@@ -1,0 +1,47 @@
+.Header{
+    position: fixed;
+    top: 0;
+    height: 65px;
+    width: 100%;
+    box-shadow: 1px 1px 4px #7e7e7e;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Header .logo{
+    position: relative;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.Header .icons{
+    display: flex;
+    align-items: center;
+    position: relative;
+    right: 1rem;
+    font-size: 22px;
+}
+
+.Header .icons img{
+    cursor: pointer;
+}
+
+.Header .menu-icon{
+    display: none;
+}
+
+@media screen and (max-width:768px){
+    .Header .icons{
+        display: none;
+    }
+    .Header .menu-icon{
+        display: block;
+        position: relative;
+        right: 1rem;
+        font-size: 22px;
+    }
+}
+

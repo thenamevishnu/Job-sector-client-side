@@ -1,0 +1,129 @@
+.Login .container{
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+    background-color: transparent;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+}
+
+.Login .form input{
+    width: 60%; 
+}
+
+.Login .form input:focus{
+    outline: 0;
+}
+
+.Login .form input, .Login .form .button{
+    display: block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);  
+    border-radius: 15px;
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+}
+
+.Login .form .button{
+    background-color: #108A00;
+    border: none;
+    border-radius: 20px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.Login .container .google-login{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+
+@media screen and (max-width:768px){
+    .Login .container{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+    }
+
+    .Login .form input{
+        width: 90%;  
+    }
+}
+
+@media screen and (max-width:576px){
+    .Login .container{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+    }
+
+    .Login .form input{
+        width: 90%;  
+    }
+}
+
+@media screen and (min-width:576px){
+    .Login .container{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+    }
+
+    .Login .form input{
+        width: 80%;  
+    }
+}
+
+@media screen and (min-width:768px){
+    .Login .container{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 80%;
+    }
+
+    .Login .form input{
+        width: 80%;  
+    }
+}
+
+@media screen and (min-width:992px){
+    .Login .container{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 70%;
+    }
+
+    .Login .form input{
+        width: 70%;  
+    }
+}
+
+@media screen and (min-width:1200px){
+    .Login .container{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 50%;
+    }
+
+    .Login .form input{
+        width: 50%;  
+    }
+}
+
+.Login .container .line-left, .Login .container .line-right{
+    width: 50%;
+    border: 1px solid #c6c6c6;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    margin-top: 12px;
+}
