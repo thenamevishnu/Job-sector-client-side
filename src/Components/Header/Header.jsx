@@ -50,7 +50,7 @@ function Header({icons}) {
       <div className='Header'>
           <div className='logo'>
               <img src={process.env.react_app_cloud + "default/logo.png"} alt='logo' width="90px"/>
-              {icons && <div className='ms-5'>
+              {icons && <div className='ms-5 d-md-inline d-none'>
                 <ul className='list-inline'>
                   <li className='me-3 list-inline-item'>Find Work</li>
                   <li className='me-3 list-inline-item'>My Jobs</li>
@@ -63,7 +63,7 @@ function Header({icons}) {
               <i className='far fa-question me-3'></i>
               <i className='far fa-comment-dots me-3'></i>
               <i className='far fa-bell me-3'></i>
-              <img src={JSON.parse(localStorage.getItem("userStorage")) ? JSON.parse(localStorage.getItem("userStorage")).getUser.profile.image : null} alt='profile pic' width="50px" onClick={()=>{localStorage.removeItem("userStorage"); navigate("/login")}}/>
+              <img src={JSON.parse(localStorage.getItem("userStorage")) ? JSON.parse(localStorage.getItem("userStorage")).getUser.profile.image : null} alt='profile pic' width="50px" onClick={()=>{ navigate("/settings/contact-info")}}/>
           </div>} 
           {icons && <i className='fa fa-bars menu-icon'></i>}
       </div>

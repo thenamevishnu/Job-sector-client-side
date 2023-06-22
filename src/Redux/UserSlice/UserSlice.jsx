@@ -5,11 +5,13 @@ export const UserSlice=createSlice({
     initialState:{
         id:"",
         name:"",
+        email:"",
         image:""
     },
     reducers:{
         updateUser:(state,action)=>{
             state.name = action.payload.name
+            state.email = action.payload.email
             state.id=action.payload.id
             state.image=action.payload.image
         }

@@ -1,0 +1,38 @@
+.contact-info{
+    margin-top: 6rem;
+}
+
+.contact-info .right-col{
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+    border-radius: 20px;
+    /* position: absolute;
+    top:13%;
+    right: 15%; */
+}
+
+@media screen and (max-width:768px){
+    .contact-info .centerfy{
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,0%);
+    }
+}
+
+/* @media screen and (max-width:768px){
+    .contact-info .right-first-col{
+        width: 100%; 
+    }
+}
+
+@media screen and (min-width:768px){
+    .contact-info .right-first-col{
+        right: 15%;
+    }
+}
+
+
+@media screen and (min-width:992px){
+    .contact-info .right-first-col{
+        right: 8%;
+    }
+} */

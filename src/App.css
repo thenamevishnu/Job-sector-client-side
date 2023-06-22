@@ -4,7 +4,30 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+body::-webkit-scrollbar{
+  display: none;
+}
+
 .default-link{
   text-decoration: none;
   color: #0C6B00;
+}
+
+.inner-circle{
+  box-shadow: inset 1px 4px 4px rgb(107, 107, 107);
+  padding: 6px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #C6C6C6;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
 }

@@ -1,0 +1,25 @@
+.my-profile{
+    margin-top: 5rem;
+}
+
+.my-profile .first-border{
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+    border-radius: 20px;
+}
+
+.my-profile .centerfy{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);
+}
+
+.my-profile .profile .info{
+    line-height: 0.6;
+}
+
+.my-profile .buttons .outline-button{
+    background-color: transparent;
+    border-radius: 20px;
+    border: 1.5px solid green;
+    color: green; 
+}

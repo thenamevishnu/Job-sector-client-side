@@ -118,7 +118,7 @@ console.log(userObject);
                             successAlert(data.message)
                             setTimeout(async () => {
                                 localStorage.setItem("userStorage",JSON.stringify(data))
-                                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.first_name+" "+data.getUser.profile.last_name,image:data.getUser.profile.image}))
+                                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}))
                                 navigate("/")
                             }, 1600);
                         }
