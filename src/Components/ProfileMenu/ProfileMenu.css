@@ -14,9 +14,3 @@
 .left-menu .list-left-menu li{
     line-height: 2;
 }
-
-@media screen and (max-width:768px){
-    .left-menu{
-        margin-top: -100%;
-    }
-}

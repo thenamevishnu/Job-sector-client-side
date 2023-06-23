@@ -14,12 +14,70 @@
 }
 
 .my-profile .profile .info{
-    line-height: 0.6;
+    line-height: 0.3;
+    font-size: 0.8rem;
 }
 
-.my-profile .buttons .outline-button{
-    background-color: transparent;
+.my-profile .profile .profile-pic img{
+    padding-top: 5px;
+    object-fit:contain;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.my-profile .inner-circle{
+    display: flex
+}
+
+.my-profile .inner-circle-right{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.my-profile .line-height{
+    line-height: 0.1;
+}
+
+.my-profile .skills{
+    white-space: nowrap;
+    display: flex;
+    overflow-x:scroll;
+    padding-bottom: 10px;
+}
+
+.my-profile .skills::-webkit-scrollbar{
+    background-color: rgb(217, 217, 217);
     border-radius: 20px;
-    border: 1.5px solid green;
-    color: green; 
+    height: 5px;
+    box-shadow: inset 2px 2px 2px gray;
+}
+
+.my-profile .skills::-webkit-scrollbar-thumb{
+    background-color: rgb(39, 147, 39);
+    border-radius: 20px;
+}
+
+.my-profile .skills .skill{
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    box-shadow: inset 2px 2px 4px #818181;
+}
+
+.my-profile .cirtificate .frame{
+    border-radius: 15px;
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+}
+
+.my-profile .cirtificate .inner-circle-down{
+    bottom: 10px;
+    right: 10px;
+}
+
+.my-profile .cirtificate .down-trash{
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+    color: rgb(5, 125, 5);
 }

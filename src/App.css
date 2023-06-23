@@ -5,7 +5,15 @@
 }
 
 body::-webkit-scrollbar{
-  display: none;
+    background-color: rgb(217, 217, 217);
+    border-radius: 20px;
+    width: 10px;
+    box-shadow: inset 2px 2px 2px gray;
+}
+
+body::-webkit-scrollbar-thumb{
+  background-color: rgb(39, 147, 39);
+  border-radius: 20px;
 }
 
 .default-link{
@@ -23,11 +31,12 @@ body::-webkit-scrollbar{
   justify-content: center;
   border-radius: 50%;
   background-color: #C6C6C6;
-  position: absolute;
-  right: 10px;
-  top: 10px;
 }
 
 .cursor-pointer{
   cursor: pointer;
+}
+
+.theme-green{
+   color: rgb(39, 147, 39);
 }
