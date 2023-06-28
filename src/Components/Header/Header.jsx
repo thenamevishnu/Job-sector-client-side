@@ -2,27 +2,15 @@ import React, { useEffect } from 'react'
 import "./Header.css"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux'
+import { errorAlert } from '../../Functions/Toasts'
 
 function Header({icons}) {
 
     const navigate = useNavigate()
     const {image} = useSelector(state => state.user)
-
-    const errorAlert = async (message) => {
-        toast.error(message, {
-            position: "top-center",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-    }
     
     useEffect(()=>{
         
@@ -54,7 +42,7 @@ function Header({icons}) {
               <img src={process.env.react_app_cloud + "/job/default/logo.png"} alt='logo' width="90px"/>
               {icons && <div className='ms-5 d-md-inline d-none'>
                 <ul className='list-inline'>
-                  <li className='me-3 list-inline-item'>Find Work</li>
+                  <li className='me-3 list-inline-item cursor-pointer' onClick={()=>navigate("/")}>Find Work</li>
                   <li className='me-3 list-inline-item'>My Jobs</li>
                   <li className='me-3 list-inline-item'>Reports</li>
                   <li className='me-3 list-inline-item'>Messages</li>

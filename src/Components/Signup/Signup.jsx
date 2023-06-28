@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import "./Signup.css"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
-import {ToastContainer, toast} from "react-toastify"
+import {ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleLogin } from "@react-oauth/google"
 import jwt_decode from "jwt-decode"
 import { useDispatch } from 'react-redux'
 import { updateUser } from '../../Redux/UserSlice/UserSlice'
+import { handleSubmit } from '../../Functions/Signup'
+import { successAlert } from '../../Functions/Toasts'
 
 function Signup() {
 
@@ -19,9 +21,12 @@ function Signup() {
         username:"",
         email:"",
         password:"",
+        confirmPassword:"",
         country:"India",
-        account_type:""
+        account_type:"",
+        otp:""
     })
+    const [canShow,setCanShow] = useState(null)
 
     useEffect(()=>{
 
@@ -44,124 +49,28 @@ function Signup() {
 
    
     const [country,setCountryList] = useState([])
-    const [borderColor,setBorder] = useState({
-        first:null,
-        second:null,
-        third:null,
-        fourth:null,
-        fifth:"1.5px solid green"
-    })
+  
     const [userObject,setUserObject] = useState(null)
-console.log(userObject);
-    const regex = {
-         full_name : /^([A-Za-z])([A-Za-z\s]){3,11}$/gm,
-         username : /^([_a-z])([a-z0-9]){3,11}$/gm,
-         email : /^([\w\W])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm,
-         password : /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*().\\?]).{8,16}$/gm
-    }
 
-    const errorAlert = async (message) => {
-        toast.error(message, {
-            position: "top-center",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-    }
-
-    const successAlert = async (message) => {
-        toast.success(message, {
-            position: "top-center",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-    }
-
-    const handleSubmit = async () => {
-        
-        try{
-
-            userData.account_type = localStorage.getItem("type")
-
-            if(userObject){
-                userData.full_name = userObject.name.slice(0,12)
-                userData.username = (userObject.email.split("@"))[0].replace(/[^\w]/gi,"").slice(0,12)
-                userData.password = process.env.react_app_googleAuthKey
-                userData.email = userObject.email
-            }
-
-            const {data} = await axios.post(process.env.react_app_server + "/signup" ,{userData},{withCredentials:true})
-
-            if(!data.status){
-                errorAlert(data.message)
-                setUserObject(null)
-            }else{
-                setTimeout(async () => {
-                    if(userObject){
-                        const userData = {}
-                        userData.email = userObject.email
-                        userData.password = process.env.react_app_googleAuthKey
-                        const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
-                        if(!data.status){
-                            errorAlert(data.message)
-                            setUserObject(null)
-                        }else{
-                            successAlert(data.message)
-                            setTimeout(async () => {
-                                localStorage.setItem("userStorage",JSON.stringify(data))
-                                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}))
-                                navigate("/")
-                            }, 1600);
-                        }
-                    }else{
+    const submitHandle = async () => {
+        const response = await handleSubmit(userData, userObject, setCanShow, setUserData)
+            if(response?.status){
+                if(response.update){
+                    successAlert(response.text)
+                    dispatch(updateUser(response.response))
+                    setTimeout(() => {
                         navigate("/")
-                    }
-                }, 0);
+                    }, 1600);
+                }else{
+                    successAlert(response.message)
+                    setTimeout(() => {
+                        navigate("/")
+                    }, 1600);
+                }
             }
-        }catch(err){
-            errorAlert(err.message)
-        }
-    }
-
-    const dataChange = async (key, value, validate) => {
-        setUserData({...userData,[key]:value}); 
-        if(validate==='full_name'){
-            if(!regex.full_name.test(value)){
-                setBorder({...borderColor,first:"1.5px solid red"})
-            } else { 
-                setBorder({...borderColor,first:"1.5px solid green"})
+            if(response?.setUserObject==null){
+                setUserObject(null)
             }
-        }
-        if(validate==='username'){
-            if(!regex.username.test(value)){
-                setBorder({...borderColor,second:"1.5px solid red"})
-            } else { 
-                setBorder({...borderColor,second:"1.5px solid green"})
-            }
-        }
-        if(validate==="email"){
-            if(!regex.email.test(value)){
-                setBorder({...borderColor,third:"1.5px solid red"})
-            } else {
-                setBorder({...borderColor,third:"1.5px solid green"})
-            }
-        }
-        if(validate==="password"){
-            if(!regex.password.test(value)){
-                setBorder({...borderColor,fourth:"1.5px solid red"})
-            } else {
-                setBorder({...borderColor,fourth:"1.5px solid green"})
-            }
-        }
     }
 
     return (
@@ -170,17 +79,23 @@ console.log(userObject);
                 <h2 className='text-center mt-3'>Signup to job sector</h2>
                 <div className='form mt-5 text-center'>
                     <div className='name'>
-                        {!userObject && <input type='text' className='mb-3 p-2' placeholder='Full Name' name='full_name' onChange={(e) =>dataChange(e.target.name,e.target.value,"full_name")} style={{border:borderColor.first}}></input>}
-                        {!userObject && <input type='text' className='mb-3 p-2 ms-4' placeholder='Username' name='username' onChange={(e) =>dataChange(e.target.name,e.target.value,"username")} style={{border:borderColor.second}}></input>}
+                        {!userObject && <input type='text' className='mb-3 p-2' placeholder='Full Name' name='full_name' value={userData.full_name} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>}
+                        {!userObject && <input type='text' className='mb-3 p-2 ms-4' placeholder='Username' name='username' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>}
                     </div>
                     {!userObject && <div className='email'>
-                        <input type='text' className='mb-3 p-2' placeholder='Email' name='email' onChange={(e) =>dataChange(e.target.name,e.target.value,"email")} style={{border:borderColor.third}}></input>
+                        <input type='text' className='mb-3 p-2' placeholder='Email' name='email'value={userData.email}  onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    </div>}
+                    {!userObject && canShow && <div className='otp'>
+                        <input type='text' className='mb-3 p-2' placeholder={"Enter otp ("+userData.email+")"} value={userData.otp} name='otp' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>}
                     {!userObject && <div className='password'>
-                        <input type='password' className='mb-3 p-2' placeholder='Password' name='password' onChange={(e) =>dataChange(e.target.name,e.target.value,"password")} style={{border:borderColor.fourth}}></input>
+                        <input type='password' className='mb-3 p-2' placeholder='Password (should contain a-z,A-Z,0-9,special)' value={userData.password} name='password' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    </div>}
+                    {!userObject && <div className='password'>
+                        <input type='password' className='mb-3 p-2' placeholder='Confirm Password' name='confirmPassword' value={userData.confirmPassword} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>}
                     <div className='country'>
-                        <select name="country" className='p-2 mb-3' onChange={(e) => dataChange(e.target.name,e.target.value,"country")} style={{border:borderColor.fifth}}>
+                        <select name="country" className='p-2 mb-3' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}>
                             <option value="India">India</option>
                             {
                                country.map(obj => {
@@ -193,7 +108,7 @@ console.log(userObject);
                             }
                         </select>
                     </div>
-                    <button className='button p-2 ps-3 pe-3 mb-4' onClick={()=>handleSubmit()}>Create account</button>
+                    <button className='button p-2 ps-3 pe-3 mb-4' onClick={submitHandle}>Create account</button>
                     <Link className='default-link'>Forgot Password ?</Link>
                 </div>
                 <div style={{display:"flex"}}>

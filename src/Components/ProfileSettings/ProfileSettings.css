@@ -36,10 +36,6 @@
     top: 10px;
 }
 
-.my-profile .line-height{
-    line-height: 0.1;
-}
-
 .my-profile .skills{
     white-space: nowrap;
     display: flex;
@@ -80,4 +76,22 @@
     bottom: 0;
     right: 20px;
     color: rgb(5, 125, 5);
+}
+
+.my-profile .skills .align-close{
+    position: absolute;
+    top: 0.1rem;
+    right: 0.7rem;
+    font-size: 10px;
+    color: red;
+    font-weight: bolder;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 13px;
+    height: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }

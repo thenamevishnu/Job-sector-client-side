@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import "./Login.css"
 import { Link, useNavigate } from "react-router-dom"
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux"
 import axios from 'axios';
 import { updateUser } from "../../Redux/UserSlice/UserSlice"
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode"
+import { successAlert, errorAlert } from '../../Functions/Toasts';
+import { googleAuth } from '../../Functions/GoogleOauth';
 
 function Login() {
 
@@ -33,33 +35,7 @@ function Login() {
     const regex = {
         email : /^([\W\w])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm,
         password : /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*().\\?]).{8,16}$/gm
-   }
-
-   const errorAlert = async (message) => {
-       toast.error(message, {
-           position: "top-center",
-           autoClose: 1500,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           theme: "colored",
-           });
-   }
-
-   const successAlert = async (message) => {
-       toast.success(message, {
-           position: "top-center",
-           autoClose: 1500,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           theme: "colored",
-           });
-   }
+    }
 
     const handleSubmit = async () => {
         try{
@@ -70,7 +46,7 @@ function Login() {
                 errorAlert(data.message)
             }else{
                 localStorage.setItem("userStorage",JSON.stringify(data))
-                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:"/job/"+data.getUser.profile.image}))
+                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}))
                 successAlert(data.message)
                 setTimeout(() => {
                     navigate("/")
@@ -81,31 +57,16 @@ function Login() {
         }
     }
 
-    const googleAuth = async () => {
-        try{
-            
-            const userData = {}
-            userData.email = userObject.email
-            userData.password = process.env.react_app_googleAuthKey
-
-            const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
-        
-            if(!data.status){
-                errorAlert(data.message)
-            }else{
-                localStorage.setItem("userStorage",JSON.stringify(data))
-                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}))
-                userObject && successAlert(data.message)
-                setTimeout(() => {
-                    navigate("/")
-                }, 1600);
-            }
-        }catch(err){
-            errorAlert(err.message)
+    userObject && googleAuth(userObject).then(response=>{
+        if(response?.status){
+            dispatch(updateUser(response.response))
+            setTimeout(() => {
+                navigate("/")
+            }, 1600);
         }
-    }
+    })
 
-    userObject && googleAuth()
+    
 
     const dataChange = async (key, value, validate) => {
         setUserData({...userData,[key]:value}); 
@@ -137,7 +98,7 @@ function Login() {
                         <input type='password' className='mb-3 p-2' placeholder='Password' name='password' onChange={(e) =>dataChange(e.target.name,e.target.value,"password")} style={{border:borderColor.second}}></input>
                     </div>
                     <button className='button p-2 ps-3 pe-3 mb-4' onClick={()=>handleSubmit()}>Continue with email</button>
-                    <Link className='default-link'>Forgot Password ?</Link>
+                    <Link className='default-link' to="/forgot-password">Forgot Password ?</Link>
                 </div>
                 <div style={{display:"flex"}}>
                     <div className='line-left'></div>&nbsp; or &nbsp;<div className='line-right'></div>
