@@ -7,7 +7,8 @@ export const UserSlice=createSlice({
         name:"",
         email:"",
         image:"",
-        audio:""
+        audio:"",
+        type:""
     },
     reducers:{
         updateUser:(state,action)=>{
@@ -16,6 +17,7 @@ export const UserSlice=createSlice({
             state.id=action.payload.id
             state.image=action.payload.image
             state.audio=action.payload.audio
+            state.type=action.payload.type
         }
     }
 })

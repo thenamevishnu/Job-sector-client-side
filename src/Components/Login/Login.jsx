@@ -46,7 +46,7 @@ function Login() {
                 errorAlert(data.message)
             }else{
                 localStorage.setItem("userStorage",JSON.stringify(data))
-                dispatch(updateUser({id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}))
+                dispatch(updateUser({id:data.getUser._id,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}))
                 successAlert(data.message)
                 setTimeout(() => {
                     navigate("/")

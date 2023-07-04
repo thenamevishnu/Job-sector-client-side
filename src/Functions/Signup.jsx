@@ -75,7 +75,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
                         return obj
                     }else{
                         localStorage.setItem("userStorage",JSON.stringify(data))
-                        obj.response = {id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}
+                        obj.response = {id:data.getUser._id,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}
                         obj.status = true
                         obj.update = true
                         obj.text = data.message

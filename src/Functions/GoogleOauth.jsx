@@ -16,7 +16,7 @@ export const googleAuth = async (userObject) => {
         }else{
             const obj = {}
             localStorage.setItem("userStorage",JSON.stringify(data))
-            obj.response = {id:data.getUser._id,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}
+            obj.response = {id:data.getUser._id,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}
             obj.status = true
             successAlert(data.message)
             return obj

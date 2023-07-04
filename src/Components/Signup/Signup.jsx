@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./Signup.css"
 import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
 import {ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleLogin } from "@react-oauth/google"
@@ -10,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { updateUser } from '../../Redux/UserSlice/UserSlice'
 import { handleSubmit } from '../../Functions/Signup'
 import { successAlert } from '../../Functions/Toasts'
+import json from "country-region-data/data.json"
 
 function Signup() {
 
@@ -39,12 +39,8 @@ function Signup() {
             navigate("/type")
         }
 
-        async function getJson(){
-            const {data} = await axios.get("https://raw.githubusercontent.com/thenamevishnu/country-state/master/index.json")
-            setCountryList(data)
-        }
+        setCountryList(json)
 
-        getJson()
     },[navigate,userData])
 
    

@@ -1,4 +1,5 @@
 import axios from "axios"
+import { errorAlert } from "./Toasts"
 
 export const deleteLanguage = async (obj,id) => {
     const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteLanguage:true,obj:obj,id:id})
@@ -39,5 +40,13 @@ export const deleteCertificate = async (obj,id) => {
     const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteCertificate:true,obj:obj,id:id})
     if(data.status){
         return data.certificates
+    }
+}
+
+export const changeAvailable = async (checkStatus,id) => {
+    try{
+        await axios.post(`${process.env.react_app_server}/changeProfileData`,{checkStatus:true,value:checkStatus,id:id})
+    }catch(err){
+        errorAlert(err.message)
     }
 }

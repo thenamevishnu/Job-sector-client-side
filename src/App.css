@@ -5,15 +5,7 @@
 }
 
 body::-webkit-scrollbar{
-    background-color: rgb(217, 217, 217);
-    border-radius: 20px;
-    width: 10px;
-    box-shadow: inset 2px 2px 2px gray;
-}
-
-body::-webkit-scrollbar-thumb{
-  background-color: rgb(39, 147, 39);
-  border-radius: 20px;
+  display: none;
 }
 
 .default-link{
@@ -30,7 +22,7 @@ body::-webkit-scrollbar-thumb{
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: #C6C6C6;
+  background-color: #f0f0f0;
 }
 
 .cursor-pointer{
@@ -39,4 +31,13 @@ body::-webkit-scrollbar-thumb{
 
 .theme-green{
    color: rgb(39, 147, 39);
+}
+
+.jobs-bg{
+    background-color: #cfcfcf37;
+}
+
+.border-20{
+  border-radius: 20px;
+  border: 1px solid #80808086;
 }

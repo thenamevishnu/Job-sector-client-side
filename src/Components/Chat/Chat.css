@@ -1,0 +1,50 @@
+.chat-app .container{
+    margin-top: 5rem;
+}
+
+.chat-app .container .left{
+    height: 40em;
+}
+
+.chat-app .container .search input{
+    border: 1px solid gray;
+    padding: 6px;
+    border-radius: 20px;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.chat-app .container .search input:focus{
+    outline: 0;
+}
+
+.chat-app .container .chat-head{
+    background-color: rgb(234, 234, 234);
+    border-radius: 20px;
+    box-shadow: 1px 1px 1px gray;
+}
+
+.chat-app .container .chat-head img{
+    border-radius: 50px;
+}
+
+.chat-app .container .send-button{
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: white;
+}
+
+.chat-app .container .type-message{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.chat-app .container .type-message input{
+    border: 1px solid rgb(192, 192, 192);
+}
+
+.chat-app .container .type-message input:focus{
+    outline: 0;
+}

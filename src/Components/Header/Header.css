@@ -26,6 +26,18 @@
     font-size: 22px;
 }
 
+.Header .icons .post-job-button{
+    background-color: gray;
+    border: none;
+    border-radius: 15px;
+    font-size: 0.8em;
+    box-shadow: 1px 1px 1px rgb(159, 159, 159),-1px -1px 1px rgb(159, 159, 159),-1px 1px 1px rgb(159, 159, 159),1px -1px 1px rgb(159, 159, 159);
+}
+
+.Header .icons .post-job-button:active{
+    box-shadow: none;
+}
+
 .Header .icons img{
     cursor: pointer;
 }
