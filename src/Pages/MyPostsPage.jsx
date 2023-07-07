@@ -1,14 +1,12 @@
 import React from 'react'
 import Header from '../Components/Header/Header'
-import MyPosts from '../Components/Freelancer/MyPosts/MyPosts'
-import Footer from '../Components/Footer/Footer'
+import MyPosts from "../Components/Clients/MyPosts/MyPosts"
 
 function MyPostsPage() {
   return (
     <div>
         <Header icons={true} />
         <MyPosts />
-        <Footer />
     </div>
   )
 }

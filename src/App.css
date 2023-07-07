@@ -41,3 +41,38 @@ body::-webkit-scrollbar{
   border-radius: 20px;
   border: 1px solid #80808086;
 }
+
+.border-50{
+  border-radius: 50px;
+}
+
+.info-button{
+  border: none;
+  border-radius: 10px;
+  background-color: #00acbce0;
+  color: #fff;
+}
+
+.disable-button{
+  border: none;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 0, 0, 0.741);
+  background-color: transparent;
+  color: #5a5a5a;
+}
+
+.enable-button{
+  border: none;
+  border-radius: 10px;
+  border: 1px solid #00d015be;
+  background-color: transparent;
+  color: #5a5a5a;
+}
+
+.edit-button{
+  border: none;
+  border-radius: 10px;
+  border: 1px solid #1500d0be;
+  background-color: transparent;
+  color: #5a5a5a;
+}

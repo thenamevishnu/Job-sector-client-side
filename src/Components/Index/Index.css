@@ -61,6 +61,15 @@
     display: inline;
 }
 
+.landing-page .fa-trash{
+    padding: 10px;
+    border-radius: 50px;
+    width: 10px;
+    height: 10px;
+    color: rgba(206, 0, 0, 0.604);
+    display: inline;
+}
+
 .landing-page .tags .tag{
     background-color: #D8D8D8;
     box-shadow: inset 1px 1px 1px gray;

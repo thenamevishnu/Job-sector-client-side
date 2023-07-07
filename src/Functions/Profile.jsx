@@ -50,3 +50,12 @@ export const changeAvailable = async (checkStatus,id) => {
         errorAlert(err.message)
     }
 }
+
+export const removeSaved = async (post_id,user_id) => {
+    try{
+        const {data} = await axios.post(`${process.env.react_app_server}/removeSaved/${user_id}/${post_id}`)
+        return data.postData
+    }catch(err){
+        errorAlert(err.message)
+    }
+}

@@ -4,14 +4,15 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { errorAlert } from '../../Functions/Toasts'
 import { Link, useNavigate } from 'react-router-dom'
-import { changeAvailable } from '../../Functions/Profile'
+import { changeAvailable, removeSaved } from '../../Functions/Profile'
 import moment from 'moment'
 
 function Index() {
 
-    const {id} = useSelector(state => state.user)
+    const {id,type} = useSelector(state => state.user)
     const [userData,setUserData] = useState({})
     const [postData,setPostData] = useState([])
+    const [showData,setShowData] = useState("/getLatest")
 
     const navigate = useNavigate()
 
@@ -19,15 +20,17 @@ function Index() {
         const fetchData = async () => {
             try{
                 const response1 = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
-                const response2 = await axios.get(process.env.react_app_server + "/getPostData")
+                const response2 = await axios.get(process.env.react_app_server + showData)
+                console.log(response2.data);
+                response1.data.profile.total_saved = response1?.data?.saved_jobs?.length
                 setUserData(response1.data.profile)
-                setPostData(response2.data.postInfo)
+                setPostData(response2.data.postData)
             }catch(err){
                 errorAlert(err.message)
             }
       }
       fetchData()
-    },[id])
+    },[id,showData,type])
 
     return (
         <div className='landing-page text-center'>
@@ -43,11 +46,11 @@ function Index() {
                             <div className="col-12 border-20 mt-5">
                               
                                 <div className="row">
-                                    <h4 className='text-start p-3 fw-bold'>Jobs you might like</h4>
+                                    <h4 className='text-start p-3 fw-bold'>{type === "freelancer" ? "Jobs you might like" : "Job Board"}</h4>
                                     <div className='text-start p-3'>
-                                        <span className='me-4'>Best Matches</span>
-                                        <span className='me-4'>Most Recent</span>
-                                        <span>Saved Jobs (0)</span>
+                                        {type === "freelancer" && <span className={showData === "/bestMatch/"+id ? 'text-success me-4 cursor-pointer' : 'me-4 cursor-pointer'} onClick={()=>setShowData("/bestMatch/"+id)}>Best Matches</span>}
+                                        <span className={showData === "/getLatest" ? 'text-success me-4 cursor-pointer' : 'me-4 cursor-pointer'} onClick={()=>setShowData("/getLatest")}>Most Recent</span>
+                                        <span className={showData === "/getSavedPost/"+id ? 'text-success cursor-pointer' : 'cursor-pointer'} onClick={()=>setShowData("/getSavedPost/"+id)}>Saved Jobs ({userData?.total_saved})</span>
                                     </div>
                                     <hr/>
 
@@ -62,10 +65,13 @@ function Index() {
                                                     <div className='p-3'>
                                                         <div className='text-success text-start' style={{fontSize:"1.2em",maxWidth:"35em"}} onClick={()=>{localStorage.setItem("post-id",obj._id); navigate("/post-view")}}>{obj.title}</div>
                                                     </div>
-                                                    <div className='p-3'>
+                                                    {showData === "/getSavedPost/"+id+"" && <div className='p-3'>
+                                                        <i className='fa fa-trash me-3' title='remove from saved list' onClick={async ()=>{setPostData(await removeSaved(obj._id,id)); setUserData({...userData,total_saved:userData?.total_saved - 1})}}></i>
+                                                    </div>}
+                                                    {showData !== "/getSavedPost/"+id+"" && <div className='p-3'>
                                                         <i className='far fa-thumbs-down me-3'></i>
                                                         <i className='far fa-heart'></i>
-                                                    </div>
+                                                    </div>}
                                                 </div>
                                                 <div className='p-3'>
                                                     <div className='text-start' style={{fontSize:"0.8em"}}>{obj.jobType} - {obj.experience} - Est. Budget: {obj.jobType === "Hourly" ? "$"+obj.priceRange.from+"-"+obj.priceRange.to+"/hr" : "$"+obj.priceRange.from+"-"+obj.priceRange.to} - Posted {moment(obj?.posted).fromNow()}</div>
@@ -121,7 +127,7 @@ function Index() {
                             </div>
                             <div className='my-proposals border-20 p-2 text-start'>
                                 <h4 className='fw-bold p-2'>Proposals</h4>
-                                <Link className='default-link p-2' to="/my-proposals">My Proposals</Link>
+                                <Link className='default-link p-2' to="/my-proposals" onClick={()=>navigate("/my-proposals")}>My Proposals</Link>
                             </div>
                         </div>
 

@@ -9,7 +9,7 @@ import moment from "moment"
 function JobView() {
     
     // const navigate = useNavigate()
-    const {id} = useSelector(state => state.user)
+    const {id,type} = useSelector(state => state.user)
     const [postInfo,setPostInfo] = useState({})
     const [related,setRelated] = useState([])
     const [refresh,setRefresh] = useState(false)
@@ -40,7 +40,6 @@ function JobView() {
             <div className='container'>
                 <div className="row gap-5">
                     <div className="col-12 border-20 p-3">
-                    {!postInfo?.title && <div className='text-center'>Post Not Found!</div>}
                     {postInfo?.title && <div className="row d-flex justify-content-between">
                         <div className="col-8">
                             
@@ -62,6 +61,7 @@ function JobView() {
                                             })
                                         }
                                     </div>
+                                    <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeed?.from}</div>
                                     <div className='text-start mt-4 mb-4'>Total Proposals : {postInfo?.proposals?.length}</div>
                                     <div className='text-start mt-1'>Payments - ${postInfo?.auther && postInfo?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {postInfo?.auther && postInfo?.auther[0]?.profile?.country}</div>
                                     <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.rating}</div>
@@ -78,13 +78,14 @@ function JobView() {
                                     <span className='fst-italic' style={{fontSize:"12px"}}>{postInfo && postInfo?.auther[0]?.profile?.title}</span>
                                 </div>
                            </div>
-                           <button className='apply-job mt-4 p-2 fw-bold' onClick={async ()=>{setPostInfo({...postInfo,proposals:await sendProposal(postInfo._id,id)})}}><i className='far fa-paper-plane'></i> SEND PROPOSAL</button>
+                           {type === "freelancer" && <button className='apply-job mt-4 p-2 fw-bold' onClick={async ()=>{setPostInfo({...postInfo,proposals:await sendProposal(postInfo._id,id)})}}><i className='far fa-paper-plane'></i> SEND PROPOSAL</button>}
                            <button className='save-job mt-3 p-2 fw-bold' onClick={()=>saveJob(postInfo._id,id)}><i className='far fa-heart'></i> SAVE JOB</button>
                         </div>
                         </div>}
+                        {!postInfo?.title && <div className='text-center fs-5'>Post Disabled or Deleted!</div>}
                     </div>
 
-                    <div className="col-12 border-20 p-3">
+                    { related?.length > 0 && <div className="col-12 border-20 p-3">
                         <h4 className='fw-bold'>RELATED POSTS</h4>
                         <hr />
                         {
@@ -117,6 +118,7 @@ function JobView() {
                             })
                         }
                     </div>
+                     }
                 </div>
             </div>
         </div>

@@ -14,6 +14,8 @@ import JobViewPage from './Pages/JobViewPage';
 import ChatPage from './Pages/ChatPage';
 import MyPostsPage from './Pages/MyPostsPage';
 import { useSelector } from 'react-redux';
+import MyProposalsPage from './Pages/MyProposalsPage';
+import ViewPostPage from './Pages/ViewPostPage';
 
 function App() {
 
@@ -35,8 +37,10 @@ function App() {
                 <Route Component={PostJobPage} path='/post-job' />
                 <Route Component={JobViewPage} path='/post-view' />
                 <Route Component={ChatPage} path='/chats' />
+                <Route Component={MyProposalsPage} path='/my-proposals' />
 
                 <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/"}/>} path='/my-posts' />
+                <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
             </Routes>
         </Router>
     </div>

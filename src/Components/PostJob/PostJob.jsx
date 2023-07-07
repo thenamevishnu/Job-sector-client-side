@@ -66,7 +66,7 @@ function PostJob() {
                             })
                         }
                    
-                    <button className='button p-2 ps-3 pe-3 mt-4 mb-4' onClick={()=>{postNewJob(post,id) && navigate("/")}}><i className='fa fa-paper-plane'></i> Post Now</button>
+                    <button className='button p-2 ps-3 pe-3 mt-4 mb-4' onClick={async ()=>{await postNewJob(post,id) && navigate("/")}}><i className='fa fa-paper-plane'></i> Post Now</button>
                 </div>
             </div>
             <ToastContainer/>
