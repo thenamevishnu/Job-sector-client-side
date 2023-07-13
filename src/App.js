@@ -16,6 +16,7 @@ import MyPostsPage from './Pages/MyPostsPage';
 import { useSelector } from 'react-redux';
 import MyProposalsPage from './Pages/MyProposalsPage';
 import ViewPostPage from './Pages/ViewPostPage';
+import PostEditPage from './Pages/PostEditPage';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
 
                 <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/"}/>} path='/my-posts' />
                 <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
+                <Route element={type === "client" && <PostEditPage />} path='/post-edit' />
             </Routes>
         </Router>
     </div>

@@ -33,7 +33,7 @@ function MyPosts() {
                                 </div>
                                 <div>
                                     <button className={obj?.status ? 'disable-button d-block p-1 ps-2 pe-2 mb-2' : 'enable-button d-block p-1 ps-2 pe-2 mb-2'} onClick={async ()=>setPostData(await changePostStatus(obj._id,id,obj.status))}>{obj?.status ? "Disable" : "Enable"}</button>
-                                    <button className='edit-button d-block p-1 ps-2 pe-2'>Edit</button>
+                                    <button className='edit-button d-block p-1 ps-2 pe-2' onClick={()=>{localStorage.setItem("client-edit-post",obj._id); navigate("/post-edit");}}>Edit</button>
                                 </div>
                             </div>
                         )

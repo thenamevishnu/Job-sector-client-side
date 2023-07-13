@@ -8,8 +8,6 @@ export const postNewJob = async (post,id) => {
         discription:/^([\w])+/gm
     }
 
-    console.log(post);
-
     const priceRange = post.priceRange?.split("-")
 
     if(post.title===""){
@@ -42,16 +40,66 @@ export const postNewJob = async (post,id) => {
         postData.user_id = id
         const {data} = await axios.post(`${process.env.react_app_server}/post-job`,{postData},{withCredentials:true})
         if(data.status){
-            console.log(data);
+            successAlert("New Job Created!")
             return true
         }else{
+            errorAlert("Error happend!")
+            return false
+        }
+    }
+}
+
+export const updateMyPost = async (post, id, post_id) => {
+    const regex = {
+        title:/^([\w])+/gm,
+        discription:/^([\w])+/gm
+    }
+
+    const priceRange = post.priceRange?.split("-")
+
+    if(post.title===""){
+        errorAlert("Title is required!")
+    }else if(!regex.title.test(post.title)){
+        errorAlert("Only words are allowed in title")
+    }else if(post.experience === ""){
+        errorAlert("Select experience level")
+    }else if(post.jobType === ""){
+        errorAlert("Select Job Type!")
+    }else if(post.priceRange===""){
+        errorAlert("Price Range is required!")
+    }else if(isNaN(priceRange[0]) || isNaN(priceRange[1])){
+        errorAlert("Invalid! Eg: 100-150")
+    }else if(post.connectionsNeed === ""){
+        errorAlert("Select connections needed!")
+    }else if(post.description === ""){
+        errorAlert("Description is required!")
+    }else if(!regex.discription.test(post.description)){
+        errorAlert("Only words are allowed in description!")
+    }else if(post.skillsNeed?.length === 0){
+        errorAlert("Select skills needed!")
+    }else{
+        const connectionsNeed = post.connectionsNeed?.split("-")
+        const postData = {...post,priceRange:{
+            from:parseFloat(priceRange[0]),to:parseFloat(priceRange[1])
+        },connectionsNeed:{
+            from:parseInt(connectionsNeed[0]),to:parseInt(connectionsNeed[1])
+        }}
+        postData.user_id = id
+        postData.post_id = post_id
+        const {data} = await axios.post(`${process.env.react_app_server}/update-job`,{postData},{withCredentials:true})
+        if(data.status){
+            successAlert("Job Updated!")
+            return true
+        }else{
+            errorAlert("Error happend!")
             return false
         }
     }
 }
 
 export const addSkills = async (value,post) => {
-    if(post.skillsNeed.includes(value)){
+    const checkArray = post?.skillsNeed?.map(item => item.toLowerCase())
+    if(checkArray.includes(value.toLowerCase())){
         errorAlert("Skill already selected!")
     }else{
         if(value!=="0"){
@@ -69,12 +117,14 @@ export const removeSkills = async (value,post) => {
     return post.skillsNeed
 }
 
-export const saveJob = async (post_id, user_id) => {
+export const saveJob = async (post_id, user_id, userData) => {
     const {data} = await axios.post(`${process.env.react_app_server}/saveJobs`,{post_id:post_id,user_id:user_id},{withCredentials:true})
     if(data.status){
         successAlert(data.message)
+        return {status:true,total:userData.total_saved += 1}
     }else{
         errorAlert(data.message)
+        return {status:false,total:userData.total_saved}
     }
 }
 
@@ -90,4 +140,9 @@ export const sendProposal = async (post_id, user_id) => {
         }
     }
     return data.response
+}
+
+export const isSaved = (obj,id) => {
+    const response = obj.find(item => item === id)
+    return response
 }

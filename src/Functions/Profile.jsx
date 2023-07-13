@@ -51,10 +51,11 @@ export const changeAvailable = async (checkStatus,id) => {
     }
 }
 
-export const removeSaved = async (post_id,user_id) => {
+export const removeSaved = async (post_id,user_id,savedId) => {
     try{
         const {data} = await axios.post(`${process.env.react_app_server}/removeSaved/${user_id}/${post_id}`)
-        return data.postData
+        savedId.splice(savedId.indexOf(post_id),1)
+        return {postData:data.postData,savedId:savedId}
     }catch(err){
         errorAlert(err.message)
     }

@@ -205,7 +205,7 @@ export function Skills(props) {
     const [modal,showModal] = props.states
     const [skills,setSkills] = useState({skills:""})
 
-    const reg = /^([a-zA-Z])([a-zA-Z-_\s+]){1,80}$/gm
+    const reg = /^([a-zA-Z0-9])([a-zA-Z-_\s+0-9]){1,80}$/gm
 
     const skillSubmit = async () => {
         if(skills.skills === ""){

@@ -6,6 +6,7 @@ import { errorAlert } from '../../Functions/Toasts'
 import { Link, useNavigate } from 'react-router-dom'
 import { changeAvailable, removeSaved } from '../../Functions/Profile'
 import moment from 'moment'
+import { isSaved, saveJob } from '../../Functions/Posts'
 
 function Index() {
 
@@ -13,7 +14,8 @@ function Index() {
     const [userData,setUserData] = useState({})
     const [postData,setPostData] = useState([])
     const [showData,setShowData] = useState("/getLatest")
-
+    const [saved_jobs,setSavedJobs] = useState([])
+    const [savedId,setSavedId] = useState([])
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -24,6 +26,7 @@ function Index() {
                 console.log(response2.data);
                 response1.data.profile.total_saved = response1?.data?.saved_jobs?.length
                 setUserData(response1.data.profile)
+                setSavedJobs(response1.data.saved_jobs)
                 setPostData(response2.data.postData)
             }catch(err){
                 errorAlert(err.message)
@@ -31,7 +34,7 @@ function Index() {
       }
       fetchData()
     },[id,showData,type])
-
+    
     return (
         <div className='landing-page text-center'>
             <div className="row mx-auto">
@@ -66,11 +69,15 @@ function Index() {
                                                         <div className='text-success text-start' style={{fontSize:"1.2em",maxWidth:"35em"}} onClick={()=>{localStorage.setItem("post-id",obj._id); navigate("/post-view")}}>{obj.title}</div>
                                                     </div>
                                                     {showData === "/getSavedPost/"+id+"" && <div className='p-3'>
-                                                        <i className='fa fa-trash me-3' title='remove from saved list' onClick={async ()=>{setPostData(await removeSaved(obj._id,id)); setUserData({...userData,total_saved:userData?.total_saved - 1})}}></i>
+                                                        <i className='fa fa-trash me-3' title='remove from saved list' onClick={async ()=>{const info = await removeSaved(obj._id,id,savedId); setPostData(info.postData); setUserData({...userData,total_saved:userData?.total_saved - 1})}}></i>
                                                     </div>}
                                                     {showData !== "/getSavedPost/"+id+"" && <div className='p-3'>
                                                         <i className='far fa-thumbs-down me-3'></i>
-                                                        <i className='far fa-heart'></i>
+                                                        <i className={isSaved(saved_jobs,obj._id) ? 'fas fa-heart' : savedId?.includes(obj._id) ? 'fas fa-heart' : 'far fa-heart'} onClick={async ()=>{
+                                                            const saved = await saveJob(obj._id,id,userData); 
+                                                            setUserData({...userData, total_saved: saved.total}); 
+                                                            setSavedId([...savedId,obj._id])
+                                                            }}></i>
                                                     </div>}
                                                 </div>
                                                 <div className='p-3'>

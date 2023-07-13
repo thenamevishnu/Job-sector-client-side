@@ -32,7 +32,7 @@ function MyProposals() {
                                     <div>Status : {obj?.my_proposals?.status}</div>
                                 </div>
                                 <div>
-                                    <button className='info-button p-1 ps-2 pe-2' onClick={()=>{localStorage.setItem("post-id",obj._id); navigate("/post-view")}}>View Job</button>
+                                    <button className='info-button p-1 ps-2 pe-2' onClick={()=>{localStorage.setItem("post-id",obj?.post_info[0]?._id); navigate("/post-view")}}>View Job</button>
                                 </div>
                             </div>
                         )
