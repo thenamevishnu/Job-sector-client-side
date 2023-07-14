@@ -5,13 +5,15 @@ export const adminSlice=createSlice({
     initialState:{
         admin_id:"",
         admin_name:"",
-        admin_image:""
+        admin_username:"",
+        admin_email:""
     },
     reducers:{
         updateAdmin:(state,action)=>{
             state.admin_id = action.payload.admin_id
             state.admin_name=action.payload.admin_name
-            state.admin_image=action.payload.admin_image
+            state.admin_username=action.payload.admin_username
+            state.admin_email=action.payload.admin_email
         }
     }
 })

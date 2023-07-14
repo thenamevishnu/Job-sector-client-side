@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import "./Chat.css"
-import io from "socket.io-client"
 import { useSelector } from 'react-redux'
+import { getAllChatList } from '../../Api/Chat'
+import Conversation from './Conversation'
 
 function Chat() {
+    
+    const {id} = useSelector(state => state.user)
 
-    const room = "job"
-    const {name,id} = useSelector(state => state.user)
-
-    const socket = io.connect(process.env.react_app_server)
-
-    socket.emit("join_room",room)
-
-    const [message, setMessage] = useState("")
-
-    const sendMessage = async () => {
-        const messageData = {
-            room: room,
-            user_id:id,
-            author: name,
-            message: message,
-            time: new Date().getHours() + ':' + new Date().getMinutes()
-          };
-          await socket.emit('sendMessage', messageData);
-    }
+    
+    const [chatList,setChatList] = useState([])
+    const [chatSelected,selectedChat] = useState(null)
 
     useEffect(()=>{
-        socket.on("receivedMessage",(data)=>{
-            console.log(data);
-        })
-    },[socket])
+       const fetchData = async () => {
+            const userLists = await getAllChatList(id)
+            const lists = userLists.map(obj => {
+                return{
+                    ...obj,users: obj.users.filter(item => item._id !== id)
+                }
+            })
+            setChatList(lists)
+       }
+       fetchData()
+    },[id])
 
     return (
         <div className='chat-app'>
@@ -43,50 +37,31 @@ function Chat() {
                                 <div className='col-12 p-2 search'>
                                     <input type='text' />
                                 </div>
-                                <div className='users'>
-                                    
+                                <div className='users mt-3 p-2'>
+                                    {
+                                        chatList && chatList.map(obj => {
+                                            return (
+                                                <div className='user mb-2 p-2 d-flex justify-content-between position-relative border-20' key={obj._id} onClick={()=>selectedChat(obj)}>
+                                                    <div className='d-flex align-items-center'>
+                                                        <div>
+                                                            <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image}`} alt='pic of opponent' width="50px" className='rounded-pill'/>
+                                                        </div>
+                                                        <div className='ms-2'>
+                                                            <div>{obj?.users[0]?.profile?.full_name}</div>
+                                                            <div style={{fontSize:"0.73em"}}>{obj?.lastMessage?.length > 10 ? obj?.lastMessage?.substring(0,10)+"..." : obj?.lastMessage}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='position-absolute' style={{top:"2px",right:"10px"}}>
+                                                        {(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
                             </div>
 
-                            <div className='col-7 border-20 position-relative'>
-                                <div className='chat-head col-12 d-flex justify-content-between p-2'>
-                                    
-                                    <div className='d-flex align-items-center'>
-                                        <img className='profile-pic' src={process.env.react_app_cloud + "/job/default/avatar.png"} alt='profile-pic' width="50px"></img>
-                                        <div className='ms-2'>
-                                            Vishnu MK<br></br>
-                                            <span className='text-success'>Online</span>
-                                        </div>
-                                    </div>
-
-                                    <div className='p-2'>
-                                        <i className='fa fa-video p-2'></i>
-                                    </div>
-
-                                </div>
-
-                                <div className='col-12 p-2'>
-                                        <div className='border-20 p-3 w-25'>
-                                            fghsdfghsfgh
-                                        </div>
-                                        <div className='border-20 p-3'>
-                                            fgjldfkglhkjfdgklj
-                                        </div>
-                                        <div className='border-20 p-3'>
-                                            fgjldfkglhkjfdgklj
-                                        </div>
-                                </div>
-
-                                <div className='container'>
-                                    <div className='col-10 mb-3'>
-                                        <div className='type-message'>
-                                            <input type='text' className='p-2 me-2 border-20' placeholder='Message...' style={{width:"100%"}} value={message} onChange={(event)=>setMessage(event.target.value)}/>
-                                            <i className='send-button fa fa-paper-plane p-2 border-20 text-success cursor-pointer' style={{zIndex:"1"}} onClick={sendMessage}></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                           <Conversation selected={chatSelected}/>
 
                         </div>
 

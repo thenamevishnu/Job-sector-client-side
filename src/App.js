@@ -1,22 +1,23 @@
 import './App.css';
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom"
-import HomePage from './Pages/HomePage';
-import LoginPage from './Pages/LoginPage';
-import SignupPage from './Pages/SignupPage';
-import SignupTypePage from './Pages/SignupTypePage';
-import ContactInfoPage from './Pages/ContactInfoPage';
-import PublicProfilePage from './Pages/PublicProfilePage';
-import ProfileSettingsPage from './Pages/ProfileSettingsPage';
-import ForgotPage from './Pages/ForgotPage';
-import ResetPage from './Pages/ResetPage';
-import PostJobPage from './Pages/PostJobPage';
-import JobViewPage from './Pages/JobViewPage';
-import ChatPage from './Pages/ChatPage';
-import MyPostsPage from './Pages/MyPostsPage';
+import HomePage from './Pages/Users/HomePage';
+import LoginPage from './Pages/Users/LoginPage';
+import SignupPage from './Pages/Users/SignupPage';
+import SignupTypePage from './Pages/Users/SignupTypePage';
+import ContactInfoPage from './Pages/Users/ContactInfoPage';
+import PublicProfilePage from './Pages/Users/PublicProfilePage';
+import ProfileSettingsPage from './Pages/Users/ProfileSettingsPage';
+import ForgotPage from './Pages/Users/ForgotPage';
+import ResetPage from './Pages/Users/ResetPage';
+import PostJobPage from './Pages/Users/Client/PostJobPage';
+import JobViewPage from './Pages/Users/JobViewPage';
+import ChatPage from './Pages/Chats/ChatPage';
+import MyPostsPage from './Pages/Users/Client/MyPostsPage';
 import { useSelector } from 'react-redux';
-import MyProposalsPage from './Pages/MyProposalsPage';
-import ViewPostPage from './Pages/ViewPostPage';
-import PostEditPage from './Pages/PostEditPage';
+import MyProposalsPage from './Pages/Users/Freelancer/MyProposalsPage';
+import ViewPostPage from './Pages/Users/Client/ViewPostPage';
+import PostEditPage from './Pages/Users/Client/PostEditPage';
+import AdminLoginPage from './Pages/Admins/AdminLoginPage';
 
 function App() {
 
@@ -43,6 +44,8 @@ function App() {
                 <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/"}/>} path='/my-posts' />
                 <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
                 <Route element={type === "client" && <PostEditPage />} path='/post-edit' />
+
+                <Route element={<AdminLoginPage/>} path='/admin/login' />
             </Routes>
         </Router>
     </div>

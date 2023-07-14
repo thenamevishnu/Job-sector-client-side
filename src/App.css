@@ -76,3 +76,7 @@ body::-webkit-scrollbar{
   background-color: transparent;
   color: #5a5a5a;
 }
+
+.scroll-bar-hidden::-webkit-scrollbar{
+  display: none;
+}
