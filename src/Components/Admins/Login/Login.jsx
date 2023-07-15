@@ -11,7 +11,8 @@ function Login() {
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        const adminStorage = localStorage.getItem("adminStorage")
+        // const adminStorage = localStorage.getItem("adminStorage")
+        const adminStorage = null
         if(adminStorage) navigate("/admin")
     },[navigate])
 
@@ -41,7 +42,7 @@ function Login() {
                 dispatch(updateAdmin({admin_id:data.getAdmin._id,admin_name:data.getAdmin.name,admin_email:data.getAdmin.email,admin_username:data.getAdmin.username}))
                 successAlert(data.message)
                 setTimeout(() => {
-                    navigate("/")
+                    navigate("/admin")
                 }, 1600);
             }
         }catch(err){

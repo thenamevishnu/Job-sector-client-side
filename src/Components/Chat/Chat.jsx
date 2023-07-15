@@ -3,6 +3,7 @@ import "./Chat.css"
 import { useSelector } from 'react-redux'
 import { getAllChatList } from '../../Api/Chat'
 import Conversation from './Conversation'
+import Landing from './Landing'
 
 function Chat() {
     
@@ -11,7 +12,7 @@ function Chat() {
     
     const [chatList,setChatList] = useState([])
     const [chatSelected,selectedChat] = useState(null)
-
+    const [changeList,setChangeList] = useState(null)
     useEffect(()=>{
        const fetchData = async () => {
             const userLists = await getAllChatList(id)
@@ -23,7 +24,11 @@ function Chat() {
             setChatList(lists)
        }
        fetchData()
-    },[id])
+        // if ('Notification' in window && Notification.permission !== 'denied') {
+        //     Notification.requestPermission().then(permission => {});
+        // }
+  
+    },[changeList,id])
 
     return (
         <div className='chat-app'>
@@ -39,7 +44,7 @@ function Chat() {
                                 </div>
                                 <div className='users mt-3 p-2'>
                                     {
-                                        chatList && chatList.map(obj => {
+                                        chatList && chatList.map((obj) => {
                                             return (
                                                 <div className='user mb-2 p-2 d-flex justify-content-between position-relative border-20' key={obj._id} onClick={()=>selectedChat(obj)}>
                                                     <div className='d-flex align-items-center'>
@@ -60,8 +65,8 @@ function Chat() {
                                     }
                                 </div>
                             </div>
-
-                           <Conversation selected={chatSelected}/>
+                            {!chatSelected && <Landing/>}
+                            {chatSelected && <Conversation selected={chatSelected} refreshList={[changeList,setChangeList]}/>}
 
                         </div>
 

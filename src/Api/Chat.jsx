@@ -18,6 +18,7 @@ export const getAllChatList = async (user_id) => {
 
 export const sendMessage = async (messageData) => {
     const {data} = await axios.post(`${process.env.react_app_server}/chat/send-message`,{messageData})
+    return data.message
 }
 
 export const getMessagesByChat = async (chat_id) => {
