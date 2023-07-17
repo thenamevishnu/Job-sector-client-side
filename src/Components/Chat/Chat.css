@@ -1,12 +1,24 @@
-.chat-app .container{
+.chat-app .container-fluid{
     margin-top: 5rem;
 }
 
-.chat-app .container .left{
-    height: 40em;
+.chat-app .container-fluid .left{
+    height: 88vh;
 }
 
-.chat-app .container .search input{
+.chat-app .container-fluid .messages{
+    height: 74vh;
+    overflow-y: scroll;
+}
+
+.chat-app .container-fluid .messages .message-box{
+    max-width:25vw;
+    word-break:break-all;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.chat-app .container-fluid .search input{
     border: 1px solid gray;
     padding: 6px;
     border-radius: 20px;
@@ -14,41 +26,52 @@
     padding-left: 10px;
 }
 
-.chat-app .container .search input:focus{
+.chat-app .container-fluid .search input:focus{
     outline: 0;
 }
 
-.chat-app .container .chat-head{
+.chat-app .container-fluid .chat-head{
     background-color: rgb(234, 234, 234);
     border-radius: 20px;
     box-shadow: 1px 1px 1px gray;
 }
 
-.chat-app .container .chat-head img{
+.chat-app .container-fluid .chat-head img{
     border-radius: 50px;
 }
 
-.chat-app .container .send-button{
+.chat-app .container-fluid .send-button{
     position: absolute;
     top: 4px;
     right: 4px;
     background-color: white;
 }
 
-.chat-app .container .type-message{
+.chat-app .container-fluid .type-message{
     position: absolute;
     bottom: 0;
     width: 100%;
 }
 
-.chat-app .container .type-message input{
+.chat-app .container-fluid .type-message input{
     border: 1px solid rgb(192, 192, 192);
 }
 
-.chat-app .container .type-message input:focus{
+.chat-app .container-fluid .type-message input:focus{
     outline: 0;
 }
 
-/* .chat-app .container .users .user{
-    
-} */
+@media screen and (max-width:768px){
+    .chat-app .mobile{
+        display: none;
+    }
+}
+
+@media screen and (min-width:768px){
+    .chat-app .back-icon{
+        display: none;
+    }
+    .chat-app .mobile-disaply{
+        display: none;
+    }
+}

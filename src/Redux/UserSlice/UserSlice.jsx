@@ -8,7 +8,8 @@ export const UserSlice=createSlice({
         email:"",
         image:"",
         audio:"",
-        type:""
+        type:"",
+        chat_manage:false
     },
     reducers:{
         updateUser:(state,action)=>{
@@ -18,6 +19,7 @@ export const UserSlice=createSlice({
             state.image=action.payload.image
             state.audio=action.payload.audio
             state.type=action.payload.type
+            state.chat_manage=action.payload.chat_manage
         }
     }
 })
