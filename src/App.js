@@ -36,12 +36,13 @@ function App() {
                 <Route Component={ProfileSettingsPage} path='/my-profile' />
                 <Route Component={ForgotPage} path='/forgot-password' />
                 <Route Component={ResetPage} path='/reset/:key' />
-                <Route Component={PostJobPage} path='/post-job' />
                 <Route Component={JobViewPage} path='/post-view' />
                 <Route Component={ChatPage} path='/chats' />
-                <Route Component={MyProposalsPage} path='/my-proposals' />
 
-                <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/"}/>} path='/my-posts' />
+                <Route element={type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
+
+                <Route element={type === "client" ? <PostJobPage/> : <Navigate to={"/"}/>} path='/post-job' />
+                <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/>} path='/my-posts' />
                 <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
                 <Route element={type === "client" && <PostEditPage />} path='/post-edit' />
 

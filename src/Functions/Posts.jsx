@@ -121,11 +121,10 @@ export const saveJob = async (post_id, user_id, userData) => {
     const {data} = await axios.post(`${process.env.react_app_server}/saveJobs`,{post_id:post_id,user_id:user_id},{withCredentials:true})
     if(data.status){
         successAlert(data.message)
-        return {status:true,total:userData.total_saved += 1}
     }else{
         errorAlert(data.message)
-        return {status:false,total:userData.total_saved}
     }
+    return true
 }
 
 export const sendProposal = async (post_id, user_id) => {

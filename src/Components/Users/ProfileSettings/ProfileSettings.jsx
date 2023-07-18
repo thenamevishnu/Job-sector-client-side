@@ -16,7 +16,7 @@ function ProfileSettings() {
     // const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const {image,name,id,email,audio} = useSelector(state => state.user)
+    const stateData = useSelector(state => state.user)
     const [userData,setUserData] = useState({})
     const [showFile,setFile] = useState({})
     const [updateData,setData] = useState({})
@@ -39,12 +39,12 @@ function ProfileSettings() {
 
             const formData = new FormData()
             
-            formData.append("user_id",id)
+            formData.append("user_id",stateData.id)
             type==="image" ? formData.append("image",file) : formData.append("audio",file)
             const config = {
                 header: {
                     "content-type": "multipart/form-data",
-                    id: id
+                    id: stateData.id
                 },
                 withCredentials: true
             }
@@ -54,7 +54,7 @@ function ProfileSettings() {
                     const endPoint = type==="image" ? "/update-profile-pic" : "/update-profile-audio"
                     const {data} = await axios.post(process.env.react_app_server +""+endPoint, formData, config)
                     type==="image" ? promiseComplete({image:file}) : promiseComplete({audio:data.audio})
-                    const obj = type==="image" ? {image:data.dp,id:id,email:email,name:name,audio:audio} : {image:image,id:id,email:email,name:name,audio:data.audio}
+                    const obj = type==="image" ? {...stateData,image:data.dp,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio} : {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:data.audio}
                     dispatch(updateUser(obj))
                     resolve(data)
                 }, 1500);
@@ -71,17 +71,17 @@ function ProfileSettings() {
        
         const fetchData = async () => {
             try{
-                const {data} = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
+                const {data} = await axios.post(process.env.react_app_server + "/getUserData",{id:stateData.id},{withCredentials:true})
                 setUserData(data.profile)
             }catch(err){
                 errorAlert(err.message)
             }
         }
         fetchData()
-    },[id])
+    },[stateData.id])
 
     const handleDataFromChild = async (data)=> {
-        const res = await fromChildResponse(data,id,{setData,updateData})
+        const res = await fromChildResponse(data,stateData.id,{setData,updateData})
         if(res){
             if(res.language){
                 setUserData({...userData,language:res.language})
@@ -118,10 +118,10 @@ function ProfileSettings() {
                 <div className='row'>
                     <div className='col-12 col-md-4 first-border p-3 mt-3'>
                         <div className='profile first-border text-center mb-4'>
-                        <label htmlFor='upload-image' title='Update Image' className='profile-pic cursor-pointer mt-2'><img src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + "/" +image} alt='profile-pic' width='150px'/></label>
+                        <label htmlFor='upload-image' title='Update Image' className='profile-pic cursor-pointer mt-2'><img src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + "/" +stateData.image} alt='profile-pic' width='150px'/></label>
                         <input type='file' id='upload-image' accept='.jpeg, .jpg, .png, .webp' name='dp' style={{display:"none"}} onChange={(e)=>setFiles(e.target.files[0],"image")}></input>
                             <div className='info mt-3'>
-                                <p>{name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' width='15px' className='pb-1'></img>}</p>
+                                <p>{stateData.name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' width='15px' className='pb-1'></img>}</p>
                                 <p><i className='fa fa-location-dot'></i> {userData.country}</p>
                                 <p>place</p>
                             </div>
@@ -134,7 +134,7 @@ function ProfileSettings() {
                             </label>
                         </div> 
                         <audio ref={audioRef} controls style={{width:"100%"}}>
-                            <source src={showFile.audio ? process.env.react_app_cloud_audio + "" +showFile.audio : process.env.react_app_cloud_audio + "" +audio} />
+                            <source src={showFile.audio ? process.env.react_app_cloud_audio + "" +showFile.audio : process.env.react_app_cloud_audio + "" +stateData.audio} />
                         </audio>
                         <div className='line-height mt-4'>
                             <div className='position-relative d-flex align-items-center'>
@@ -160,7 +160,7 @@ function ProfileSettings() {
                                 {
                                 userData?.language && userData.language.map((obj,index)=>{
                                     return (
-                                        <p key={index}>{obj.lang} - {obj.level} <i className='fa fa-trash text-danger cursor-pointer' title='delete' onClick={async ()=>setUserData({...userData,language:await deleteLanguage({lang:obj.lang,level:obj.level},id)})}></i></p>
+                                        <p key={index}>{obj.lang} - {obj.level} <i className='fa fa-trash text-danger cursor-pointer' title='delete' onClick={async ()=>setUserData({...userData,language:await deleteLanguage({lang:obj.lang,level:obj.level},stateData.id)})}></i></p>
                                     )
                                 }) 
                             }</div>
@@ -180,7 +180,7 @@ function ProfileSettings() {
                                 {
                                 userData?.education && userData.education.map((obj,index)=>{
                                     return (
-                                        <p key={index}>{obj.name} <i className='fa fa-trash text-danger cursor-pointer' title='delete' onClick={async ()=>setUserData({...userData,education:await deleteEducation({name:obj.name,subject:obj.subject,from:obj.from,to:obj.to},id)})}></i><br /> {obj.subject} <br /> {obj.from} - {obj.to}</p>
+                                        <p key={index}>{obj.name} <i className='fa fa-trash text-danger cursor-pointer' title='delete' onClick={async ()=>setUserData({...userData,education:await deleteEducation({name:obj.name,subject:obj.subject,from:obj.from,to:obj.to},stateData.id)})}></i><br /> {obj.subject} <br /> {obj.from} - {obj.to}</p>
                                     )
                                 }) 
                             }</div>
@@ -228,7 +228,7 @@ function ProfileSettings() {
                                     {
                                         userData.skills && userData.skills.map(value => {
                                             return(
-                                                <div key={value} className='position-relative p-1'><div className='skill p-1 ps-2 pe-2 me-2'><i className='fa fa-close align-close' onClick={async ()=>setUserData({...userData,skills:await deleteSkill(value,id)})}></i>{value}</div></div>
+                                                <div key={value} className='position-relative p-1'><div className='skill p-1 ps-2 pe-2 me-2'><i className='fa fa-close align-close' onClick={async ()=>setUserData({...userData,skills:await deleteSkill(value,stateData.id)})}></i>{value}</div></div>
                                             )
                                         })
                                     }
@@ -248,7 +248,7 @@ function ProfileSettings() {
                                     {
                                         userData?.my_projects && userData.my_projects.map((obj) => {
                                             return(
-                                                <li className='list-inline-items mb-3' key={obj.name}><i className='fab fa-github'></i>&nbsp;Link : <a href={obj.url} rel="noreferrer" target='_blank' className='default-link'>{obj.name}</a> <i className='fa fa-trash text-danger cursor-pointer' onClick={async ()=>setUserData({...userData,my_projects:await deleteProject(obj,id)})}></i><br></br>Language : {obj.language}<br></br>Created At : {obj.created_at}<br></br></li>
+                                                <li className='list-inline-items mb-3' key={obj.name}><i className='fab fa-github'></i>&nbsp;Link : <a href={obj.url} rel="noreferrer" target='_blank' className='default-link'>{obj.name}</a> <i className='fa fa-trash text-danger cursor-pointer' onClick={async ()=>setUserData({...userData,my_projects:await deleteProject(obj,stateData.id)})}></i><br></br>Language : {obj.language}<br></br>Created At : {obj.created_at}<br></br></li>
                                             )
                                         })
                                     }
@@ -282,7 +282,7 @@ function ProfileSettings() {
                                                 </div>
                                                 <div className='col-9 text-start position-relative'>
                                                     <div className='down-trash'>
-                                                        <a href={obj.link} target='_blank' rel="noreferrer" title={"Link to "+obj.title+" certificate"}><i className='fa fa-link'></i></a>&nbsp;&nbsp;<i className='fa fa-trash text-danger cursor-pointer' onClick={async ()=>setUserData({...userData,certificates:await deleteCertificate(obj,id)})}></i>
+                                                        <a href={obj.link} target='_blank' rel="noreferrer" title={"Link to "+obj.title+" certificate"}><i className='fa fa-link'></i></a>&nbsp;&nbsp;<i className='fa fa-trash text-danger cursor-pointer' onClick={async ()=>setUserData({...userData,certificates:await deleteCertificate(obj,stateData.id)})}></i>
                                                     </div>
                                                     <p className='fw-bold'>{obj.title}</p>
                                                     <p>Provider: {obj.provider}</p>
@@ -322,7 +322,7 @@ function ProfileSettings() {
                                                 </div>
                                                 <div className='col-9 text-start position-relative'>
                                                     <div className='down-trash'>
-                                                        <i className='fa fa-trash text-danger cursor-pointer' onClick={async ()=>setUserData({...userData,employment_history:await deleteEmployment(obj,id)})}></i>
+                                                        <i className='fa fa-trash text-danger cursor-pointer' onClick={async ()=>setUserData({...userData,employment_history:await deleteEmployment(obj,stateData.id)})}></i>
                                                     </div>
                                                     <p className='fw-bold'>{obj.title}</p>
                                                     <p>Company: {obj.company}</p>

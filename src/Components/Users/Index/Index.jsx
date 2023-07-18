@@ -113,12 +113,12 @@ function Index() {
                             
                             <div className='col-12 border-20 p-3 mb-3'>
                                 <div className='profile-info'>
-                                    <img src={userData?.image && `${process.env.react_app_cloud}/${userData.image}`} alt='profile pic'/>
+                                    <img src={userData?.image && `${process.env.react_app_cloud}/${userData.image}`} alt='profile pic' onClick={()=>navigate("/my-profile")} className='cursor-pointer'/>
                                     <div className='text-center mt-3 verified'>
                                     {userData?.full_name && userData.full_name} {userData.is_verified && <img className='ms-1' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='verification badge'/>}
                                     </div>
                                     <div className='text-center fst-italic mt-1' style={{fontSize:"12px"}}>{userData?.title && userData.title}</div>
-                                    <div className='mt-3'>123 Connections</div>
+                                    <div className='mt-3'>{userData?.connections?.count} Connections</div>
                                     <hr></hr>
                                     <div className='availability mt-4'>
                                         <div className='button d-flex align-items-center justify-content-center mb-3'>Availability Badge 
@@ -132,10 +132,10 @@ function Index() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='my-proposals border-20 p-2 text-start'>
+                            {type === "freelancer" && <div className='my-proposals border-20 p-2 text-start'>
                                 <h4 className='fw-bold p-2'>Proposals</h4>
                                 <Link className='default-link p-2' to="/my-proposals" onClick={()=>navigate("/my-proposals")}>My Proposals</Link>
-                            </div>
+                            </div>}
                         </div>
 
                     </div>

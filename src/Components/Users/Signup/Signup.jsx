@@ -52,7 +52,7 @@ function Signup() {
     const submitHandle = async () => {
         const response = await handleSubmit(userData, userObject, setCanShow, setUserData)
             if(response?.status){
-                if(response.update){
+                if(response?.update){
                     successAlert(response.text)
                     dispatch(updateUser(response.response))
                     setTimeout(() => {

@@ -3,18 +3,22 @@ import "./PublicProfile.css"
 import axios from 'axios'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom'
 import { errorAlert } from '../../../Functions/Toasts'
+import { useSelector } from 'react-redux';
+import { addConnection } from '../../../Functions/Profile';
 
 function PublicProfile() {
 
     const [userData,setUserData] = useState({})
+    const [userId,setUserId] = useState("")
+    const {id} = useSelector(state => state.user)
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 const id = localStorage.getItem("publicProfile")
                 const {data} = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
+                setUserId(data._id)
                 setUserData(data.profile)
             }catch(err){
                 errorAlert(err.message)
@@ -32,8 +36,12 @@ function PublicProfile() {
                 
                 <div className='row'>
                     <div className='col-12 col-md-4 first-border p-3 mt-3'>
-                        <div className='profile first-border text-center mb-4'>
-                        <img className='img' src={ process.env.react_app_cloud + "/" +userData.image} alt='profile-pic' width='150px'/>
+                        <div className='profile position-relative first-border text-center mb-4'>
+                        <div><img className='img' src={ process.env.react_app_cloud + "/" +userData.image} alt='profile-pic' width='150px'/>
+                            {
+                                id!==userId && <span className='position-absolute bottom-0 end-0 me-3 mb-2 cursor-pointer fs-5' onClick={async ()=>await addConnection(id,userId)} title={`Follow ${userData?.full_name}`}><i className='fa fa-plus'></i></span>
+                            }
+                        </div>
                             <div className='info mt-3'>
                                 <p>{userData.full_name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' width='15px' className='pb-1'></img>}</p>
                                 <p><i className='fa fa-location-dot'></i> {userData.country}</p>
@@ -102,7 +110,7 @@ function PublicProfile() {
                             <div className='ms-md-3 ms-0 first-border p-3 col-12 mt-3 position-relative'>
                                 <h5 className='fw-bold me-2 theme-green'>Work History</h5> 
                                     {
-                                        userData?.work_history?.length === 0 && <div className='fs-6 text-start text-danger mt-3 mb-3'>No work yet. Once you start getting hired on Upwork, your work with clients will show up here.</div>
+                                        userData?.work_history?.length === 0 && <div className='fs-6 text-start text-danger mt-3 mb-3'>No work history yet!</div>
                                     }
                                     {
                                         userData?.work_history && userData.work_history.map(obj=>{
@@ -111,8 +119,6 @@ function PublicProfile() {
                                             )
                                         })
                                     }
-                                
-                                <Link className='default-link' to="/">Search for jobs <i className='fa fa-link'></i></Link> 
                             </div>
                         </div>
                         <div className="row mx-auto">
@@ -121,7 +127,7 @@ function PublicProfile() {
                                 <h5 className='fw-bold me-2 theme-green'>Skills</h5> 
                                 <div className='skills text-center mt-4 mb-1'>
                                     {
-                                        userData?.skills?.length === 0 && <div className='fs-6 text-start text-danger'>You haven't added skills yet!</div>
+                                        userData?.skills?.length === 0 && <div className='fs-6 text-start text-danger'>Not added yet!</div>
                                     }
                                     {
                                         userData.skills && userData.skills.map(value => {
@@ -139,7 +145,7 @@ function PublicProfile() {
                                 <h5 className='fw-bold me-2 theme-green mb-3'>My Projects</h5> 
                                 <ul className='list-inline'>
                                     {
-                                        userData?.my_projects?.length === 0 && <div className='fs-6 text-start text-danger'>You haven't added Projects yet!</div>
+                                        userData?.my_projects?.length === 0 && <div className='fs-6 text-start text-danger'>Not added yet!</div>
                                     }
                                     {
                                         userData?.my_projects && userData.my_projects.map((obj) => {
@@ -163,7 +169,7 @@ function PublicProfile() {
                 <div className="container">
                 <div className="row text-center">
                         {
-                            userData?.certificates?.length === 0 && <div className="fs-6 text-start text-danger p-3">You haven't added certifications yet!</div>
+                            userData?.certificates?.length === 0 && <div className="fs-6 text-start text-danger p-3">Not added yet!</div>
                         }
                         {
                             userData?.certificates && userData.certificates.map((obj,index)=> {
@@ -200,7 +206,7 @@ function PublicProfile() {
                 <div className="container">
                     <div className="row text-center">
                         {
-                            userData?.employment_history?.length === 0 && <div className="fs-6 text-start text-danger p-3">You haven't added employment history yet!</div>
+                            userData?.employment_history?.length === 0 && <div className="fs-6 text-start text-danger p-3">Not added yet!</div>
                         }
                         
                         {

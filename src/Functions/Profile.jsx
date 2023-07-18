@@ -1,5 +1,5 @@
 import axios from "axios"
-import { errorAlert } from "./Toasts"
+import { errorAlert, successAlert } from "./Toasts"
 
 export const deleteLanguage = async (obj,id) => {
     const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteLanguage:true,obj:obj,id:id})
@@ -56,6 +56,19 @@ export const removeSaved = async (post_id,user_id,savedId) => {
         const {data} = await axios.post(`${process.env.react_app_server}/removeSaved/${user_id}/${post_id}`)
         savedId.splice(savedId.indexOf(post_id),1)
         return {postData:data.postData,savedId:savedId}
+    }catch(err){
+        errorAlert(err.message)
+    }
+}
+
+export const addConnection = async (follower, to) => {
+    try{
+        const {data} = await axios.post(`${process.env.react_app_server}/addConnection`,{follower:follower,to:to})
+        if(data.status){
+            successAlert(data.message)
+        }else{
+            errorAlert(data.message)
+        }
     }catch(err){
         errorAlert(err.message)
     }

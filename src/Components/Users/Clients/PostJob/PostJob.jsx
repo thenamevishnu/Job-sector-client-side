@@ -20,6 +20,7 @@ function PostJob() {
         description:"",
         skillsNeed:[]
     })
+
     const [AllSkills,setAllSkills] = useState([])
 
     useEffect(()=>{
