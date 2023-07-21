@@ -4,7 +4,7 @@ import { errorAlert, successAlert } from "./Toasts"
 export const sendForgotLink = async (email) => {
     const email_reg = /^([\w\W])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm
     if(!email_reg.test(email)){
-        errorAlert("Invalid email format"+email)
+        errorAlert("Invalid email format")
     }else{
         const {data} = await axios.get(`${process.env.react_app_server}/getUserDataByEmail/${email}`)
         if(!data.status){

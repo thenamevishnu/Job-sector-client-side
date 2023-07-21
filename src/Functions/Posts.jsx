@@ -124,7 +124,7 @@ export const saveJob = async (post_id, user_id, userData) => {
     }else{
         errorAlert(data.message)
     }
-    return true
+    return data.total
 }
 
 export const sendProposal = async (post_id, user_id) => {

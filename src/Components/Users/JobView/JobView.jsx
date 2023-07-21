@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import "./JobView.css"
-// import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { saveJob, sendProposal } from '../../../Functions/Posts'
@@ -36,92 +34,86 @@ function JobView() {
     },[refresh])
 
     return (
-        <div className='post-view'>
-            <div className='container'>
-                <div className="row gap-5">
-                    <div className="col-12 border-20 p-3">
-                    {postInfo?.title && <div className="row d-flex justify-content-between">
-                        <div className="col-8">
+        <>
+            <div className='container grid grid-cols-12 relative mx-auto mt-20 border-2 border-gray-400 rounded-xl'>
+                {!postInfo?.title && <div className='text-center text-lg col-span-12'>Post Disabled or Deleted!</div>}
+
+                {postInfo?.title && <div className="col-span-12">
+                    <div className='grid grid-cols-12'>
+                        <div className="lg:col-span-9 md:col-span-8 col-span-12 p-4">
                             
-                           <div className="col-12">
-                                <div className='d-flex justify-content-between'>
-                                    <div className='p-3 mb-2'>
-                                        <div className='text-success text-start' style={{fontSize:"1.2em",maxWidth:"35em"}}>{postInfo?.title}</div>
-                                    </div>
-                                </div>
-                                <div className='p-3'>
-                                    <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{postInfo?.jobType} - Est. Budget: ${postInfo?.priceRange?.from}-{postInfo?.priceRange?.to} - Posted {moment(postInfo?.posted).fromNow()}</div>
-                                    <p className='text-start mt-4' style={{lineHeight:"2.5"}}>{postInfo?.description}</p>
-                                    <div className='mt-4 mb-5 tags text-start'>
-                                        {
-                                            postInfo?.skillsNeed && postInfo?.skillsNeed.map(value => {
-                                                return(
-                                                    <span className='tag me-2 p-1 ps-2 pe-2' key={value}>{value}</span>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeed?.from}</div>
-                                    <div className='text-start mt-4 mb-4'>Total Proposals : {postInfo?.proposals?.length}</div>
-                                    <div className='text-start mt-1'>Payments - ${postInfo?.auther && postInfo?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {postInfo?.auther && postInfo?.auther[0]?.profile?.country}</div>
-                                    <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.rating}</div>
-                                </div>  
+                            <div className='text-green-700 text-start mb-1' style={{fontSize:"1.2em"}}>{postInfo?.title}</div>
+                            <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{postInfo?.jobType} - Est. Budget: ${postInfo?.priceRange?.from}-{postInfo?.priceRange?.to} - Posted {moment(postInfo?.posted).fromNow()}</div>
+                            <p className='text-start mt-4 whitespace-pre-wrap'>{postInfo?.description}</p> 
+                            <div className='mt-4 mb-5 tags text-start'>
+                                {
+                                    postInfo?.skillsNeed && postInfo?.skillsNeed.map(value => {
+                                        return(
+                                            <span className='shadow-tag bg-gray-300 rounded-xl me-2 p-1 ps-2 pe-2' key={value}>{value}</span>
+                                        )
+                                    })
+                                }
                             </div>
+                            
+                            <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeed?.from}</div>
+                            <div className='text-start mt-4 mb-4'>Total Proposals : {postInfo?.proposals?.length}</div>
+                            <div className='text-start mt-1'>Payments - ${postInfo?.auther && postInfo?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {postInfo?.auther && postInfo?.auther[0]?.profile?.country}</div>
+                            <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.rating}</div>
+                            
                         </div>
-                        <div className="col-3 text-center">
-                           <div className='auther-info border-20 p-2 text-center'>
-                                <img src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em" style={{borderRadius:"50px"}}/>
-                                <div className='d-flex align-items-center justify-content-center mt-2'>
+
+                        <div className="lg:col-span-3 md:col-span-4 md:block hidden p-3">
+                            <div className='border-2 border-gray-400 rounded-xl p-2'>
+                                <div className='flex justify-center'>
+                                    <img className='rounded-full' src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em"/>
+                                </div>
+                                <div className='flex items-center justify-center mt-2'>
                                     <span>{postInfo && postInfo?.auther[0]?.profile?.full_name}</span>&nbsp;{postInfo?.auther[0]?.profile?.is_verified && <img src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='auther pic' width="15em" />}
                                 </div>
-                                <div>
-                                    <span className='fst-italic' style={{fontSize:"12px"}}>{postInfo && postInfo?.auther[0]?.profile?.title}</span>
+                                <div className='text-center'>
+                                    <span className='text-sm'>{postInfo && postInfo?.auther[0]?.profile?.title}</span>
                                 </div>
-                           </div>
-                           {type === "freelancer" && <button className='apply-job mt-4 p-2 fw-bold' onClick={async ()=>{setPostInfo({...postInfo,proposals:await sendProposal(postInfo._id,id)})}}><i className='far fa-paper-plane'></i> SEND PROPOSAL</button>}
-                           <button className='save-job mt-3 p-2 fw-bold' onClick={()=>saveJob(postInfo._id,id)}><i className='far fa-heart'></i> SAVE JOB</button>
+                            </div>
+                            {type === "freelancer" && <button className='p-2 bg-green-700 text-white w-full rounded-lg mt-3' onClick={async ()=>{setPostInfo({...postInfo,proposals:await sendProposal(postInfo._id,id)})}}><i className='far fa-paper-plane'></i> SEND PROPOSAL</button>}
+                            <button className='p-2 border-2 text-green-700 border-green-700 w-full rounded-lg mt-3' onClick={()=>saveJob(postInfo._id,id)}><i className='far fa-heart'></i> SAVE JOB</button>
                         </div>
-                        </div>}
-                        {!postInfo?.title && <div className='text-center fs-5'>Post Disabled or Deleted!</div>}
                     </div>
-
-                    { related?.length > 0 && <div className="col-12 border-20 p-3">
-                        <h4 className='fw-bold'>RELATED POSTS</h4>
-                        <hr />
-                        {
-                            related && related.map(relatedPost => {
-                                return(
-                                    <div className="col-12 border-20 mb-2" key={relatedPost._id}>
-                                        <div className='d-flex justify-content-between'>
-                                            <div className='p-3 mb-2'>
-                                                <div className='text-success text-start cursor-pointer' style={{fontSize:"1.2em",maxWidth:"35em"}} onClick={()=>{localStorage.setItem("post-id",relatedPost._id); setRefresh(!refresh); }}>{relatedPost?.title}</div>
-                                            </div>
-                                        </div>
-                                        <div className='p-3'>
-                                            <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{relatedPost?.jobType} - {relatedPost?.experience} - Est. Budget: ${relatedPost?.priceRange?.from}-{relatedPost?.priceRange?.to} - Posted {moment(relatedPost?.posted).fromNow()}</div>
-                                            <p className='text-start mt-4' style={{lineHeight:"2.5"}}>{relatedPost?.description}</p>
-                                            <div className='mt-4 mb-5 tags text-start'>
-                                                {
-                                                    relatedPost?.skillsNeed.map(value => {
-                                                        return(
-                                                            <span className='tag me-2 p-1 ps-2 pe-2' key={value}>{value}</span>
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-                                            <div className='text-start mt-4 mb-4'>Total Proposals : {relatedPost?.proposals?.length}</div>
-                                            <div className='text-start mt-1'>Payment verified - ${relatedPost?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> India</div>
-                                            <div className='text-start mt-3'>Rating : {relatedPost?.auther[0]?.profile?.rating}</div>
-                                        </div>  
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                     }
                 </div>
+                }
+
             </div>
-        </div>
+
+            <div className='container grid grid-cols-12 mx-auto'>
+                { related?.length > 0 && <div className="col-span-12">
+                    <h4 className='font-bold text-xl underline my-5'>RELATED POSTS</h4>
+                    {
+                        related && related.map(relatedPost => {
+                            return(
+                                <div className="border-2 border-gray-400 p-3 rounded-xl mb-1" key={relatedPost._id}>
+                                    <div className='text-green-700 text-start cursor-pointer' style={{fontSize:"1.2em"}} onClick={()=>{localStorage.setItem("post-id",relatedPost._id); setRefresh(!refresh); }}>{relatedPost?.title}</div>
+                                    <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{relatedPost?.jobType} - {relatedPost?.experience} - Est. Budget: ${relatedPost?.priceRange?.from}-{relatedPost?.priceRange?.to} - Posted {moment(relatedPost?.posted).fromNow()}</div>
+                                    <p className='text-start mt-4'>{relatedPost?.description}</p>
+                                        <div className='mt-4 mb-5 tags text-start'>
+                                            {
+                                                relatedPost?.skillsNeed.map(value => {
+                                                    return(
+                                                        <span className='shadow-tag bg-gray-300 rounded-xl me-2 p-1 ps-2 pe-2' key={value}>{value}</span>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    <div className='text-start mt-4 mb-4'>Total Proposals : {relatedPost?.proposals?.length}</div>
+                                    <div className='text-start mt-1'>Payment verified - ${relatedPost?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> India</div>
+                                    <div className='text-start mt-3'>Rating : {relatedPost?.auther[0]?.profile?.rating}</div>
+                                </div>  
+                            )
+                        })
+                }
+                </div>
+                }
+            </div>
+        </>
+        
     )
 }
 

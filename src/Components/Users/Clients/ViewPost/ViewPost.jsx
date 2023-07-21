@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import "./ViewPost.css"
 import axios from 'axios'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
@@ -24,49 +23,46 @@ function ViewPost() {
     },[post_id])
 
     return (
-        <div className='post-view-client'>
-            <div className='container'>
-                <div className="row gap-5">
-                    <div className="col-12 border-20 p-3">
-                    {postData?.title && <div className="row d-flex justify-content-between">
-                        <div className="col-8">
-                            
-                           <div className="col-12">
-                                <div className='d-flex justify-content-between'>
-                                    <div className='p-3 mb-2'>
-                                        <div className='text-success text-start' style={{fontSize:"1.2em",maxWidth:"35em"}}>{postData?.title}</div>
-                                    </div>
-                                </div>
-                                <div className='p-3'>
-                                    <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{postData?.jobType} - Est. Budget: ${postData?.priceRange?.from}-{postData?.priceRange?.to} - Posted {moment(postData?.posted).fromNow()}</div>
-                                    <p className='text-start mt-4' style={{lineHeight:"2.5"}}>{postData?.description}</p>
-                                    <div className='mt-4 mb-5 tags text-start'>
-                                        {
-                                            postData?.skillsNeed && postData?.skillsNeed.map(value => {
-                                                return(
-                                                    <span className='tag me-2 p-1 ps-2 pe-2' key={value}>{value}</span>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <div className='text-start mt-4 mb-4'>Connections Need : {postData?.connectionsNeed?.from}</div>
-                                    <div className='text-start mt-4 mb-4'>Total Proposals : {postData?.proposals?.length}</div>
-                                </div>  
-                            </div>
+        <>
+        <div className='container grid grid-cols-12 border-2 border-gray-400 mx-auto mt-20 rounded-xl'>
+            {
+                !postData?.title && <div className='text-center col-span-12'>Post Disabled or Deleted!</div>
+            } 
+            {
+                postData?.title && 
+                    <div className="p-3 col-span-12">
+                        <div className='mb-2'>
+                            <div className='text-green-700 text-start' style={{fontSize:"1.2em",maxWidth:"35em"}}>{postData?.title}</div>
                         </div>
-                        
-                        </div>}
-                        {!postData?.title && <div className='text-center fs-5'>Post Disabled or Deleted!</div>}
+                        <div>
+                            <div className='text-start mb-2' style={{fontSize:"0.8em"}}>{postData?.jobType} - Est. Budget: ${postData?.priceRange?.from}-{postData?.priceRange?.to} - Posted {moment(postData?.posted).fromNow()}</div>
+                        </div>
+                        <p className='text-start mt-4 whitespace-pre-wrap' style={{lineHeight:"2.5"}}>{postData?.description}</p>
+                        <div className='mt-4 mb-5 text-start'>
+                            {
+                                postData?.skillsNeed && postData?.skillsNeed.map(value => {
+                                    return(
+                                        <span className='shadow-tag rounded-xl bg-gray-300 me-2 p-1 ps-2 pe-2' key={value}>{value}</span>
+                                    )
+                                })
+                            }
+                        </div>  
+                        <div className='text-start mt-4 mb-4'>Connections Need : {postData?.connectionsNeed?.from}</div>
+                        <div className='text-start mt-4 mb-4'>Total Proposals : {postData?.proposals?.length}</div>    
                     </div>
-                    {
-                        userData?.length > 0 && <h3>All Users</h3>
-                    }
+                }
+        </div>
+        
+        <div className='container grid grid-cols-12 mx-auto mt-1 rounded-xl px-0 p-2'>
+        {
+                userData?.length > 0 && <h3 className='p-2 px-0 col-span-12 text-green-700 text-lg mb-2 uppercase'>Proposals list</h3>
+            }
                     {
                         userData && userData.map((obj) => {
                             return(
-                                <div className='col-12 mb-2 border-20 p-3 d-flex align-items-center justify-content-between' key={obj._id} >
-                                    <div className='profile-info d-flex align-items-center'>
-                                        <img className='cursor-pointer' src={`${process.env.react_app_cloud}/${obj?.profile?.image}`} alt='profile-pic' width="80px" style={{borderRadius:"50px"}} onClick={()=>{localStorage.setItem("publicProfile",obj._id); navigate("/profile")}} />
+                                <div className='lg:col-span-4 md:col-span-6 col-span-12 flex justify-between border-2 border-gray-400 rounded-xl p-2' key={obj._id} >
+                                    <div className='flex items-center'>
+                                        <img className='cursor-pointer rounded-full' src={`${process.env.react_app_cloud}/${obj?.profile?.image}`} alt='profile-pic' width="80px" onClick={()=>{localStorage.setItem("publicProfile",obj._id); navigate("/profile")}} />
                                         <div className='ms-3' style={{lineHeight:"1.3"}}>
                                             <div>{obj?.profile?.full_name}</div>
                                             <div style={{fontSize:"0.8em"}}>{obj?.profile?.title}</div>
@@ -74,19 +70,17 @@ function ViewPost() {
                                         </div>
                                     </div>
                                     {
-                                        obj.my_proposals.find(item => item.post_id === post_id && item.status === "Achieved") ? <div className='d-flex align-items-center cursor-pointer' onClick={()=>navigate("/chats")}><i className='me-2 fa fa-comment fs-3 text-success'></i> Chat Now</div> : <div>
-                                        <i className='fa fa-circle-xmark me-3 fs-1 text-danger cursor-pointer' onClick={async ()=>setUserData(await rejectPropsal(post_id,obj._id))}></i>
-                                        <i className='fa fa-circle-check fs-1 text-success cursor-pointer' onClick={async ()=>{await createChat(id,obj._id); setUserData(await acceptProposal(post_id,obj._id));}}></i>
+                                        obj.my_proposals.find(item => item.post_id === post_id && item.status === "Achieved") ? <div className='flex items-center cursor-pointer' onClick={()=>navigate("/chats")}><i className='me-2 fa fa-comment fs-3 text-green-700'></i> Chat Now</div> : <div className='flex items-center'>
+                                        <i className='fa fa-circle-xmark me-3 fs-1 text-red-600 cursor-pointer text-3xl' onClick={async ()=>setUserData(await rejectPropsal(post_id,obj._id))}></i>
+                                        <i className='fa fa-circle-check fs-1 text-green-700 cursor-pointer text-3xl' onClick={async ()=>{await createChat(id,obj._id); setUserData(await acceptProposal(post_id,obj._id));}}></i>
                                     </div>
                                     }
                                 </div>
                             )
                         })
                     }
-
-                </div>
-            </div>
         </div>
+        </>
     )
 }
 

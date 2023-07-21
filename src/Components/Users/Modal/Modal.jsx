@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import "./Modal.css"
 import axios from 'axios'
 import { errorAlert } from '../../../Functions/Toasts'
 import { isUri } from 'valid-url'
+import ModalDesign from './ModalDesign'
 
 export function HoursPerWeek(props) {
 
     const {data} = props
     const [modal,showModal] = props.states
 
-  return (
-
-        <div className='pop-up p-4'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <select className='box' onChange={(e)=>{props.sendDataToParant({hoursPerWeek:e.target.value}); showModal(!modal.status)}}>
+    return (
+        <ModalDesign action={[modal,showModal]}>
+            <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+            <select className='outline-none border-2 border-gray-400 rounded-lg p-2 w-full' onChange={(e)=>{props.sendDataToParant({hoursPerWeek:e.target.value}); showModal(!modal.status)}}>
                 <option value="0">Select an option</option>
                 <option value="More than 30 hrs/week">More than 30 hrs/week</option>
                 <option value="Less than 30 hrs/week">Less than 30 hrs/week</option>
                 <option value="As needed - open to offers">As needed - open to offers</option>
                 <option value="None">None</option>
             </select>
-        </div>
-   
-  )
+        </ModalDesign>
+    )
 }
 
 export function Languages(props){
@@ -43,32 +40,35 @@ export function Languages(props){
 
     return (
 
-        <div className='pop-up p-4'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <div className='languages mt-5 '>
-                {languages && <select className='select-language me-5' onChange={(e)=>setLang({...lang,lang:e.target.value})}><option value="0">Select Language</option>
-                    {
-                        languages.map(obj => {
-                            return(
-                                <option key={obj.name} value={obj.name}>{obj.name} ({obj.nativeName})</option>
-                            )
-                        })
-                    }
-                </select>}
-                <select className='select-level' onChange={(e)=>setLang({...lang,level:e.target.value})}><option value="0">Select Level</option>
+        <ModalDesign action={[modal,showModal]}>
+            <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+            <div className=''>
+                {
+                languages && 
+                    <select className='outline-none border-2 border-gray-400 rounded-lg p-2 w-full' onChange={(e)=>setLang({...lang,lang:e.target.value})}>
+                        <option value="0">Select Language</option>
+                        {
+                            languages.map(obj => {
+                                return(
+                                    <option key={obj.nativeName} value={obj.nativeName}>{obj.nativeName}</option>
+                                )
+                            })
+                        }
+                    </select>
+                }
+                <select className='outline-none border-2 border-gray-400 rounded-lg p-2 w-full mt-2' onChange={(e)=>setLang({...lang,level:e.target.value})}>
+                    <option value="0">Select Level</option>
                     <option value="Basic">Basic</option>
                     <option value="Conversational">Conversational</option>
                     <option value="Fluent">Fluent</option>
                     <option value="Native or Bilingual">Native</option>
                 </select>
             </div>
-            <div className='button-position mt-5'>
-            <button className='save-button p-1 ps-3 pe-3 me-3' onClick={()=>{props.sendDataToParant({language:lang}); showModal(!modal.status)}}><i className='fa fa-save'></i> Save</button>
-            <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+            <div className='mt-5 flex justify-end'>
+                <button className='text-white bg-green-700 rounded-lg p-1 ps-3 pe-3 me-3' onClick={()=>{props.sendDataToParant({language:lang}); showModal(!modal.status)}}><i className='fa fa-save'></i> Save</button>
+                <button className='text-white bg-red-600 rounded-lg p-1 ps-3 pe-3 me-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
             </div>
-        </div>
-   
+        </ModalDesign>
   )
 }
 
@@ -111,14 +111,12 @@ export function Education(props){
     }
 
     return (
-
-        <div className='pop-up p-4'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <div className='education text-center mt-4'>
-            <input type='text' name='name' placeholder='school / college' value={education.name} onChange={(e)=>setEducation({...education,name:e.target.value})}></input>
-            <input type='text' name='subject' placeholder='subject / field' className='mt-2' value={education.subject} onChange={(e)=>setEducation({...education,subject:e.target.value})}></input>
-                <select name="from_year" onChange={(e)=>{setEducation({...education,from:e.target.value}); setSelected({...selectedYear,from:e.target.value})}}  className='mt-2'>
+        <ModalDesign action={[modal,showModal]}>
+            <div>
+                <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+                <input type='text' name='name' className='mb-2 w-full p-2 outline-none border-2 border-gray-400 rounded-lg' placeholder='school / college' value={education.name} onChange={(e)=>setEducation({...education,name:e.target.value})}></input>
+                <input type='text' name='subject' className='mb-2 w-full p-2 outline-none border-2 border-gray-400 rounded-lg' placeholder='subject / field' value={education.subject} onChange={(e)=>setEducation({...education,subject:e.target.value})}></input>
+                <select name="from_year" className='w-full mb-2 p-2 outline-none border-2 border-gray-400 rounded-lg' onChange={(e)=>{setEducation({...education,from:e.target.value}); setSelected({...selectedYear,from:e.target.value})}}>
                     <option value="0">Select from year</option>
                     {
                         yearList.map(year => {
@@ -128,7 +126,8 @@ export function Education(props){
                         })
                     }
                 </select>
-                {selectedYear.from && <select name="to_year" onChange={(e)=>setEducation({...education,to:e.target.value})} className='mt-2'>
+                {selectedYear.from && 
+                <select name="to_year" className='w-full mb-2 p-2 outline-none border-2 border-gray-400 rounded-lg' onChange={(e)=>setEducation({...education,to:e.target.value})}>
                     <option value="0">Select to year</option>
                     <option value="Present">Present</option>
                     {
@@ -139,14 +138,13 @@ export function Education(props){
                         })
                     }
                 </select>}
+                <div className='flex justify-end mt-5'>
+                    <button className='bg-green-700 text-white rounded-lg p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
+                    <button className='bg-green-700 text-white rounded-lg p-1 ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+                </div>
             </div>
-            <div className='button-position mt-5'>
-            <button className='save-button p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
-            <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
-            </div>
-        </div>
-   
-  )
+        </ModalDesign>
+    )
 }
 
 export function BioData(props){
@@ -182,20 +180,18 @@ export function BioData(props){
 
     return (
 
-        <div className='pop-up p-4'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <div className='education text-center mt-4'>
-            <input type='text' name='title' placeholder='What is your field ? eg: Full stack developer' value={bio.title} onChange={(e)=>setBio({...bio,title:e.target.value})}></input>
-            <input type='text' name='per_hour' placeholder='Your cost per hour? rg: 10' className='mt-2' value={bio.per_hour} onChange={(e)=>setBio({...bio,per_hour:e.target.value})}></input>
-            <textarea type='text' name='description' placeholder='About yourself?' className='mt-2' value={bio.description} onChange={(e)=>setBio({...bio,description:e.target.value})}></textarea>
+        <ModalDesign action={[modal,showModal]}>
+            <div>
+                <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+                <input type='text' className="w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2" name='title' placeholder='What is your field ? eg: Full stack developer' value={bio.title} onChange={(e)=>setBio({...bio,title:e.target.value})}></input>
+                <input type='text' className="w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2" name='per_hour' placeholder='Your cost per hour? rg: 10' value={bio.per_hour} onChange={(e)=>setBio({...bio,per_hour:e.target.value})}></input>
+                <textarea className="w-full border-2 border-gray-400 rounded-lg p-2 resize-none outline-none" type='text' name='description' placeholder='About yourself?' value={bio.description} onChange={(e)=>setBio({...bio,description:e.target.value})}></textarea>
+                <div className='flex justify-end mt-5'>
+                    <button className='bg-green-700 text-white rounded-lg p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
+                    <button className='bg-red-600 text-white rounded-lg p-1 ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+                </div>
             </div>
-            <div className='button-position mt-5'>
-            <button className='save-button p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
-            <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
-            </div>
-        </div>
-   
+        </ModalDesign>
   )
 }
 
@@ -220,16 +216,16 @@ export function Skills(props) {
 
     return (
 
-            <div className='pop-up p-4'>
-                <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-                <h3>{data.title}</h3>
-                <div className='education text-center mt-4'>
-                    <input type='text' name='skill' placeholder='Enter skill' value={skills.skills} onChange={(e)=>{setSkills({skills:e.target.value})}}></input>
-                    <button className='save-button p-1 ps-3 pe-3 me-3 mt-4' onClick={skillSubmit}><i className='fa fa-save'></i> Save</button>
-                    <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+            <ModalDesign action={[modal,showModal]}>
+                <div>
+                    <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+                    <input type='text' className='w-full outline-none border-2 border-gray-400 rounded-lg p-2' name='skill' placeholder='Enter skill' value={skills.skills} onChange={(e)=>{setSkills({skills:e.target.value})}}></input>
+                    <div className='flex justify-end mt-4'>
+                        <button className='bg-green-700 text-white rounded-lg p-1 ps-3 pe-3 me-3' onClick={skillSubmit}><i className='fa fa-save'></i> Save</button>
+                        <button className='bg-red-600 text-white rounded-lg ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+                    </div>
                 </div>
-            </div>
-    
+            </ModalDesign>
     )
 }
 
@@ -275,18 +271,16 @@ export function Projects(props){
     }
 
     return (
-
-        <div className='pop-up p-4'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <div className='education text-center mt-4'>
-                <input type='text' name='repo' placeholder='Paste your github repository link' value={project.url} onChange={(e)=>setProject({...project,url:e.target.value})}></input>
-                <div className='button-position mt-5'>
-                    <button className='save-button p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
-                    <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+        <ModalDesign action={[modal,showModal]}>
+            <div>
+                <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+                <input type='text' className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none' name='repo' placeholder='Paste your github repository link' value={project.url} onChange={(e)=>setProject({...project,url:e.target.value})}></input>
+                <div className='flex justify-end mt-5'>
+                    <button className='bg-green-700 rounded-lg text-white p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
+                    <button className='bg-red-600 text0-white rounded-lg text-white p-1 ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
                 </div>
             </div>
-        </div>
+        </ModalDesign>
   )
 }
 
@@ -334,43 +328,40 @@ export function Employment(props){
     }
 
     return (
-
-        <div className='pop-up p-4'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <div className='education text-center mt-4'>
-            <input type='text' name='company' placeholder='Company' value={employment.company} onChange={(e)=>setEmployment({...employment,company:e.target.value})}></input>
-            <input type='text' name='title' placeholder='Title' value={employment.title} onChange={(e)=>setEmployment({...employment,title:e.target.value})} className='mt-2'></input>
-            <select name="from_year" onChange={(e)=>{setEmployment({...employment,from:e.target.value}); setSelected({...selectedYear,from:e.target.value})}} className='mt-2'>
-                <option value="0">Select from year</option>
-                {
-                    yearList.map(year => {
-                        return (
-                            <option key={"1"+year} value={year}>{year}</option>
-                        )
-                    })
-                }
-            </select>
-            {selectedYear.from && <select name="to_year" onChange={(e)=>setEmployment({...employment,to:e.target.value})} className='mt-2'>
-                <option value="0">Select to year</option>
-                <option value="Present">Present</option>
-                {
-                    yearList.map(year => {
-                        return (
-                            <option key={"2"+year} value={year}>{year}</option>
-                        )
-                    })
-                }
-            </select>}
-            <textarea type='text' name='description' placeholder='Enter description' className='mt-2' value={employment.description} onChange={(e)=>setEmployment({...employment,description:e.target.value})}></textarea>
+        <ModalDesign action={[modal,showModal]}>
+            <div>
+                <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+                <input type='text' className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' name='company' placeholder='Company' value={employment.company} onChange={(e)=>setEmployment({...employment,company:e.target.value})}></input>
+                <input type='text' className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' name='title' placeholder='Title' value={employment.title} onChange={(e)=>setEmployment({...employment,title:e.target.value})} ></input>
+                <select className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' name="from_year" onChange={(e)=>{setEmployment({...employment,from:e.target.value}); setSelected({...selectedYear,from:e.target.value})}} >
+                    <option value="0">Select from year</option>
+                    {
+                        yearList.map(year => {
+                            return (
+                                <option key={"1"+year} value={year}>{year}</option>
+                            )
+                        })
+                    }
+                </select>
+                {selectedYear.from && <select name="to_year" className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' onChange={(e)=>setEmployment({...employment,to:e.target.value})}>
+                    <option value="0">Select to year</option>
+                    <option value="Present">Present</option>
+                    {
+                        yearList.map(year => {
+                            return (
+                                <option key={"2"+year} value={year}>{year}</option>
+                            )
+                        })
+                    }
+                </select>}
+                <textarea type='text' name='description' placeholder='Enter description' className='w-full border-2 border-gray-400 resize-none rounded-lg p-2 outline-none mb-2' value={employment.description} onChange={(e)=>setEmployment({...employment,description:e.target.value})}></textarea>
+                <div className='flex justify-end mt-5'>
+                    <button className='rounded-lg bg-green-700 text-white p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
+                    <button className='rounded-lg bg-red-600 text-white p-1 ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+                </div>
             </div>
-            <div className='button-position mt-5'>
-            <button className='save-button p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
-            <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
-            </div>
-        </div>
-   
-  )
+        </ModalDesign>
+    )
 }
 
 export function Certificate(props){
@@ -411,22 +402,19 @@ export function Certificate(props){
     }
 
     return (
-
-        <div className='pop-up p-4 mt-3'>
-            <i className='fa fa-close close' onClick={()=>showModal(!modal.status)}></i>
-            <h3>{data.title}</h3>
-            <div className='education text-center mt-4'>
-            <input type='text' name='provider' placeholder='Certificate provider' value={certificate.provider} onChange={(e)=>setCertificate({...certificate,provider:e.target.value})}></input>
-            <input type='text' name='title' placeholder='Title' value={certificate.title} onChange={(e)=>setCertificate({...certificate,title:e.target.value})} className='mt-2'></input>
-            <textarea type='text' name='description' placeholder='Enter description' className='mt-2' value={certificate.description} onChange={(e)=>setCertificate({...certificate,description:e.target.value})}></textarea>
-            <input type='date' name='issued' placeholder='DD-MM-YYYY' value={certificate.issued}  onChange={(e)=>setCertificate({...certificate,issued:e.target.value})} className='mt-2'></input>
-            <input type='text' name='link' placeholder='Link to certificate' value={certificate.link}  onChange={(e)=>setCertificate({...certificate,link:e.target.value})} className='mt-2'></input>
+        <ModalDesign action={[modal,showModal]}>
+            <div>
+                <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+                <input className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' type='text' name='provider' placeholder='Certificate provider' value={certificate.provider} onChange={(e)=>setCertificate({...certificate,provider:e.target.value})}></input>
+                <input className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' type='text' name='title' placeholder='Title' value={certificate.title} onChange={(e)=>setCertificate({...certificate,title:e.target.value})}></input>
+                <textarea className='w-full border-2 resize-none border-gray-400 rounded-lg p-2 outline-none mb-2' type='text' name='description' placeholder='Enter description' value={certificate.description} onChange={(e)=>setCertificate({...certificate,description:e.target.value})}></textarea>
+                <input className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' type='date' name='issued' placeholder='DD-MM-YYYY' value={certificate.issued}  onChange={(e)=>setCertificate({...certificate,issued:e.target.value})}></input>
+                <input className='w-full border-2 border-gray-400 rounded-lg p-2 outline-none mb-2' type='text' name='link' placeholder='Link to certificate' value={certificate.link}  onChange={(e)=>setCertificate({...certificate,link:e.target.value})}></input>
+                <div className='flex justify-end mt-5'>
+                    <button className='rounded-lg bg-green-700 text-white p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
+                    <button className='rounded-lg bg-red-600 text-white p-1 ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+                </div>
             </div>
-            <div className='button-position mt-5'>
-            <button className='save-button p-1 ps-3 pe-3 me-3' onClick={handleSubmit}><i className='fa fa-save'></i> Save</button>
-            <button className='save-button p-1 ps-3 pe-3' style={{backgroundColor:"rgba(255, 0, 0, 0.681)"}} onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
-            </div>
-        </div>
-   
-  )
+        </ModalDesign>
+    )
 }

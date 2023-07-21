@@ -18,37 +18,41 @@ import MyProposalsPage from './Pages/Users/Freelancer/MyProposalsPage';
 import ViewPostPage from './Pages/Users/Client/ViewPostPage';
 import PostEditPage from './Pages/Users/Client/PostEditPage';
 import AdminLoginPage from './Pages/Admins/AdminLoginPage';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 
   const {type} = useSelector(state => state.user)
+  const userStorage = localStorage.getItem("userStorage")
+  const adminStorage = localStorage.getItem("adminStorage")
 
   return (
     <div>
         <Router>
             <Routes>
-                <Route Component={HomePage} exact path='/' />
-                <Route Component={LoginPage} path='/login' />
-                <Route Component={SignupPage} path='/signup' />
-                <Route Component={SignupTypePage} path='/type' />
-                <Route Component={ContactInfoPage} path='/settings/contact-info' />
-                <Route Component={PublicProfilePage} path='/profile' />
-                <Route Component={ProfileSettingsPage} path='/my-profile' />
-                <Route Component={ForgotPage} path='/forgot-password' />
-                <Route Component={ResetPage} path='/reset/:key' />
-                <Route Component={JobViewPage} path='/post-view' />
-                <Route Component={ChatPage} path='/chats' />
+                <Route element={userStorage ? <HomePage/> : <Navigate to={"/login"}/>} exact path='/' />
+                <Route element={userStorage ? <Navigate to={"/"}/> : <LoginPage/>} path='/login' />
+                <Route element={userStorage ? <Navigate to={"/"}/> : <SignupPage/>} path='/signup' />
+                <Route element={userStorage ? <Navigate to={"/"}/> : <SignupTypePage/>} path='/type' />
+                <Route element={userStorage ? <ContactInfoPage/> : <Navigate to={"/login"}/>} path='/settings/contact-info' />
+                <Route element={userStorage ? <PublicProfilePage/> : <Navigate to={"/login"}/>} path='/profile' />
+                <Route element={userStorage ? <ProfileSettingsPage/> : <Navigate to={"/login"}/>} path='/my-profile' />
+                <Route element={userStorage ? <Navigate to={"/"}/> : <ForgotPage/>} path='/forgot-password' />
+                <Route element={userStorage ? <Navigate to={"/"}/> : <ResetPage/>} path='/reset/:key' />
+                <Route element={userStorage ? <JobViewPage/> : <Navigate to={"/login"}/>} path='/post-view' />
+                <Route element={userStorage ? <ChatPage/> : <Navigate to={"/login"}/>} path='/chats' />
 
-                <Route element={type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
+                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
 
-                <Route element={type === "client" ? <PostJobPage/> : <Navigate to={"/"}/>} path='/post-job' />
-                <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/>} path='/my-posts' />
-                <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
-                <Route element={type === "client" && <PostEditPage />} path='/post-edit' />
+                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" ? <PostJobPage/> : <Navigate to={"/"}/>} path='/post-job' />
+                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/>} path='/my-posts' />
+                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" && <ViewPostPage />} path='/view-post' />
+                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" && <PostEditPage />} path='/post-edit' />
 
-                <Route element={<AdminLoginPage/>} path='/admin/login' />
+                <Route element={!adminStorage ?  <Navigate to={"/login"}/> : <AdminLoginPage/>} path='/admin/login' />
             </Routes>
         </Router>
+        <ToastContainer limit={1}/>
     </div>
   );
 }

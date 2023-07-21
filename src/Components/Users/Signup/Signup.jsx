@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import "./Signup.css"
-import { Link, useNavigate } from "react-router-dom"
-import {ToastContainer} from "react-toastify"
+import { useNavigate } from "react-router-dom"
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleLogin } from "@react-oauth/google"
 import jwt_decode from "jwt-decode"
@@ -49,7 +47,8 @@ function Signup() {
   
     const [userObject,setUserObject] = useState(null)
 
-    const submitHandle = async () => {
+    const submitHandle = async (e) => {
+        e.preventDefault()
         const response = await handleSubmit(userData, userObject, setCanShow, setUserData)
             if(response?.status){
                 if(response?.update){
@@ -71,55 +70,58 @@ function Signup() {
     }
 
     return (
-        <div className='Signup'>
-            <div className='container'>
-                <h2 className='text-center mt-3'>Signup to job sector</h2>
-                <div className='form mt-5 text-center'>
-                    <div className='name'>
-                        {!userObject && <input type='text' className='mb-3 p-2' placeholder='Full Name' name='full_name' value={userData.full_name} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>}
-                        {!userObject && <input type='text' className='mb-3 p-2 ms-4' placeholder='Username' name='username' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>}
-                    </div>
-                    {!userObject && <div className='email'>
-                        <input type='text' className='mb-3 p-2' placeholder='Email' name='email'value={userData.email}  onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+            <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
+                <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job Sector Registration</h1>
+                <form className="mt-6" onSubmit={submitHandle}>
+                    {!userObject && <div className="mb-2">
+                        <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Full Name' name='full_name' value={userData.full_name} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>}
-                    {!userObject && canShow && <div className='otp'>
-                        <input type='text' className='mb-3 p-2' placeholder={"Enter otp ("+userData.email+")"} value={userData.otp} name='otp' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    {!userObject && <div className="mb-2">
+                        <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='UserName' name='username' value={userData.username} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>}
-                    {!userObject && <div className='password'>
-                        <input type='password' className='mb-3 p-2' placeholder='Password (should contain a-z,A-Z,0-9,special)' value={userData.password} name='password' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    {!userObject && <div className="mb-2">
+                        <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Email' name='email' value={userData.email}  onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>}
-                    {!userObject && <div className='password'>
-                        <input type='password' className='mb-3 p-2' placeholder='Confirm Password' name='confirmPassword' value={userData.confirmPassword} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    {!userObject && canShow && <div className="mb-2">
+                        <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder={"Enter otp ("+userData.email+")"} value={userData.otp} name='otp' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>}
-                    <div className='country'>
-                        <select name="country" className='p-2 mb-3' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}>
+                    {!userObject && <div className="mb-2">
+                        <input type='password' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Password' name='password' value={userData.password} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    </div>}
+                    {!userObject && <div className="mb-2">
+                        <input type='password' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Confirm Password' name='confirmPassword' value={userData.confirmPassword} onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                    </div>}
+                    <div className='mt-2'>
+                        <select name="country" className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' onChange={(e)=>setUserData({...userData,[e.target.name]:e.target.value})}>
                             <option value="India">India</option>
                             {
-                               country.map(obj => {
+                                country.map(obj => {
                                     return(
                                         <option key={obj.countryName} value={obj.countryName}>
                                             {obj.countryName}
                                         </option>
                                     )
-                               }) 
+                                }) 
                             }
                         </select>
                     </div>
-                    <button className='button p-2 ps-3 pe-3 mb-4' onClick={submitHandle}>Create account</button>
-                    <Link className='default-link'>Forgot Password ?</Link>
+                    <div className="mt-6">
+                        <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
+                            Register
+                        </button>
+                    </div>
+                </form>
+                <div className="relative flex items-center justify-center w-full mt-6 border border-t">
+                    <div className="absolute px-5 bg-white">Or</div>
                 </div>
-                <div style={{display:"flex"}}>
-                    <div className='line-left'></div>&nbsp; or &nbsp;<div className='line-right'></div>
+                <div className='flex mt-4 gap-x-2 justify-center'>
+                <GoogleLogin text='signup_with' size="medium" context='signup' onSuccess={(credentialResponse) => {
+                    setUserObject(jwt_decode(credentialResponse.credential))
+                }} />
                 </div>
-                <div className='google-login mb-4'>
-                    <GoogleLogin text='signup_with' size='medium' theme='filled_blue' shape='pill' type='standard' context='signup' onSuccess={(credentialResponse) => {
-                        setUserObject(jwt_decode(credentialResponse.credential))
-                    }} />
-                </div>
-                
-                <div className='text-center mb-3'>Already have an account? <Link to="/login" className='default-link'>Login</Link></div>
+                <p className="mt-8 text-xs font-light text-center text-gray-700"> Already have an account? <span className=" cursor-pointer font-medium text-green-600 hover:text-blue-700" onClick={()=>navigate("/login")}>Login</span></p>
             </div>
-            <ToastContainer />
         </div>
     )
 }

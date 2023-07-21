@@ -1,5 +1,4 @@
 import React from 'react'
-import "./ProfileMenu.css"
 import { useNavigate } from 'react-router-dom'
 
 function ProfileMenu() {
@@ -7,33 +6,30 @@ function ProfileMenu() {
     const navigate = useNavigate()  
 
     return (
-        <>
-        <div className='offset-lg-2 offset-md-1 col-lg-3 col-md-3 col-11 d-none d-md-block left-menu'>
-            <div className="left-menu-list p-3">
-                <h5><b>User Settings</b></h5>
-                <ul className='list-left-menu'>
-                    <li className='cursor-pointer' onClick={()=>navigate("/settings/contact-info")}>Contact Info</li>
-                    <li className='cursor-pointer' onClick={()=>navigate("/my-profile")}>Profile</li>
-                    <li className='cursor-pointer'>Profile Settings</li>
-                    <li className='cursor-pointer'>Password & Security</li>
+        < >
+            <div className="col-span-4 border-2 rounded-xl p-3 md:block hidden">
+                <h5 className='text-xl mb-2'><b>User Settings</b></h5>
+                <ul className='ml-5 mb-2'>
+                    <li className='cursor-pointer text-lg mb-2' onClick={()=>navigate("/settings/contact-info")}>Contact Info</li>
+                    <li className='cursor-pointer text-lg mb-2' onClick={()=>navigate("/my-profile")}>Profile</li>
+                    <li className='cursor-pointer text-lg mb-2'>Profile Settings</li>
+                    <li className='cursor-pointer text-lg mb-2'>Password & Security</li>
                 </ul>
-                <h5><b>Payments</b></h5>
-                <ul className='list-left-menu'>
-                    <li className='cursor-pointer'>Payments</li>
-                    <li className='cursor-pointer'>Balance</li>
+                <h5 className='text-xl mb-2'><b>Payments</b></h5>
+                <ul className='ml-5 mb-2'>
+                    <li className='cursor-pointer text-lg mb-2'>Payments</li>
+                    <li className='cursor-pointer text-lg mb-2'>Balance</li>
                 </ul>
-                <h5><b>Notification Settings</b></h5>
-                <ul className='list-left-menu'>
-                    <li className='cursor-pointer'>Manage Notifications</li>
+                <h5 className='text-xl mb-2'><b>Notification Settings</b></h5>
+                <ul className='ml-5 mb-2'>
+                    <li className='cursor-pointer text-lg mb-2'>Manage Notifications</li>
                 </ul>
-                <h5><b>Manage Account</b></h5>
-                <ul className='list-left-menu'>
-                    <li className='cursor-pointer'>Delete Account</li>
-                    <li className='cursor-pointer'>My Reports</li>
-                    <li className='cursor-pointer' onClick={()=>{localStorage.removeItem("userStorage"); navigate("/login")}}>Logout</li>
+                <h5 className='text-xl mb-2'><b>Manage Account</b></h5>
+                <ul className='ml-5'>
+                    <li className='cursor-pointer text-lg mb-2'>Delete Account</li>
+                    <li className='cursor-pointer text-lg mb-2'>My Reports</li>
                 </ul>
             </div>
-        </div>
         </>
     )
 }

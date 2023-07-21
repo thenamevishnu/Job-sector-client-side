@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import "./Login.css"
-import { Link, useNavigate } from "react-router-dom"
-import { ToastContainer } from 'react-toastify'
+import { useNavigate } from "react-router-dom"
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux"
 import axios from 'axios';
@@ -25,21 +23,12 @@ function Login() {
         email:"",
         password:""
     })
-    const [borderColor,setBorder] = useState({
-        first:null,
-        second:null,
-    })
 
     const [userObject,setUserObject] = useState(null)
 
-    const regex = {
-        email : /^([\W\w])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm,
-        password : /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*().\\?]).{8,16}$/gm
-    }
-
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
         try{
-            
+            e.preventDefault()
             const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
         
             if(!data.status){
@@ -66,51 +55,36 @@ function Login() {
         }
     })
 
-    
-
-    const dataChange = async (key, value, validate) => {
-        setUserData({...userData,[key]:value}); 
-        if(validate==='email'){
-            if(!regex.email.test(value)){
-                setBorder({...borderColor,first:"1.5px solid red"})
-            } else { 
-                setBorder({...borderColor,first:"1.5px solid green"})
-            }
-        }
-        if(validate==='password'){
-            if(!regex.password.test(value)){
-                setBorder({...borderColor,second:"1.5px solid red"})
-            } else { 
-                setBorder({...borderColor,second:"1.5px solid green"})
-            }
-        }
-    }
-
     return (
-        <div className='Login'>
-            <div className='container'>
-                <h2 className='text-center mt-3'>Login to job sector</h2>
-                <div className='form mt-5 text-center'>
-                    <div className='email'>
-                        <input type='text' className='mb-3 p-2' placeholder='Email' name='email' onChange={(e) =>dataChange(e.target.name,e.target.value,"email")} style={{border:borderColor.first}}></input>
+        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+            <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
+                <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job Sector Login</h1>
+                <form className="mt-6" onSubmit={handleSubmit}>
+                    <div className="mb-2">
+                    <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Email' name='email' onChange={(e) =>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>
-                    <div className='password'>
-                        <input type='password' className='mb-3 p-2' placeholder='Password' name='password' onChange={(e) =>dataChange(e.target.name,e.target.value,"password")} style={{border:borderColor.second}}></input>
+                    <div className="mb-2">
+                    <input type='password' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Password' name='password' onChange={(e) =>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>
-                    <button className='button p-2 ps-3 pe-3 mb-4' onClick={()=>handleSubmit()}>Continue with email</button>
-                    <Link className='default-link' to="/forgot-password">Forgot Password ?</Link>
+                    <span className="text-xs text-green-600 hover:text-blue-700 cursor-pointer" onClick={()=>navigate("/forgot-password")}>
+                        Forget Password?
+                    </span>
+                    <div className="mt-6">
+                        <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <div className="relative flex items-center justify-center w-full mt-6 border border-t">
+                    <div className="absolute px-5 bg-white">Or</div>
                 </div>
-                <div style={{display:"flex"}}>
-                    <div className='line-left'></div>&nbsp; or &nbsp;<div className='line-right'></div>
+                <div className='flex mt-4 gap-x-2 justify-center'>
+                <GoogleLogin text='signin_with' size="medium" context='signin' onSuccess={(credentialResponse) => {
+                    setUserObject(jwt_decode(credentialResponse.credential))
+                }} />
                 </div>
-                <div className='google-login mb-4'>
-                    <GoogleLogin text='signin_with' size='medium' theme='filled_blue' shape='pill' type='standard' context='signin' onSuccess={(credentialResponse) => {
-                        setUserObject(jwt_decode(credentialResponse.credential))
-                    }} />
-                </div>
-                <div className='text-center mb-3'>Don't have an account? <Link to="/type" className='default-link'>SignUp</Link></div>
+                <p className="mt-8 text-xs font-light text-center text-gray-700"> Don't have an account? <span className=" cursor-pointer font-medium text-green-600 hover:text-blue-700" onClick={()=>navigate("/type")}>Signup</span></p>
             </div>
-            <ToastContainer/>
         </div>
     )
 }

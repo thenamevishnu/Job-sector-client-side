@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import "./SignupType.css"
-import { Link, useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
+import { warnAlert } from '../../../Functions/Toasts';
 
 function SignupType() {
 
@@ -14,56 +13,38 @@ function SignupType() {
       if(userStorage) navigate("/")
     },[navigate])
 
-    const errorAlert = async (message) => {
-      toast.error(message, {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
-  }
-
     return (
-        <div className='SignupType'>
-            <div className='container'>
-                <h2 className='text-center mt-3'>Join as a client or freelancer</h2>
-                <div className='row mt-5 gap-md-0 d-flex justify-content-around'>
-                  <div className='col-1'></div>
-                  <div className='client p-4 col-md-4 col-8' onClick={()=>{
+        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+            <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-3xl">
+                <div className="grid sm:grid-cols-2 xm:grid-cols-1 gap-4 mx-auto text-center">
+                <div className='relative shadow-2xl p-4 rounded-lg border flex items-center cursor-pointer' onClick={()=>{
                       localStorage.setItem("type","client")
                       setSelected({client:true})
                   }}>
-                      {(selected?.client || localStorage.getItem("type")==="client") && <span className='fa fa-circle-check text-success position-absolute' style={{right:"10px",top:"10px"}}></span>}
-                      <img src="../resume.png" alt="resume" width="50px" style={{whiteSpace:"nowrap"}}/>
-                      <h5>I am a client, hiring<br></br>for a project</h5>
+                      {(selected?.client || localStorage.getItem("type")==="client") && <span className='fa fa-circle-check text-green-800 absolute top-2 end-2'></span>}
+                      <img src="../resume.png" alt="resume" className="whitespace-nowrap rounded-full w-24"/>
+                      <h5 className="text-lg">I am a client, hiring for a project</h5>
                   </div>
-                  <div className='col-md-2 col-1'></div>
-                  <div className='freelancer p-4 col-md-4 col-8 mt-3 mt-md-0' onClick={()=>{
+
+                  <div className='relative shadow-2xl p-4 rounded-lg border flex items-center cursor-pointer' onClick={()=>{
                       localStorage.setItem("type","freelancer")
                       setSelected({freelancer:true})
                   }}>
-                      {(selected?.freelancer || localStorage.getItem("type")==="freelancer") && <span className='fa fa-circle-check text-success position-absolute' style={{right:"10px",top:"10px"}}></span>}
-                      <img src="../job.png" alt="resume" width="50px" style={{whiteSpace:"nowrap"}}/>
-                      <h5>I am a freelancer,<br></br>looking for works</h5>
+                      {(selected?.freelancer || localStorage.getItem("type")==="freelancer") && <span className='fa fa-circle-check text-green-800 absolute top-2 end-2'></span>}
+                      <img src="../job.png" alt="resume" className='whitespace-nowrap rounded-full w-24'/>
+                      <h5 className="text-lg">I am a freelancer looking for works</h5>
                   </div>
-                  <div className='col-md-1 col-0'></div>
                 </div>
-                <div className='mt-4 mt-md-5 text-center'>
-                      <button className='button p-2 ps-3 ps-md-4 pe-3 pe-md-4' onClick={()=>{
+                <div className="mt-8">
+                      <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800" onClick={()=>{
                           if(localStorage.getItem("type")){
-                            navigate("/signup")
+                              navigate("/signup")
                           }else{
-                            errorAlert("Please select account type!")
+                              warnAlert("Select Account Type!")
                           }
                       }}>Continue</button>
                 </div>
-                <div className='text-center mt-3 mb-3'>Already have an account? <Link to="/login" className='default-link'>Login</Link></div>
             </div>
-            <ToastContainer/>
         </div>
     )
 }
