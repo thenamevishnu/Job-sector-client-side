@@ -19,6 +19,7 @@ import ViewPostPage from './Pages/Users/Client/ViewPostPage';
 import PostEditPage from './Pages/Users/Client/PostEditPage';
 import AdminLoginPage from './Pages/Admins/AdminLoginPage';
 import { ToastContainer } from 'react-toastify';
+import BalancePage from './Pages/Users/BalancePage';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
                 <Route element={userStorage ? <Navigate to={"/"}/> : <SignupTypePage/>} path='/type' />
                 <Route element={userStorage ? <ContactInfoPage/> : <Navigate to={"/login"}/>} path='/settings/contact-info' />
                 <Route element={userStorage ? <PublicProfilePage/> : <Navigate to={"/login"}/>} path='/profile' />
+                <Route element={userStorage ? <BalancePage/> : <Navigate to={"/login"}/>} path='/settings/balance' />
                 <Route element={userStorage ? <ProfileSettingsPage/> : <Navigate to={"/login"}/>} path='/my-profile' />
                 <Route element={userStorage ? <Navigate to={"/"}/> : <ForgotPage/>} path='/forgot-password' />
                 <Route element={userStorage ? <Navigate to={"/"}/> : <ResetPage/>} path='/reset/:key' />

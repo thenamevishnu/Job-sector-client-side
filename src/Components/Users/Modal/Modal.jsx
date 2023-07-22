@@ -3,6 +3,8 @@ import axios from 'axios'
 import { errorAlert } from '../../../Functions/Toasts'
 import { isUri } from 'valid-url'
 import ModalDesign from './ModalDesign'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { Paypal } from '../Balance/Paypal'
 
 export function HoursPerWeek(props) {
 
@@ -416,5 +418,87 @@ export function Certificate(props){
                 </div>
             </div>
         </ModalDesign>
+    )
+}
+
+export function AddPaymentMethod(props) {
+
+    const {data} = props
+    const [modal,showModal] = props.states
+    const [enterData,setData] = useState({addMethod:"",to:""})
+
+    const handleSubmit = async () => {
+        if(!enterData.addMethod || enterData.addMethod === "0"){
+            errorAlert("Select a method!")
+        }
+        if(enterData.addMethod === "Paypal"){
+            const emailReg = /^([\w\W])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm
+            if(!emailReg.test(enterData.to)){
+                errorAlert("Enter valid email address")
+            }else{
+                props.sendDataToParant({addPayment:enterData})
+                showModal(!modal.status)
+            }
+        }
+        // if(enterData.addMethod === "Crypto"){
+        //     const emailReg = /^([\w\W])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm
+        //     if(!emailReg.test(enterData.to)){
+        //         errorAlert("Enter valid email address")
+        //     }else{
+        //         showModal(!modal.status)
+        //     }
+        // }
+    }
+
+    return (
+        <ModalDesign action={[modal,showModal]}>
+            <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+            <select className='outline-none border-2 border-gray-400 rounded-lg p-2 w-full' value={enterData.addMethod} onChange={(e)=>{setData({...enterData,addMethod:e.target.value})}}>
+                <option value="0">Select Method</option>
+                <option value="Paypal">Paypal</option>
+                {/* <option value="Crypto">Crypto Currency</option> */}
+            </select>
+            {
+                enterData.addMethod !== "Paypal" ? null : <input type='text' className='outline-none border-2 border-gray-400 rounded-lg p-2 w-full mt-2' placeholder='Enter Paypal Email' value={enterData.to} onChange={(e)=>setData({...enterData,to:e.target.value})}/>
+                // : <input type='text' className='outline-none border-2 border-gray-400 rounded-lg p-2 w-full mt-2' placeholder='Enter BTC Address' value={enterData.to} onChange={(e)=>setData({...enterData,to:e.target.value})}/>
+            }
+            <div className='flex justify-end mt-5'>
+                <button className='rounded-lg bg-green-700 text-white p-1 ps-3 pe-3 me-3' onClick={()=>handleSubmit()}><i className='fa fa-save'></i> Save</button>
+                <button className='rounded-lg bg-red-600 text-white p-1 ps-3 pe-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+            </div>
+        </ModalDesign>
+    )
+}
+
+export function PaypalPay(props){
+    
+    const [modal,showModal] = props.states
+    const [amount,setAmount] = useState(100)
+
+    return (
+
+        <ModalDesign action={[modal,showModal]}>
+            <div className='p-5'>
+                <input type='number' className='border-2 border-gray-400 rounded-lg outline-none w-full p-2' value={amount} onChange={(e)=>setAmount(e.target.value)}/>
+                <span className='text-red-600 text-sm'>{amount < 5 && "Enter minimum $5"}</span>
+                {amount >= 5 && <div className='mb-5'></div>}
+                <PayPalScriptProvider
+                    options={{
+                        "clientId": process.env.react_app_paypal,
+                        components: "buttons",
+                        currency: "USD",
+                        disableFunding:"card"
+                }}>
+                    <Paypal
+                        currency={"USD"}
+                        amount={amount < 5 ? 5 : amount}
+                        showSpinner={false}
+                        getSuccess={props.getSuccess}
+                        action={[modal,showModal]}
+                    /> 
+                </PayPalScriptProvider>
+            </div>
+        </ModalDesign>
+
     )
 }

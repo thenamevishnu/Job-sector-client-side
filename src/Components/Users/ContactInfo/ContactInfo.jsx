@@ -8,10 +8,10 @@ function ContactInfo() {
 
   return (
       <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
-          <ProfileMenu />
+          <ProfileMenu active={{contactInfo:true}}/>
                 
                   <div className='md:col-span-8 col-span-12'>
-                      <div className='relative border-2 p-3 mb-2 rounded-xl'>
+                      <div className='relative border-2 border-gray-400 p-3 mb-2 rounded-xl'>
 
                           <span className='inner-circle p-2 bg-gray-200 rounded-full cursor-pointer absolute end-3 top-3'><i className='fa fa-pen' style={{color:'#808080'}}></i></span>
                           <h3 className=' font-bold text-green-700 block text-xl mb-2'>Contact Info</h3>  
@@ -27,7 +27,7 @@ function ContactInfo() {
                           </div>
 
                       </div>
-                      <div className='p-3 border-2 rounded-xl relative'>
+                      <div className='p-3 border-2 border-gray-400 rounded-xl relative'>
                           <span className='inner-circle cursor-pointer absolute top-3 end-3'><i className='fa fa-pen' style={{color:'#808080'}}></i></span>
                           <h3 className="text-green-700 font-bold text-xl">Location</h3>
 
