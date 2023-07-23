@@ -36,10 +36,10 @@ function PublicProfile() {
             <img className='w-32 rounded-full' src={process.env.react_app_cloud + "/" + userData.image} alt='profile-pic'/>
         </div>
         {
-            id!==userId && <span className='absolute bottom-1 end-1 text-white p-2 rounded-full w-8 flex justify-center items-center h-8 bg-blue-700 me-3 mb-2 cursor-pointer fs-5' onClick={async ()=>await addConnection(id,userId)} title={`Follow ${userData?.full_name}`}><i className='fa fa-plus'></i></span>
+            id!==userId && <span className='absolute bottom-1 end-1 text-white p-2 rounded-full w-8 flex justify-center items-center h-8 bg-blue-900 me-3 mb-2 cursor-pointer fs-5' onClick={async ()=>await addConnection(id,userId)} title={`Follow ${userData?.full_name}`}><i className='fa fa-plus'></i></span>
         }
         <div className='info mt-3'>
-            <p>{userData.full_name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' width='15px' className='pb-1'></img>}</p>
+            <div className='flex items-center justify-center'>{userData.full_name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' className='w-4 h-4.5 ms-1'></img>}</div>
             <p><i className='fa fa-location-dot'></i> {userData.country}</p>
         </div>
     </div>

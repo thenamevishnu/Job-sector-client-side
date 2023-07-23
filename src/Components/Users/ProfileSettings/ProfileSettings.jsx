@@ -116,9 +116,9 @@ function ProfileSettings() {
                 <div className='text-center mb-1 border-2 rounded-xl border-gray-400 p-2'>
                     <label htmlFor='upload-image' title='Update Image' className='cursor-pointer mt-2 flex justify-center'><img className='w-32 rounded-full' src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + "/" +stateData.image} alt='profile-pic'/></label>
                     <input type='file' id='upload-image' accept='.jpeg, .jpg, .png, .webp' name='dp' style={{display:"none"}} onChange={(e)=>setFiles(e.target.files[0],"image")}></input>
-                    <div className='info mt-3'>
-                        <p>{stateData.name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' width='15px' className='pb-1'></img>}</p>
-                        <p><i className='fa fa-location-dot'></i> {userData.country}</p>
+                    <div className='mt-3'>
+                        <div className='flex justify-center items-center'>{stateData.name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' className='w-4 h-4.5 ms-1'></img>}</div>
+                        <div><i className='fa fa-location-dot'></i> {userData.country}</div>
                     </div>
                 </div>
 

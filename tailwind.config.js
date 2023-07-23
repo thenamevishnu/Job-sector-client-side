@@ -10,7 +10,8 @@ export default {
               "chat-background":"url('assets/chat-background.jpg')"
           },
           boxShadow:{
-                "tag" : "inset 1px 1px 1px gray"
+                "tag" : "inset 1px 1px 1px gray",
+                "button" : "rgba(0, 0, 0, 0.24) 0px 3px 8px"
           }
       },
   },

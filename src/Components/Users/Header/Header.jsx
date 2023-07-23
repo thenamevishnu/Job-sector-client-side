@@ -71,7 +71,7 @@ function Header({icons}){
             </div>
             {icons && <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div className='text-xl'>
-                <i className='far fa-paper-plane mr-3 cursor-pointer' title='post new job' onClick={()=>navigate("/post-job")}></i>
+                {type === "client" && <i className='far fa-paper-plane mr-3 cursor-pointer' title='post new job' onClick={()=>navigate("/post-job")}></i>}
                 <i className='far fa-question mr-3 cursor-pointer' title='Help'></i>
                 <i className='far fa-comment mr-3 cursor-pointer' title='Contact'></i>
                 <i className='far fa-bell mr-3 cursor-pointer' title='Notification'></i>

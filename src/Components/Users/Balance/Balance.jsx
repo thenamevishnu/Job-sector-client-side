@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { useSelector } from 'react-redux'
 import { AddPaymentMethods, getUserData } from '../../../Api/user'
-import { AddPaymentMethod, PaypalPay } from '../Modal/Modal'
+import { AddPaymentMethod, OnPaid, PaypalPay } from '../Modal/Modal'
 
 function Balance() {
 
@@ -10,6 +10,7 @@ function Balance() {
     const [modal,showModal] = useState({})
     const [userData,setUserData] = useState({})
     const [method, setMethods] = useState([])
+    const [showTick,showTickSuccess] = useState(false)
    
     useEffect(()=>{
         const fetchData = async () => {
@@ -38,13 +39,18 @@ function Balance() {
         }
         if(data.amountPaid){
             setUserData({...userData,balance:parseFloat(userData.balance) + parseFloat(data.amountPaid),transactions:data.transactions})
+            showTickSuccess(true)
+            setTimeout(()=>{
+                showTickSuccess(false)
+            },1000)
         }
     }
 
     return (
       <>
       {modal.paypal && <PaypalPay data={modal} states={[modal, showModal]} getSuccess={handleDataFromChild}/>}
-      {modal.addMethod && <AddPaymentMethod data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />} 
+      {modal.addMethod && <AddPaymentMethod data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}
+      {showTick && <OnPaid/>} 
       <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
           <ProfileMenu active={{balance:true}}/>
               
@@ -67,11 +73,13 @@ function Balance() {
                     <div className='mx-4 mt-3'>
                         
                         <div className='container mx-auto grid grid-cols-12'>
-                            {userData?.transactions?.length > 0 ? <div className='col-span-12 border-2 rounded-xl p-3 border-gray-400'>
-                                <p>Amount : ${userData?.transactions[userData.transactions.length - 1]?.amount}</p>
-                                <p>Pay_ID : {userData?.transactions[userData.transactions.length - 1]?.pay_id}</p>
-                                <p>Time : {userData?.transactions[userData.transactions.length - 1]?.time}</p>
-                            </div> : <p className='col-span-12 mt-4 text-red-600 text-sm'>There is no transactions found!</p>}
+                            {userData?.transactions?.length > 0 ? <>
+                            <div className='col-span-12 p-3 ps-5 border-gray-400 border-2 rounded-xl'>
+                                <p><b>Amount</b> : <code>${userData?.transactions[userData.transactions.length - 1]?.amount}</code></p>
+                                <p><b>PaymentID</b> : <code>{userData?.transactions[userData.transactions.length - 1]?.pay_id}</code></p>
+                                <p><b>Time</b> : <code>{new Date(userData?.transactions[userData.transactions.length - 1]?.time).toLocaleString("en-US",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true})}</code></p>
+                            </div> 
+                            </>: <p className='col-span-12 mt-4 text-red-600 text-sm'>There is no transactions found!</p>}
                         </div>
                           
                     </div>

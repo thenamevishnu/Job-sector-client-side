@@ -18,3 +18,10 @@ export const AddPaymentMethods = async (data,id) => {
         return false
     }
 }
+
+export const changeSearchResults = async (prefix) => {
+    if(prefix.length > 0){
+        const {data} = await axios.get(`${process.env.react_app_server}/getSearchResult/${prefix}`)
+        return data.response
+    }
+}

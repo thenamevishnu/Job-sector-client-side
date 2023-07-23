@@ -64,7 +64,7 @@ function ViewPost() {
                                     <div className='flex items-center'>
                                         <img className='cursor-pointer rounded-full' src={`${process.env.react_app_cloud}/${obj?.profile?.image}`} alt='profile-pic' width="80px" onClick={()=>{localStorage.setItem("publicProfile",obj._id); navigate("/profile")}} />
                                         <div className='ms-3' style={{lineHeight:"1.3"}}>
-                                            <div>{obj?.profile?.full_name}</div>
+                                            <div className='flex items-center'>{obj?.profile?.full_name} {obj?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
                                             <div style={{fontSize:"0.8em"}}>{obj?.profile?.title}</div>
                                             <div style={{fontSize:"0.85em"}}>{obj?.profile?.country}</div>
                                         </div>

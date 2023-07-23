@@ -20,6 +20,10 @@ import PostEditPage from './Pages/Users/Client/PostEditPage';
 import AdminLoginPage from './Pages/Admins/AdminLoginPage';
 import { ToastContainer } from 'react-toastify';
 import BalancePage from './Pages/Users/BalancePage';
+import PaymentsPage from './Pages/Users/PaymentsPage';
+import ManageNotificationPage from './Pages/Users/ManageNotificationPage';
+import PasswordSecurityPage from './Pages/Users/PasswordSecurityPage';
+import DeleteAccountPage from './Pages/Users/DeleteAccountPage';
 
 function App() {
 
@@ -38,11 +42,15 @@ function App() {
                 <Route element={userStorage ? <ContactInfoPage/> : <Navigate to={"/login"}/>} path='/settings/contact-info' />
                 <Route element={userStorage ? <PublicProfilePage/> : <Navigate to={"/login"}/>} path='/profile' />
                 <Route element={userStorage ? <BalancePage/> : <Navigate to={"/login"}/>} path='/settings/balance' />
+                <Route element={userStorage ? <PaymentsPage/> : <Navigate to={"/login"}/>} path='/settings/payments' />
                 <Route element={userStorage ? <ProfileSettingsPage/> : <Navigate to={"/login"}/>} path='/my-profile' />
                 <Route element={userStorage ? <Navigate to={"/"}/> : <ForgotPage/>} path='/forgot-password' />
                 <Route element={userStorage ? <Navigate to={"/"}/> : <ResetPage/>} path='/reset/:key' />
                 <Route element={userStorage ? <JobViewPage/> : <Navigate to={"/login"}/>} path='/post-view' />
                 <Route element={userStorage ? <ChatPage/> : <Navigate to={"/login"}/>} path='/chats' />
+                <Route element={userStorage ? <ManageNotificationPage/> : <Navigate to={"/login"}/>} path='/settings/notifications' />
+                <Route element={userStorage ? <PasswordSecurityPage/> : <Navigate to={"/login"}/>} path='/settings/password-security' />
+                <Route element={userStorage ? <DeleteAccountPage/> : <Navigate to={"/login"}/>} path='/settings/delete-account' />
 
                 <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
 

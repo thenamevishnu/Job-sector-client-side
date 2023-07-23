@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { errorAlert } from '../../../Functions/Toasts'
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { changeAvailable, removeSaved } from '../../../Functions/Profile'
 import moment from 'moment'
 import { isSaved, saveJob } from '../../../Functions/Posts'
+import { changeSearchResults } from '../../../Api/user'
 
 function Index() {
 
@@ -15,6 +16,9 @@ function Index() {
     const [showData,setShowData] = useState("/getLatest")
     const [saved_jobs,setSavedJobs] = useState([])
     const [savedId,setSavedId] = useState([])
+    const [searchValue,setSearch] = useState("")
+    const [search,setResponses] = useState([])
+    const searchContainer = useRef(null)
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -36,12 +40,21 @@ function Index() {
      
     return (
         <div className='container grid grid-cols-12 mx-auto text-center mt-20 gap-1'>
-            <div className='md:col-span-8 col-span-12'>
+            <div className='md:col-span-8 col-span-12 relative'>
                 <label className='w-full relative' htmlFor='search'>
-                    <input type='text' className='p-2 w-6/12 rounded-ss-xl rounded-es-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...'></input>
+                    <input type='text' className='p-2 w-6/12 rounded-ss-xl rounded-es-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>{if(/(\s+)/.test(e.target.value)){if(searchContainer?.current){searchContainer.current.style.display = "none";} return false }else{if(searchContainer?.current){searchContainer.current.style.display = "block";}} setSearch(e.target.value); setResponses(await changeSearchResults(e.target.value))}}></input>
+                    
                     <i className='fa fa-search p-3 text-white bg-gray-600 rounded-ee-xl rounded-se-xl'></i>
                 </label>
-
+                <section className='h-80 w-full border-2  p-3 bg-white absolute' ref={searchContainer}>
+                {
+                     search && search.map(items => {
+                            return(
+                                <div key={items} className='text-start'>{items}</div>
+                            )
+                     })
+                }
+                </section>
             <div className="mt-3">
                 <div className='border-2 border-gray-400 rounded-xl'>
                     <h4 className='text-start p-3 font-bold'>{type === "freelancer" ? "Jobs you might like" : "Job Board"}</h4>
@@ -110,7 +123,7 @@ function Index() {
                         <img src={userData?.image && `${process.env.react_app_cloud}/${userData.image}`} alt='profile pic' onClick={()=>navigate("/my-profile")} className='cursor-pointer rounded-full w-32'/>
                     </div>
                     <div className='text-center mt-3'>
-                        {userData?.full_name && userData.full_name} {userData.is_verified && <img className='ms-1' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='verification badge'/>}
+                        <div className=' flex items-center justify-center'>{userData?.full_name && userData.full_name} {userData.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='verification badge'/>}</div>
                     </div>
                     <div className='text-center font-mono mt-1' style={{fontSize:"12px"}}>
                         {userData?.title && userData.title}

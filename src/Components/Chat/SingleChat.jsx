@@ -24,7 +24,7 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
                 <div className='flex items-center'>
                     <img className=' rounded-full' src={`${process.env.react_app_cloud}/${selected?.users[0]?.profile?.image}`} alt='profile-pic' width="50px"></img>
                     <div className='ms-2'>
-                        {selected?.users[0]?.profile?.full_name}<br></br>
+                        <div className='flex items-center'>{selected?.users[0]?.profile?.full_name} {selected?.users[0]?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
                         <span className='text-green-800'>{isTyping ? "Typing..." : "Online"}</span>
                     </div>
                 </div>

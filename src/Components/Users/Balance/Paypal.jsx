@@ -1,14 +1,12 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useEffect } from "react";
-import { errorAlert } from "../../../Functions/Toasts";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const style = {"layout":"vertical"};
 
 export const Paypal = ({ currency, showSpinner, amount , getSuccess , action}) => {
-    const navigate = useNavigate()
+
     const [modal,showModal] = action
     const {id} = useSelector(state => state.user)
     const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
