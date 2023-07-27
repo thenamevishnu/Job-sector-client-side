@@ -53,7 +53,7 @@ function ViewPost() {
                 }
         </div>
         
-        <div className='container grid grid-cols-12 mx-auto mt-1 rounded-xl px-0 p-2'>
+        <div className='container grid grid-cols-12 mx-auto mt-1 gap-2 rounded-xl px-0 p-2'>
         {
                 userData?.length > 0 && <h3 className='p-2 px-0 col-span-12 text-green-700 text-lg mb-2 uppercase'>Proposals list</h3>
             }
@@ -72,7 +72,7 @@ function ViewPost() {
                                     {
                                         obj.my_proposals.find(item => item.post_id === post_id && item.status === "Achieved") ? <div className='flex items-center cursor-pointer' onClick={()=>navigate("/chats")}><i className='me-2 fa fa-comment fs-3 text-green-700'></i> Chat Now</div> : <div className='flex items-center'>
                                         <i className='fa fa-circle-xmark me-3 fs-1 text-red-600 cursor-pointer text-3xl' onClick={async ()=>setUserData(await rejectPropsal(post_id,obj._id))}></i>
-                                        <i className='fa fa-circle-check fs-1 text-green-700 cursor-pointer text-3xl' onClick={async ()=>{await createChat(id,obj._id); setUserData(await acceptProposal(post_id,obj._id));}}></i>
+                                        <i className='fa fa-circle-check fs-1 text-green-700 cursor-pointer text-3xl' onClick={async ()=>{await createChat(id,obj._id,post_id); setUserData(await acceptProposal(post_id,obj._id));}}></i>
                                     </div>
                                     }
                                 </div>

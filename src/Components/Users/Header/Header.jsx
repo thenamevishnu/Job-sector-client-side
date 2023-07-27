@@ -62,8 +62,8 @@ function Header({icons}){
                 <div className="flex space-x-2 whitespace-nowrap">
                 
                 <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" aria-current="page" onClick={()=>navigate("/")}>Find Work</span>
-                {type === "client" ? <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-posts")}>My Posts</span> : <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-jobs")}>My Jobs</span>}
-                <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/report")}>Reports</span>
+                {type === "client" ? <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-posts")}>My Posts</span> : <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-proposals")}>Proposals</span>}
+                <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/settings/reports")}>Reports</span>
                 <span className="text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/chats")}>Messages</span>
                 
                 </div>
@@ -86,10 +86,10 @@ function Header({icons}){
                 </div>
     
             
-                {toggleProfile && <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-xl bg-white py-1 shadow-lg ring-1 ring-black border-2 ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                {toggleProfile && <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-xl bg-white py-1 shadow-lg ring-1 ring-black border-2 ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1">
                 
-                <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1" onClick={()=>navigate("/settings/contact-info")}>Settings</span>
-                <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1" onClick={()=>{localStorage.removeItem("userStorage"); setTimeout(() => navigate("/login"),1500)}}>Sign out</span>
+                <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabIndex="-1" onClick={()=>navigate("/settings/contact-info")}>Settings</span>
+                <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabIndex="-1" onClick={()=>{localStorage.removeItem("userStorage"); navigate("/login"); }}>Sign out</span>
                 </div>}
 
             </div>
@@ -102,8 +102,8 @@ function Header({icons}){
         <div className="space-y-1 px-2 pb-3 pt-2">
         
         <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" aria-current="page" onClick={()=>navigate("/")}>Find Work</span>
-                {type === "client" ? <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-posts")}>My Posts</span> : <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-jobs")}>My Jobs</span>}
-                <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/report")}>Reports</span>
+                {type === "client" ? <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-posts")}>My Posts</span> : <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/my-proposals")}>Proposals    </span>}
+                <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/settings/reports")}>Reports</span>
                 <span className="block text-black hover:bg-gray-400 hover:text-white rounded-md px-2 py-2 text-sm font-medium cursor-pointer" onClick={()=>navigate("/chats")}>Messages</span>
         </div>
         </div>}

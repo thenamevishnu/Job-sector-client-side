@@ -38,7 +38,7 @@ function ProfileSettings() {
             const formData = new FormData()
             
             formData.append("user_id",stateData.id)
-            type==="image" ? formData.append("image",file) : formData.append("audio",file)
+            type==="image" ? formData.append("image",file) : type === "audio" ? formData.append("audio",file) : formData.append("pdf",file)
             const config = {
                 header: {
                     "content-type": "multipart/form-data",
@@ -49,10 +49,10 @@ function ProfileSettings() {
 
             const myPromise = new Promise(resolve => {
                 setTimeout(async () => {
-                    const endPoint = type==="image" ? "/update-profile-pic" : "/update-profile-audio"
+                    const endPoint = type==="image" ? "/update-profile-pic" : type==="audio" ? "/update-profile-audio" : "/update-profile-pdf"
                     const {data} = await axios.post(process.env.react_app_server +""+endPoint, formData, config)
-                    type==="image" ? promiseComplete({image:file}) : promiseComplete({audio:data.audio})
-                    const obj = type==="image" ? {...stateData,image:data.dp,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio} : {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:data.audio}
+                    type==="image" ? promiseComplete({image:file}) : type === "audio" ? promiseComplete({audio:data.audio}) : promiseComplete({pdf:data.pdf})
+                    const obj = type==="image" ? {...stateData,image:data.dp,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio} : type==="audio" ? {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:data.audio} : {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio,pdf:data.pdf}
                     dispatch(updateUser(obj))
                     resolve(data)
                 }, 1500);
@@ -130,11 +130,22 @@ function ProfileSettings() {
                             <i className='fa fa-pen' style={{color:'#808080'}}></i>
                             <input className='hidden' type="file" accept='.mp3' name='audio' id='audio' onChange={(e)=>setFiles(e.target.files[0],"audio")}/>
                         </label>
-                    </div> 
+                    </div>  
 
                     <audio ref={audioRef} controls style={{width:"100%"}}>
                         <source src={showFile.audio ? process.env.react_app_cloud_audio + "" +showFile.audio : process.env.react_app_cloud_audio + "" +stateData.audio} />
                     </audio>
+
+                    <div className='mt-4'>
+                        <div className='relative flex items-center'>
+                            <h5 className='font-bold me-2 text-green-700 text-lg'>Upload Resume</h5> 
+                            <label htmlFor='pdf' className='inner-circle cursor-pointer'>
+                            <i className='fa fa-plus' style={{color:'#808080'}}></i>
+                            <input className='hidden' type="file" accept='.pdf' name='pdf' id='pdf' onChange={(e)=>setFiles(e.target.files[0],"pdf")}/>
+                        </label>
+                        </div> 
+                        <a href={showFile.pdf ? `${process.env.react_app_cloud_audio}${showFile.pdf}` : `${process.env.react_app_cloud_audio}${stateData.pdf}`} download={new Date().toLocaleString()}>Download <i className='fa fa-link'></i></a>
+                    </div>
 
                     <div className='mt-4'>
                         <div className='relative flex items-center'>

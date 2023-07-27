@@ -19,7 +19,7 @@ const persistedAdminReducer = persistReducer(persistConfig, adminReducer)
 export const Store = configureStore({
     reducer: {
         user: persistedReducer,
-        admin:persistedAdminReducer,
+        admin:persistedAdminReducer
     },
     middleware:nonSerializableMiddleware
 })

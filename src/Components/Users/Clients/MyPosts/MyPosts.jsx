@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { changePostStatus, deletePost, fetchMyPosts, markAsCompletedPost } from '../../../../Api/FetchMyPosts'
 import { useNavigate } from 'react-router-dom'
+import { getUserData } from '../../../../Api/user'
 
 
 function MyPosts() {

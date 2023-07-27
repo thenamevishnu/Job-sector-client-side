@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
-import { getUserData } from '../../../Api/user'
+import { changeTwoStep, getUserData } from '../../../Api/user'
 import { useSelector } from 'react-redux'
 
 function PasswordSecurity() {
@@ -14,6 +14,10 @@ function PasswordSecurity() {
         }
         fetchData()
     },[id])
+
+    const setTwoStep = async (status) => {
+        await changeTwoStep(id, status)
+    }
 
     return (
         <>
@@ -33,14 +37,19 @@ function PasswordSecurity() {
                             <h1 className='text-lg text-green-700 font-bold'>Two Step Verification</h1> 
                             <p className='text-sm mt-3'>Add an extra layer of security to block unauthorized access and protect your account.</p>
 
-                            <div className='text-lg text-green-700 font-bold mt-12 flex items-center'><spna className="me-2">Email Authentication</spna>
-                                    {userData.available && <><input checked className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]" type="checkbox" />
-                            <label className="inline-block pl-[0.15rem] hover:cursor-pointer"></label>
-                                    </>}
-                                    {!userData.available && <><input className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]" type="checkbox" />
-                            <label className="inline-block pl-[0.15rem] hover:cursor-pointer"></label>
-                                    </>}
+                            <div className='font-bold mt-8 text-lg text-green-700 flex items-center'><p className='mr-2'>Email Verification</p>
                                 
+                                {
+                                    userData?.twoStep ? 
+                                        <>
+                                            <label htmlFor='emailVerify1'><span className='px-1 bg-green-700 text-white rounded-lg'><i className='fa fa-check'></i></span></label>
+                                            <input type='checkbox' id='emailVerify1' className='hidden' onChange={async ()=>{setTwoStep(!userData?.twoStep); setUserData({...userData,twoStep:!userData?.twoStep})}} checked/>
+                                        </>
+                                    :   <>
+                                            <label htmlFor='emailVerify2'><span className='px-2.5 border-2 border-gray-400 rounded-lg'></span></label>
+                                            <input type='checkbox' id='emailVerify2' className='hidden' onChange={async ()=>{setTwoStep(!userData?.twoStep); setUserData({...userData,twoStep:!userData?.twoStep})}}/>
+                                        </>
+                                }
                             </div>
                             <p className='text-sm mt-3'>Receive a six digit code by text message to confirm it’s you.</p>
                         </div>

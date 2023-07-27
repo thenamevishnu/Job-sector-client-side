@@ -70,7 +70,7 @@ function Signup() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+        <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job Sector Registration</h1>
                 <form className="mt-6" onSubmit={submitHandle}>

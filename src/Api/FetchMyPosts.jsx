@@ -24,3 +24,8 @@ export const getMyProposals = async (user_id) => {
    const {data} = await axios.get(`${process.env.react_app_server}/getMyProposals/${user_id}`)
    return data
 }
+
+export const getMyJobs = async (user_id) => {
+    const {data} = await axios.get(`${process.env.react_app_server}/getMyJobs/${user_id}`)
+    return data
+ }

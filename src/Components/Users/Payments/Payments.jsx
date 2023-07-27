@@ -23,15 +23,15 @@ function Payments() {
 
                     <div className='container mx-auto grid grid-cols-12 p-3 gap-2'>
                         <h1 className="whitespace-nowrap text-lg font-bold text-green-700">All Transactions</h1>
-                        {userData?.transactions && userData?.transactions.map(item => {
+                        {userData?.transactions?.length > 0 ? userData?.transactions.map(item => {
                             return (
                                 <div className='col-span-12 border-2 border-gray-400 rounded-lg p-2' key={item?.pay_id}>
                                     <p>Amount : ${item?.amount}</p>
-                                    <p>Pay_ID : ${item?.pay_id}</p>
-                                    <p>Time : ${item?.time}</p>
+                                    <p>Status : {item?.status}</p>
+                                    <p>Time : {item?.time}</p>
                                 </div>
                             )
-                        })}
+                        }) : <h1 className='col-span-12 text-center mt-10 text-red-600 text-lg'>No Transactions Found!</h1>}
 
                     </div>
 

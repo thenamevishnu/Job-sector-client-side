@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { SocketContext } from '../../SocketContext'
 
 function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRef,socket}) {
     
     const {image} = useSelector(state => state.user)
     const [isTyping,setIsTyping] = useState(null)
+    const navigate = useNavigate()
+    const {setSocket} = useContext(SocketContext)
 
     useEffect(()=>{
         socket.emit("typing",selected?._id)
@@ -30,7 +34,10 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
                 </div>
 
                 <div className='p-2'>
-                    <i className='fa fa-video p-2'></i>
+                    <i className='fa fa-video p-2 cursor-pointer' onClick={()=>{
+                        setSocket({socket,room_id:selected._id})
+                        navigate("/chats/video/"+selected?._id);
+                    }}></i>
                 </div>
 
             </div>
@@ -53,10 +60,10 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
                 }
             </div>}
 
-                <div className='fixed bottom-0 w-8/12'>
-                    <form className='flex justify-center' onSubmit={sendNow}>
-                        <input type='text' className='p-2 border-2 border-gray-400 rounded-xl w-full outline-none' placeholder='Message...' value={message} onChange={(event)=>setMessage(event.target.value)}/>
-                        <i className='fa fa-paper-plane p-2 rounded-se-xl rounded-ee-xl bg-white text-green-800 cursor-pointer absolute right-0 top-1' onClick={(e)=>sendNow("click")}></i>
+                <div className='flex justify-center bottom-0 w-full'>
+                    <form className='absolute bottom-0 w-full' onSubmit={sendNow}>
+                        <input type='text' className='p-2 border-2 border-gray-400 rounded-xl rounded-es-none rounded-ee-none w-full outline-none' placeholder='Message...' value={message} onChange={(event)=>setMessage(event.target.value)}/>
+                        <i className='fa fa-paper-plane p-2 rounded-se-xl rounded-ee-xl bg-white text-green-800 cursor-pointer absolute right-1 top-1' onClick={(e)=>sendNow("click")}></i>
                     </form>
                 </div>
         </div>

@@ -27,7 +27,7 @@ function ProfileMenu({active}){
                 <h5 className='text-xl mb-2'><b>Manage Account</b></h5>
                 <ul className='ml-5'>
                     <li className={active?.deleteAccount ? 'text-green-600 cursor-pointer text-lg mb-2' : 'cursor-pointer text-lg mb-2'} onClick={()=>navigate("/settings/delete-account")}>Delete Account</li>
-                    <li className={active?.myReports ? 'text-green-600 cursor-pointer text-lg mb-2' : 'cursor-pointer text-lg mb-2'}>My Reports</li>
+                    <li className={active?.myReports ? 'text-green-600 cursor-pointer text-lg mb-2' : 'cursor-pointer text-lg mb-2'} onClick={()=>navigate("/settings/reports")}>My Reports</li>
                 </ul>
             </div>
         </>

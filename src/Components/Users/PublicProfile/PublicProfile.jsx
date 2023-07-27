@@ -25,6 +25,27 @@ function PublicProfile() {
         fetchData()
     },[])
 
+    const downloadPdf = async (fileUrl) => {
+
+        try {
+            const response = await fetch(fileUrl);
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = new Date().getTime() +".pdf"; 
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+        } catch (error) {
+        errorAlert("Error!")
+        }
+    };
+
 
     return (
         <>    
@@ -53,6 +74,14 @@ function PublicProfile() {
         <audio controls style={{width:"100%"}}>
             <source src={process.env.react_app_cloud_audio + "" + userData.audio} />
         </audio>
+
+
+        <div className='mt-4'>
+            <div className='relative flex items-center'>
+                <h5 className='font-bold me-2 text-green-700 text-lg'>Resume</h5> 
+            </div> 
+            <span onClick={async ()=>await downloadPdf(`${process.env.react_app_cloud_audio}${userData?.pdf}`)}>View Resume<i className='fa fa-link'></i></span>
+        </div>
 
         <div className='mt-4'>
             <div className='relative flex items-center'>

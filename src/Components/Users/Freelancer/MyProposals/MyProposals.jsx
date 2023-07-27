@@ -20,9 +20,9 @@ function MyProposals() {
 
 
     return (
-        <div className='container grid grid-cols-12 mt-20 mx-auto'>
+        <div className='container grid grid-cols-12 mt-20 mx-auto gap-2'>
             {
-                postData && postData.map(obj => {
+                postData.length > 0 ? postData.map(obj => {
                     return (
                         <div key={obj?.post_info[0]?._id} className='flex justify-between items-center col-span-12 md:col-span-6 lg:col-span-4 border-2 border-gray-400 rounded-xl p-2'>
                             <div>
@@ -34,7 +34,7 @@ function MyProposals() {
                             </div>
                         </div>
                     )
-                })
+                }) : <div className='mt-20 text-center whitespace-nowrap col-span-12 text-lg '>No Proposals Found!</div>
             }
         </div>
     )

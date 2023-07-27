@@ -1,8 +1,8 @@
 import axios from "axios"
 import { errorAlert } from "../Functions/Toasts"
 
-export const createChat = async (client, freelancer) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/chats`,{client:client,freelancer:freelancer},{withCredentials:true})
+export const createChat = async (client, freelancer, post_id) => {
+    const {data} = await axios.post(`${process.env.react_app_server}/chats`,{client:client,freelancer:freelancer,post_id:post_id},{withCredentials:true})
     if(data.status){
         return true
     }else{

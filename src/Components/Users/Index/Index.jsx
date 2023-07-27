@@ -7,6 +7,7 @@ import { changeAvailable, removeSaved } from '../../../Functions/Profile'
 import moment from 'moment'
 import { isSaved, saveJob } from '../../../Functions/Posts'
 import { changeSearchResults } from '../../../Api/user'
+import {v4 as uuidv4} from "uuid"
 
 function Index() {
 
@@ -36,21 +37,54 @@ function Index() {
             }
       }
       fetchData()
+      if(searchContainer?.current){
+        searchContainer.current.style.display = "none"
+    }
     },[id,showData,type])
+
+    const searchFlow = async (prefix) => {
+        setSearch(prefix)
+        if(prefix.trim() === ""){
+            if(searchContainer?.current){
+                searchContainer.current.style.display = "none"
+            }
+        }else{
+            const response = await changeSearchResults(prefix.trim())
+            if(response.length <= 0){
+                if(searchContainer?.current){
+                    searchContainer.current.style.display = "none"
+                }
+            }else{
+                setResponses(response)
+                if(searchContainer?.current){
+                    searchContainer.current.style.display = "block"
+                }
+            }
+        }
+    }
+
+    const showResult = async () => {
+        if(searchValue!==""){
+            const randomId = uuidv4()
+            navigate(`/search?platform=job+sector&searchId=${randomId}&q=${searchValue}&searchTime=${new Date()}`)
+        }
+    }
      
     return (
         <div className='container grid grid-cols-12 mx-auto text-center mt-20 gap-1'>
             <div className='md:col-span-8 col-span-12 relative'>
                 <label className='w-full relative' htmlFor='search'>
-                    <input type='text' className='p-2 w-6/12 rounded-ss-xl rounded-es-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>{if(/(\s+)/.test(e.target.value)){if(searchContainer?.current){searchContainer.current.style.display = "none";} return false }else{if(searchContainer?.current){searchContainer.current.style.display = "block";}} setSearch(e.target.value); setResponses(await changeSearchResults(e.target.value))}}></input>
+                    <input type='text' className='p-2 md:w-6/12 w-11/12  rounded-ss-xl rounded-es-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
                     
-                    <i className='fa fa-search p-3 text-white bg-gray-600 rounded-ee-xl rounded-se-xl'></i>
+                    <i className='fa fa-search p-3 text-white bg-gray-600 rounded-ee-xl rounded-se-xl cursor-pointer' onClick={()=>showResult()}></i>
                 </label>
-                <section className='h-80 w-full border-2  p-3 bg-white absolute' ref={searchContainer}>
+                <section className='md:left-1/4 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-6/12 w-11/12 p-3 bg-white absolute rounded-xl shadow-button' ref={searchContainer}>
                 {
                      search && search.map(items => {
                             return(
-                                <div key={items} className='text-start'>{items}</div>
+                                <div key={items} className='text-start border-2 mb-0.5 border-gray-200 rounded-xl p-1 whitespace-nowrap overflow-hidden cursor-pointer hover:bg-slate-300' onClick={()=>{setSearch(items); if(searchContainer?.current){
+                                    searchContainer.current.style.display = "none"
+                                }}}><span className='text-green-700'>{searchValue}</span>{items.slice(searchValue.length)}</div>
                             )
                      })
                 }
@@ -105,7 +139,7 @@ function Index() {
                                     }
                                 </div>
                                 <div className='text-start mt-4'>Total Proposals : {obj.proposals?.length}</div>
-                                <div className='text-start mt-1'>Payments - ${obj.auther[0]?.profile?.spent} Spent | <i className='fa fa-location-dot'></i> {obj.auther[0]?.profile?.country}</div>
+                                <div className='text-start mt-1'>Payments - ${obj.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {obj.auther[0]?.profile?.country}</div>
                                 <div className='text-start mt-3'>Rating : {obj.auther[0]?.profile?.rating}
                                 </div>
                             </div>  

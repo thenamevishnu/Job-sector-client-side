@@ -9,7 +9,8 @@ export const UserSlice=createSlice({
         image:"",
         audio:"",
         type:"",
-        chat_manage:false
+        chat_manage:false,
+        pdf:""
     },
     reducers:{
         updateUser:(state,action)=>{
@@ -20,6 +21,7 @@ export const UserSlice=createSlice({
             state.audio=action.payload.audio
             state.type=action.payload.type
             state.chat_manage=action.payload.chat_manage
+            state.pdf = action.payload.pdf
         }
     }
 })

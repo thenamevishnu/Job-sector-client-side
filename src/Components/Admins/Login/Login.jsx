@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { errorAlert, successAlert } from '../../../Functions/Toasts'
-import { ToastContainer } from 'react-toastify'
 import axios from 'axios'
 import { updateAdmin } from '../../../Redux/AdminSlice/AdminSlice'
+
 
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        // const adminStorage = localStorage.getItem("adminStorage")
-        const adminStorage = null
+        const adminStorage = localStorage.getItem("adminStorage")
+        console.log(adminStorage);
         if(adminStorage) navigate("/admin")
     },[navigate])
 
@@ -34,7 +34,7 @@ function Login() {
                 successAlert(data.message)
                 setTimeout(() => {
                     navigate("/admin")
-                }, 1600);
+                }, 2000);
             }
         }catch(err){
             errorAlert(err.message)
@@ -42,7 +42,7 @@ function Login() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+        <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job sector admin</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>
@@ -59,7 +59,6 @@ function Login() {
                     </div>
                 </form>
             </div>
-            <ToastContainer/>
         </div>
     )
 }

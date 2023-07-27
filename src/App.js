@@ -17,52 +17,70 @@ import { useSelector } from 'react-redux';
 import MyProposalsPage from './Pages/Users/Freelancer/MyProposalsPage';
 import ViewPostPage from './Pages/Users/Client/ViewPostPage';
 import PostEditPage from './Pages/Users/Client/PostEditPage';
-import AdminLoginPage from './Pages/Admins/AdminLoginPage';
 import { ToastContainer } from 'react-toastify';
 import BalancePage from './Pages/Users/BalancePage';
 import PaymentsPage from './Pages/Users/PaymentsPage';
 import ManageNotificationPage from './Pages/Users/ManageNotificationPage';
 import PasswordSecurityPage from './Pages/Users/PasswordSecurityPage';
 import DeleteAccountPage from './Pages/Users/DeleteAccountPage';
+import SearchPostPage from './Pages/Users/SearchPostPage';
+import AdminIndexPage from './Pages/Admins/AdminIndexPage';
+import AdminLoginPage from "./Pages/Admins/AdminLoginPage"
+import FreelancerReportPage from './Pages/Users/Freelancer/FreelancerReportPage';
+import ClientReportPage from './Pages/Users/Client/ClientReportPage';
+import UserManagePage from './Pages/Admins/UserManagePage';
+import PostManagePage from './Pages/Admins/PostManagePage';
+import Broadcast from './Pages/Admins/Broadcast';
+import PaymentManagePage from './Pages/Admins/PaymentManagePage';
+import VideoCallPage from './Pages/VideoCall/VideoCallPage';
 
 function App() {
 
   const {type} = useSelector(state => state.user)
-  const userStorage = localStorage.getItem("userStorage")
-  const adminStorage = localStorage.getItem("adminStorage")
 
   return (
     <div>
         <Router>
             <Routes>
-                <Route element={userStorage ? <HomePage/> : <Navigate to={"/login"}/>} exact path='/' />
-                <Route element={userStorage ? <Navigate to={"/"}/> : <LoginPage/>} path='/login' />
-                <Route element={userStorage ? <Navigate to={"/"}/> : <SignupPage/>} path='/signup' />
-                <Route element={userStorage ? <Navigate to={"/"}/> : <SignupTypePage/>} path='/type' />
-                <Route element={userStorage ? <ContactInfoPage/> : <Navigate to={"/login"}/>} path='/settings/contact-info' />
-                <Route element={userStorage ? <PublicProfilePage/> : <Navigate to={"/login"}/>} path='/profile' />
-                <Route element={userStorage ? <BalancePage/> : <Navigate to={"/login"}/>} path='/settings/balance' />
-                <Route element={userStorage ? <PaymentsPage/> : <Navigate to={"/login"}/>} path='/settings/payments' />
-                <Route element={userStorage ? <ProfileSettingsPage/> : <Navigate to={"/login"}/>} path='/my-profile' />
-                <Route element={userStorage ? <Navigate to={"/"}/> : <ForgotPage/>} path='/forgot-password' />
-                <Route element={userStorage ? <Navigate to={"/"}/> : <ResetPage/>} path='/reset/:key' />
-                <Route element={userStorage ? <JobViewPage/> : <Navigate to={"/login"}/>} path='/post-view' />
-                <Route element={userStorage ? <ChatPage/> : <Navigate to={"/login"}/>} path='/chats' />
-                <Route element={userStorage ? <ManageNotificationPage/> : <Navigate to={"/login"}/>} path='/settings/notifications' />
-                <Route element={userStorage ? <PasswordSecurityPage/> : <Navigate to={"/login"}/>} path='/settings/password-security' />
-                <Route element={userStorage ? <DeleteAccountPage/> : <Navigate to={"/login"}/>} path='/settings/delete-account' />
+                <Route element={<HomePage/>} exact path='/' />
+                <Route element={<LoginPage/>} path='/login' />
+                <Route element={<SignupPage/>} path='/signup' />
+                <Route element={<SignupTypePage/>} path='/type' />
+                <Route element={<ContactInfoPage/>} path='/settings/contact-info' />
+                <Route element={<PublicProfilePage/>} path='/profile' />
+                <Route element={<BalancePage/>} path='/settings/balance' />
+                <Route element={<PaymentsPage/>} path='/settings/payments' />
+                <Route element={<ProfileSettingsPage/>} path='/my-profile' />
+                <Route element={<ForgotPage/>} path='/forgot-password' />
+                <Route element={<ResetPage/>} path='/reset/:key' />
+                <Route element={<JobViewPage/>} path='/post-view' />
+                <Route element={<SearchPostPage/>} path='/search' />
+                <Route element={<ChatPage/>} path='/chats' />
+                <Route element={<ManageNotificationPage/>} path='/settings/notifications' />
+                <Route element={<PasswordSecurityPage/>} path='/settings/password-security' />
+                <Route element={<DeleteAccountPage/>} path='/settings/delete-account' />
 
-                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
+                <Route element={type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
 
-                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" ? <PostJobPage/> : <Navigate to={"/"}/>} path='/post-job' />
-                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/>} path='/my-posts' />
-                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" && <ViewPostPage />} path='/view-post' />
-                <Route element={!userStorage ?  <Navigate to={"/login"}/> : type === "client" && <PostEditPage />} path='/post-edit' />
+                <Route element={type === "client" ? <PostJobPage/> : <Navigate to={"/"}/>} path='/post-job' />
+                <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/>} path='/my-posts' />
+                <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
+                <Route element={type === "client" && <PostEditPage />} path='/post-edit' />
+                <Route element={type === "client" ? <ClientReportPage/> : <FreelancerReportPage/>} path="/settings/reports"/>
 
-                <Route element={!adminStorage ?  <Navigate to={"/login"}/> : <AdminLoginPage/>} path='/admin/login' />
+                <Route element={<AdminIndexPage/>} path='/admin' />
+                <Route element={<AdminLoginPage/>} path='/admin/login'/>
+                <Route element={<UserManagePage/>} path='/admin/user_management'/>
+                <Route element={<PostManagePage/>} path='/admin/post_management'/>
+                <Route element={<Broadcast/>} path='/admin/notify'/>
+                <Route element={<PaymentManagePage/>} path='/admin/payouts' />
+
+                <Route element={<VideoCallPage/>} path='/chats/video/:room_id'/>
+
+                
             </Routes>
         </Router>
-        <ToastContainer limit={1}/>
+        <ToastContainer/>
     </div>
   );
 }

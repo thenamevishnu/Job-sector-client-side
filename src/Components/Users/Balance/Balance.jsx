@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { useSelector } from 'react-redux'
-import { AddPaymentMethods, getUserData } from '../../../Api/user'
+import { AddPaymentMethods, getUserData, withdrawSuccess } from '../../../Api/user'
 import { AddPaymentMethod, OnPaid, PaypalPay } from '../Modal/Modal'
+import { errorAlert, successAlert, warnAlert } from '../../../Functions/Toasts'
 
 function Balance() {
 
@@ -43,6 +44,20 @@ function Balance() {
             setTimeout(()=>{
                 showTickSuccess(false)
             },1000)
+        }
+    }
+
+    const withdraw = async () => {
+        if(userData?.balance < 100){
+            warnAlert("You have to own $100 to withdraw!")
+        }else{
+            successAlert("Withdrawal success!")
+            const response = await withdrawSuccess(id,userData?.withdrawal_methods?.Paypal?.to)
+            if(response.status){
+                setUserData({...userData,balance:userData.balance - 100,cooldown:response.cooldown})
+            }else{
+                errorAlert("Unknown Error!")
+            }
         }
     }
 
@@ -92,7 +107,13 @@ function Balance() {
                         <h3 className='font-bold text-green-700 block text-xl mb-2'>Withdrawable Fund</h3>  
                         <div className='flex justify-between items-center mt-10'>
                             <div>Withdrawable : ${userData && userData.balance}</div>
-                            <div><button className='text-white bg-green-700 rounded-lg p-1 px-2'><i className='fa fa-dollar'></i> Payout</button></div>
+                            <div>
+                                {
+                                    userData?.cooldown - Math.floor(new Date().getTime()/1000) < 0 
+                                    ? <button className='text-white bg-green-700 rounded-lg p-1 px-2' onClick={async ()=>await withdraw()}><i className='fa fa-dollar'></i> Payout</button>
+                                    : <button className='text-white bg-green-700 rounded-lg p-1 px-2' onClick={()=>warnAlert("Locked for 1 day!")}><i className='fa fa-lock'></i> Locked</button>
+                                }
+                            </div>
                         </div>
                     </div>
                     
@@ -125,9 +146,9 @@ function Balance() {
                         
                         <div className='container mx-auto grid grid-cols-12'>
                         {userData?.transactions?.length > 0 ? <div className='col-span-12 border-2 rounded-xl p-3 border-gray-400'>
-                                <p>Amount : ${userData?.transactions[0]?.amount}</p>
-                                <p>Pay_ID : ${userData?.transactions[0]?.pay_id}</p>
-                                <p>Time : ${userData?.transactions[0]?.time}</p>
+                                <p>Amount : ${userData?.transactions[userData.transactions.length-1]?.amount}</p>
+                                <p>Status : {userData?.transactions[userData.transactions.length-1]?.status}</p>
+                                <p>Time : ${userData?.transactions[userData.transactions.length-1]?.time}</p>
                             </div> : <p className='col-span-12 mt-4 text-red-600 text-sm'>There is no transactions found!</p>}
                         </div>
                        
