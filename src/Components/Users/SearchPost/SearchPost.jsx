@@ -16,17 +16,24 @@ function SearchPost() {
     const [postData,setPostData] = useState([])
     const query = new URLSearchParams(location.search)
     const search = query.get("q")
+    const experience = query.get("experience")
+    const proposals = query.get("proposals")
+    const connections = query.get("connections")
+    const jobType = query.get("jobType")
+    const sort = query.get("sort")
     const [savedId,setSavedId] = useState([])
     const [userData,setUserData] = useState({})
     const [saved_jobs,setSavedJobs] = useState([])
     const [searchValue,setSearch] = useState(""+search+"")
     const searchContainer = useRef(null)
     const [searchData,setResponses] = useState([])
-    const [filter,setFilter] = useState({experience:[],jobType:[],proposals:[],connections:[]})
+    const [filter,setFilter] = useState({experience:experience?.split(",") ?? [],jobType:jobType?.split(",") ?? [],proposals:proposals?.split(",") ?? [],connections:connections?.split(",") ?? [],sort:sort ?? "rel"})
 
     useEffect(()=>{
         const fetchData = async () => {
-            setPostData(await getSearchPosts(search))
+            const obj = {experience: experience , proposals:proposals , connections:connections , jobType:jobType , sort: sort}
+            setFilter(obj)
+            setPostData(await getSearchPosts(search, obj))
             const user = await getUserData(id)
             setUserData(user)
             setSavedJobs(user.saved_jobs)
@@ -35,7 +42,7 @@ function SearchPost() {
         if(searchContainer?.current){
             searchContainer.current.style.display = "none"
         }
-    },[search,id])
+    },[search,id, connections, jobType, proposals, experience, sort])
 
     const searchFlow = async (prefix) => {
         setSearch(prefix)
@@ -58,22 +65,25 @@ function SearchPost() {
         }
     }
 
-    const showResult = async (filter=null) => {
+    const showResult = async (filters=null) => {
         if(searchValue!==""){
             const randomId = uuidv4()
-            if(filter){
+            if(filters){
                 let queryBuild = ""
-                if(filter?.experience?.length>0){
-                    queryBuild+="experience="+filter.experience.toString()
+                if(filters?.experience?.length>0){
+                    queryBuild+="experience="+filters.experience.toString()
                 }
-                if(filter?.jobType?.length>0){
-                    queryBuild+="&jobType="+filter.jobType.toString()
+                if(filters?.sort?.length>0){
+                    queryBuild+="&sort="+filters.sort
                 }
-                if(filter?.connections?.length>0){
-                    queryBuild+="&connections="+filter.connections.toString()
+                if(filters?.jobType?.length>0){
+                    queryBuild+="&jobType="+filters.jobType.toString()
                 }
-                if(filter?.proposals?.length>0){
-                    queryBuild+="&proposals="+filter.proposals.toString()
+                if(filters?.connections?.length>0){
+                    queryBuild+="&connections="+filters.connections.toString()
+                }
+                if(filters?.proposals?.length>0){
+                    queryBuild+="&proposals="+filters.proposals.toString()
                 }
                 navigate(`/search?platform=job+sector&searchId=${randomId}&q=${searchValue}&searchTime=${new Date()}&${queryBuild}`)
             }else{
@@ -85,7 +95,7 @@ function SearchPost() {
     return (
         <>
             <div className='container grid mx-auto grid-cols-12 mt-20'>
-                <SearchFilter showResult={showResult} queries={filter}/>
+                {filter && <SearchFilter showResult={showResult} queries={filter} filters={{experience, jobType, proposals, connections}}/>}
                 <div className='col-span-8 p-3 relative'>
                     <div className='flex justify-between'>
                         <label className='w-8/12 relative' htmlFor='search'>
@@ -93,14 +103,14 @@ function SearchPost() {
                             
                             <i className='fa fa-search p-3.5 text-white bg-gray-600 rounded-ee-xl rounded-se-xl cursor-pointer' onClick={()=>showResult()}></i>
                         </label>
-                        <select className='border-2 mb-2 w-4/12 border-gray-400 rounded-lg outline-none'>
+                        <select className='border-2 mb-2 w-4/12 border-gray-400 rounded-lg outline-none' onChange={async (e) => {await showResult({...filter,sort:e.target.value})}}>
                             <option value="0">Sort</option>
-                            <option value="latest">Posted Time Latest</option>
-                            <option value="oldest">Posted Time Oldest</option>
-                            <option value="proposalsLow">Proposals Low-High</option>
-                            <option value="proposalsHigh">Proposals High-Low</option>
-                            <option value="connectionsLow">Connection Needed Low-High</option>
-                            <option value="connectionsHigh">Connection Needed High-Low</option>
+                            <option value="latest" selected={sort==="latest" ? true : false}>Posted Time Latest</option>
+                            <option value="oldest" selected={sort==="oldest" ? true : false}>Posted Time Oldest</option>
+                            <option value="proposalsLow" selected={sort==="proposalsLow" ? true : false}>Proposals Low-High</option>
+                            <option value="proposalsHigh" selected={sort==="proposalsHigh" ? true : false}>Proposals High-Low</option>
+                            <option value="connectionsLow" selected={sort==="connectionsLow" ? true : false}>Connection Needed Low-High</option>
+                            <option value="connectionsHigh" selected={sort==="connectionsHigh" ? true : false}>Connection Needed High-Low</option>
                         </select>
                     </div>
                     <section className='md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button' ref={searchContainer}>
@@ -132,7 +142,7 @@ function SearchPost() {
                                     </div>
                                 </div>
                                 <div className='p-3'>
-                                    <div className='text-start' style={{fontSize:"0.8em"}}>{obj.jobType} - {obj.experience} - Est. Budget: {obj.jobType === "Hourly" ? "$"+obj.priceRange.from+"-"+obj.priceRange.to+"/hr" : "$"+obj.priceRange.from+"-"+obj.priceRange.to} - Posted {moment(obj?.posted).fromNow()}</div>
+                                    <div className='text-start' style={{fontSize:"0.8em"}}>{obj.jobType} - {obj.experience} - Est. Budget: {obj.jobType === "Hourly" ? "$"+obj.priceRangefrom+"-"+obj.priceRangeto+"/hr" : "$"+obj.priceRangefrom+"-"+obj.priceRangeto} - Posted {moment(obj?.posted).fromNow()}</div>
                                     <div className='text-start mt-4 overflow-hidden whitespace-pre-wrap'>{obj.description}</div>
                                     <div className='mt-4 text-start'>
                                         {

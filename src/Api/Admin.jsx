@@ -39,3 +39,8 @@ export const payoutManageAdmin = async (items, type, admin_id) => {
     const {data} = await axios.post(`${process.env.react_app_server}/admin/payoutManageAdmin/`,{items,type,admin_id})
     return data.response
 }
+
+export const getDashboard = async (id) => {
+    const {data} = await axios.get(`${process.env.react_app_server}/admin/getDashboard/${id}`)
+    return data
+}

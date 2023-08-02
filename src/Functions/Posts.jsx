@@ -32,11 +32,12 @@ export const postNewJob = async (post,id) => {
         errorAlert("Select skills needed!")
     }else{
         const connectionsNeed = post.connectionsNeed?.split("-")
-        const postData = {...post,priceRange:{
-            from:parseFloat(priceRange[0]),to:parseFloat(priceRange[1])
-        },connectionsNeed:{
-            from:parseInt(connectionsNeed[0]),to:parseInt(connectionsNeed[1])
-        }}
+        const postData = {...post,
+            priceRangefrom:parseFloat(priceRange[0]),
+            priceRangeto:parseFloat(priceRange[1]),
+            connectionsNeedfrom:parseInt(connectionsNeed[0]),
+            connectionsNeedto:parseInt(connectionsNeed[1])
+        }
         postData.user_id = id
         const {data} = await axios.post(`${process.env.react_app_server}/post-job`,{postData},{withCredentials:true})
         if(data.status){
@@ -79,11 +80,12 @@ export const updateMyPost = async (post, id, post_id) => {
         errorAlert("Select skills needed!")
     }else{
         const connectionsNeed = post.connectionsNeed?.split("-")
-        const postData = {...post,priceRange:{
-            from:parseFloat(priceRange[0]),to:parseFloat(priceRange[1])
-        },connectionsNeed:{
-            from:parseInt(connectionsNeed[0]),to:parseInt(connectionsNeed[1])
-        }}
+        const postData = {...post,
+            priceRangefrom:parseFloat(priceRange[0]),
+            priceRangeto:parseFloat(priceRange[1]),
+            connectionsNeedfrom:parseInt(connectionsNeed[0]),
+            connectionsNeedto:parseInt(connectionsNeed[1])
+        }
         postData.user_id = id
         postData.post_id = post_id
         const {data} = await axios.post(`${process.env.react_app_server}/update-job`,{postData},{withCredentials:true})

@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import json from "country-region-data/data.json"
 
-function SearchFilter({showResult, queries}) {
+function SearchFilter({showResult, queries, filters}) {
 
-    const experience = [{id:"entrylevel",text:"Entery Level"},{id:"intermediate",text:"InterMediate"},{id:"expert",text:"Expert"}]
-    const jobType = [{id:"hourly",text:"Hourly"},{id:"lessthan100",text:"Less than $100"},{id:"100to500",text:"$100 to $500"},{id:"500to1k",text:"$500 to $1K"},{id:"1kto5k",text:"$1K to $5K"},{id:"5kplus",text:"$5K+"}]
-    const proposals = [{id:"lessthan5",text:"Less than 5"},{id:"5to10",text:"5 to 10"},{id:"10to25",text:"10 to 25"},{id:"25to50",text:"25 to 50"},{id:"50plus",text:"50+"}]
-    const connections = [{id:"1to6",text:"1 to 6"},{id:"6to10",text:"6 to 10"},{id:"11to25",text:"11 to 25"},{id:"26to50",text:"26 to 50"},{id:"51to100",text:"51 to 100"},{id:"100plus",text:"100+"}]
+    const experience = [{id:"entrylevel",text:"Entry Level"},{id:"intermediate",text:"Intermediate"},{id:"expert",text:"Expert"}]
+    const jobType = [{id:"hourly",text:"Hourly"},{id:"fixedPrice",text:"Fixed Price"}]
+    const proposals = [{id:"lessthan5",text:"0 - 5"},{id:"5to10",text:"5 - 10"},{id:"10to25",text:"10 - 25"},{id:"25to50",text:"25 - 50"},{id:"50plus",text:"50 - 500"}]
+    const connections = [{id:"1to6",text:"0 - 6"},{id:"6to10",text:"6 - 10"},{id:"11to25",text:"10 - 25"},{id:"26to50",text:"25 - 50"},{id:"51to100",text:"50 - 100"},{id:"100plus",text:"100 - 500"}]
     
     const [check,setCheck] = useState(queries)
     
     const Filter = (text,field) => {
         if(!check[field].includes(text)){
+            if(field === "connections" || field === "proposals"){
+                check[field]?.shift()
+            }
             check[field].push(text)
             setCheck({...check,[field]:check[field]})
             showResult(check)
@@ -40,7 +42,7 @@ function SearchFilter({showResult, queries}) {
                                     return (
                                         
                                             <div className='mt-3' key={items.id}>
-                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"experience")}} className={check.experience.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{check.experience.includes(items.text) && <i className='fa fa-check'></i>}</label>
+                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"experience")}} className={check?.experience?.includes(items.text) || filters?.experience?.split(",")?.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{(check?.experience?.includes(items.text) || filters?.experience?.split(",")?.includes(items.text)) && <i className='fa fa-check'></i>}</label>
                                                 <input type='checkbox' id={items.id} className='hidden'/> {items.text}
                                             </div>
                                         
@@ -61,7 +63,7 @@ function SearchFilter({showResult, queries}) {
                                     return(
                                         
                                             <div className='mt-3' key={items.id}>
-                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"jobType")}} className={check.jobType.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{check.jobType.includes(items.text) && <i className='fa fa-check'></i>}</label>
+                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"jobType")}} className={check?.jobType?.includes(items.text) || filters?.jobType?.split(",")?.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{(check?.jobType?.includes(items.text) || filters?.jobType?.split(",")?.includes(items.text)) && <i className='fa fa-check'></i>}</label>
                                                 <input type='checkbox' id={items.id} className='hidden'/> {items.text}
                                             </div>
                                         
@@ -82,7 +84,7 @@ function SearchFilter({showResult, queries}) {
                                     return(
                                         
                                             <div className='mt-3' key={items.id}>
-                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"proposals")}} className={check.proposals.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{check.proposals.includes(items.text) && <i className='fa fa-check'></i>}</label>
+                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"proposals")}} className={(check?.proposals?.includes(items.text) || filters?.proposals?.split(",")?.includes(items.text)) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{(check?.proposals?.includes(items.text) || filters?.proposals?.split(",")?.includes(items.text)) && <i className='fa fa-check'></i>}</label>
                                                 <input type='checkbox' id={items.id} className='hidden'/> {items.text}
                                             </div>
                                         
@@ -103,7 +105,7 @@ function SearchFilter({showResult, queries}) {
                                     return(
                                         
                                             <div className='mt-3'  key={items.id}>
-                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"connections")}} className={check.connections.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{check.connections.includes(items.text) && <i className='fa fa-check'></i>}</label>
+                                                <label htmlFor={items.id} onClick={()=>{Filter(items.text,"connections")}} className={check?.connections?.includes(items.text) || filters?.connections?.split(",")?.includes(items.text) ? 'px-1 text-white border-gray-400 mr-1 rounded-md cursor-pointer bg-green-700' : 'px-2.5 border-2 border-gray-400 mr-1 rounded-md cursor-pointer'}>{(check?.connections?.includes(items.text) || filters?.connections?.split(",")?.includes(items.text)) && <i className='fa fa-check'></i>}</label>
                                                 <input type='checkbox' id={items.id} className='hidden'/> {items.text}
                                             </div>
                                         

@@ -125,7 +125,7 @@ function Index() {
                                 </div>}
                             </div>
                             <div className='p-3'>
-                                <div className='text-start' style={{fontSize:"0.8em"}}>{obj.jobType} - {obj.experience} - Est. Budget: {obj.jobType === "Hourly" ? "$"+obj.priceRange.from+"-"+obj.priceRange.to+"/hr" : "$"+obj.priceRange.from+"-"+obj.priceRange.to} - Posted {moment(obj?.posted).fromNow()}</div>
+                                <div className='text-start' style={{fontSize:"0.8em"}}>{obj.jobType} - {obj.experience} - Est. Budget: {obj.jobType === "Hourly" ? "$"+obj.priceRangefrom+"-"+obj.priceRangeto+"/hr" : "$"+obj.priceRangefrom+"-"+obj.priceRangeto} - Posted {moment(obj?.posted).fromNow()}</div>
                                 <div className='text-start mt-4 overflow-hidden whitespace-pre-wrap'>{obj.description}</div>
                                 <div className='mt-4 text-start'>
                                     {

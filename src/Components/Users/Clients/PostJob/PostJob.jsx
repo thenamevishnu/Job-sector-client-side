@@ -66,12 +66,12 @@ function PostJob() {
                         <div className='mb-2'>
                             <select className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' name='connectionsNeed'  value={post.connectionsNeed} onChange={(e)=>setPost({...post,[e.target.name]:e.target.value})}>
                                 <option value="0">Select Connections Needed</option>
-                                <option value="1-5">1 to 5</option>
+                                <option value="0-6">0 to 6</option>
                                 <option value="6-10">6 to 10</option>
-                                <option value="11-25">11 to 25</option>
-                                <option value="26-50">26 to 50</option>
-                                <option value="51-100">51 to 100</option>
-                                <option value="100-500">100+ Connections</option>
+                                <option value="10-25">10 to 25</option>
+                                <option value="26-50">25 to 50</option>
+                                <option value="50-100">50 to 100</option>
+                                <option value="100-500">100 - 500</option>
                             </select>
                         </div>
                         <div className='mb-2'>

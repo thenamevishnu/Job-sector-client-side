@@ -11,7 +11,7 @@ export const fetchSinglePost = async (id) => {
     return data?.postData[0]
 }
 
-export const getSearchPosts = async (search) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/search/${search}`)
+export const getSearchPosts = async (search, filterData) => {
+    const {data} = await axios.post(`${process.env.react_app_server}/search`,{search, filterData})
     return data.response
 }

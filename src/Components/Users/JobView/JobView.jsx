@@ -43,7 +43,7 @@ function JobView() {
                         <div className="lg:col-span-9 md:col-span-8 col-span-12 p-4">
                             
                             <div className='text-green-700 text-start mb-1' style={{fontSize:"1.2em"}}>{postInfo?.title}</div>
-                            <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{postInfo?.jobType} - Est. Budget: ${postInfo?.priceRange?.from}-{postInfo?.priceRange?.to} - Posted {moment(postInfo?.posted).fromNow()}</div>
+                            <div className='text-start  mb-2' style={{fontSize:"0.8em"}}>{postInfo?.jobType} - Est. Budget: ${postInfo?.priceRangefrom}-{postInfo?.priceRangeto} - Posted {moment(postInfo?.posted).fromNow()}</div>
                             <p className='text-start mt-4 whitespace-pre-wrap'>{postInfo?.description}</p> 
                             <div className='mt-4 mb-5 tags text-start'>
                                 {
@@ -55,7 +55,7 @@ function JobView() {
                                 }
                             </div>
                             
-                            <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeed?.from}</div>
+                            <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeedfrom}</div>
                             <div className='text-start mt-4 mb-4'>Total Proposals : {postInfo?.proposals?.length}</div>
                             <div className='text-start mt-1'>Payments - ${postInfo?.auther && postInfo?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {postInfo?.auther && postInfo?.auther[0]?.profile?.country}</div>
                             <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.rating}</div>

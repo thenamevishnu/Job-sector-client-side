@@ -35,7 +35,7 @@ function ViewPost() {
                             <div className='text-green-700 text-start' style={{fontSize:"1.2em",maxWidth:"35em"}}>{postData?.title}</div>
                         </div>
                         <div>
-                            <div className='text-start mb-2' style={{fontSize:"0.8em"}}>{postData?.jobType} - Est. Budget: ${postData?.priceRange?.from}-{postData?.priceRange?.to} - Posted {moment(postData?.posted).fromNow()}</div>
+                            <div className='text-start mb-2' style={{fontSize:"0.8em"}}>{postData?.jobType} - Est. Budget: ${postData?.priceRangefrom}-{postData?.priceRangeto} - Posted {moment(postData?.posted).fromNow()}</div>
                         </div>
                         <p className='text-start mt-4 whitespace-pre-wrap' style={{lineHeight:"2.5"}}>{postData?.description}</p>
                         <div className='mt-4 mb-5 text-start'>
@@ -47,7 +47,7 @@ function ViewPost() {
                                 })
                             }
                         </div>  
-                        <div className='text-start mt-4 mb-4'>Connections Need : {postData?.connectionsNeed?.from}</div>
+                        <div className='text-start mt-4 mb-4'>Connections Need : {postData?.connectionsNeedfrom}</div>
                         <div className='text-start mt-4 mb-4'>Total Proposals : {postData?.proposals?.length}</div>    
                     </div>
                 }
