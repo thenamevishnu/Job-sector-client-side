@@ -19,6 +19,12 @@ function DeleteAccount() {
         getData()
     },[id])
 
+    useEffect(()=>{
+        if(userData?.profile?.signup_method==="google"){
+            setPassword(process.env.react_app_googleAuthKey)
+        }
+    },[userData])
+
     return (
         <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
             <ProfileMenu active={{deleteAccount:true}}/>

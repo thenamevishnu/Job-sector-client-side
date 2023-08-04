@@ -37,6 +37,7 @@ import ChangePasswordPage from './Pages/Users/Freelancer/ChangePasswordPage';
 import ContactPage from './Pages/Users/ContactPage';
 import ClientProfilePage from './Pages/Users/Client/ClientProfilePage';
 import ClientPublicProfilePage from './Pages/Users/Client/ClientPublicProfilePage';
+import NotFound from './Components/NotFound';
 
 function App() {
 
@@ -83,7 +84,7 @@ function App() {
 
                 <Route element={<VideoCallPage/>} path='/chats/video/:room_id'/>
 
-                
+                <Route element={<NotFound/>} path='*'/>
             </Routes>
         </Router>
         <ToastContainer/>
