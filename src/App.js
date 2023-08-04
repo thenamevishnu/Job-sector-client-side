@@ -33,6 +33,10 @@ import PostManagePage from './Pages/Admins/PostManagePage';
 import Broadcast from './Pages/Admins/Broadcast';
 import PaymentManagePage from './Pages/Admins/PaymentManagePage';
 import VideoCallPage from './Pages/VideoCall/VideoCallPage';
+import ChangePasswordPage from './Pages/Users/Freelancer/ChangePasswordPage';
+import ContactPage from './Pages/Users/ContactPage';
+import ClientProfilePage from './Pages/Users/Client/ClientProfilePage';
+import ClientPublicProfilePage from './Pages/Users/Client/ClientPublicProfilePage';
 
 function App() {
 
@@ -42,31 +46,33 @@ function App() {
     <div>
         <Router>
             <Routes>
-                <Route element={<HomePage/>} exact path='/' />
-                <Route element={<LoginPage/>} path='/login' />
-                <Route element={<SignupPage/>} path='/signup' />
-                <Route element={<SignupTypePage/>} path='/type' />
-                <Route element={<ContactInfoPage/>} path='/settings/contact-info' />
-                <Route element={<PublicProfilePage/>} path='/profile' />
-                <Route element={<BalancePage/>} path='/settings/balance' />
-                <Route element={<PaymentsPage/>} path='/settings/payments' />
-                <Route element={<ProfileSettingsPage/>} path='/my-profile' />
-                <Route element={<ForgotPage/>} path='/forgot-password' />
-                <Route element={<ResetPage/>} path='/reset/:key' />
-                <Route element={<JobViewPage/>} path='/post-view' />
-                <Route element={<SearchPostPage/>} path='/search' />
-                <Route element={<ChatPage/>} path='/chats' />
-                <Route element={<ManageNotificationPage/>} path='/settings/notifications' />
-                <Route element={<PasswordSecurityPage/>} path='/settings/password-security' />
-                <Route element={<DeleteAccountPage/>} path='/settings/delete-account' />
+                <Route element={type ? <HomePage/> : <Navigate to={"/login"}/>} exact path='/' />
+                <Route element={type ? <Navigate to={"/"}/> : <LoginPage/>} path='/login' />
+                <Route element={type ? <Navigate to={"/"}/> : <SignupPage/>} path='/signup' />
+                <Route element={type ? <Navigate to={"/"}/> : <SignupTypePage/>} path='/type' />
+                <Route element={type ? <ContactInfoPage/> : <Navigate to={"/login"}/>} path='/settings/contact-info' />
+                <Route element={type ? <PublicProfilePage/> : <Navigate to={"/login"}/>} path='/profile' />
+                <Route element={type ? <BalancePage/> : <Navigate to={"/login"}/>} path='/settings/balance' />
+                <Route element={type ? <PaymentsPage/> : <Navigate to={"/login"}/>} path='/settings/payments' />
+                <Route element={type ? type==="freelancer" ? <ProfileSettingsPage/> : <ClientProfilePage/> : <Navigate to={"/login"}/>} path='/my-profile' />
+                <Route element={type ? <Navigate to={"/"}/> : <ForgotPage/>} path='/forgot-password' />
+                <Route element={type ? <Navigate to={"/"}/> : <ResetPage/>} path='/reset/:key' />
+                <Route element={type ? <JobViewPage/> : <Navigate to={"/login"}/>} path='/post-view' />
+                <Route element={type ? <SearchPostPage/> : <Navigate to={"/login"}/>} path='/search' />
+                <Route element={type ? <ChatPage/> : <Navigate to={"/login"}/>} path='/chats' />
+                <Route element={type ? <ManageNotificationPage/> : <Navigate to={"/login"}/>} path='/settings/notifications' />
+                <Route element={type ? <PasswordSecurityPage/> : <Navigate to={"/login"}/>} path='/settings/password-security' />
+                <Route element={type ? <DeleteAccountPage/> : <Navigate to={"/login"}/>} path='/settings/delete-account' />
+                <Route element={type ? <ChangePasswordPage/> : <Navigate to={"/login"}/>} path='/settings/change-password'/>
+                <Route element={type ? <ContactPage/> : <Navigate to={"/login"}/>} path='/contact' />
+                <Route element={type ? <ClientPublicProfilePage/> : <Navigate to={"/login"}/>} path='/client-profile' />
+                <Route element={type ? type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/> : <Navigate to={"/login"}/>} path='/my-proposals' />
 
-                <Route element={type === "freelancer" ? <MyProposalsPage/> : <Navigate to={"/my-posts"}/>} path='/my-proposals' />
-
-                <Route element={type === "client" ? <PostJobPage/> : <Navigate to={"/"}/>} path='/post-job' />
-                <Route element={type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/>} path='/my-posts' />
-                <Route element={type === "client" && <ViewPostPage />} path='/view-post' />
-                <Route element={type === "client" && <PostEditPage />} path='/post-edit' />
-                <Route element={type === "client" ? <ClientReportPage/> : <FreelancerReportPage/>} path="/settings/reports"/>
+                <Route element={type ? type === "client" ? <PostJobPage/> : <Navigate to={"/"}/> : <Navigate to={"/login"}/>} path='/post-job' />
+                <Route element={type ? type === "client" ? <MyPostsPage/> : <Navigate to={"/my-proposals"}/> : <Navigate to={"/login"}/>} path='/my-posts' />
+                <Route element={type ? type === "client" && <ViewPostPage /> : <Navigate to={"/login"}/>} path='/view-post' />
+                <Route element={type ? type === "client" && <PostEditPage /> : <Navigate to={"/login"}/>} path='/post-edit' />
+                <Route element={type ? type === "client" ? <ClientReportPage/> : <FreelancerReportPage/> : <Navigate to={"/login"}/>} path="/settings/reports"/>
 
                 <Route element={<AdminIndexPage/>} path='/admin' />
                 <Route element={<AdminLoginPage/>} path='/admin/login'/>

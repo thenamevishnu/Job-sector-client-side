@@ -15,9 +15,9 @@ export const deletePost = async (post_id,user_id) => {
     if(data.status) return data.postData
 }
  
-export const markAsCompletedPost = async (post_id , user_id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/completed-post`,{post_id,user_id})
-    if(data.status) return data.postData
+export const markAsCompletedPost = async (post_id , user_id, amount) => {
+    const {data} = await axios.post(`${process.env.react_app_server}/completed-post`,{post_id,user_id,amount})
+    return data
 }
 
 export const getMyProposals = async (user_id) => {

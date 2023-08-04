@@ -1,5 +1,5 @@
 import axios from "axios"
-import { errorAlert, successAlert } from "./Toasts"
+import { errorAlert } from "./Toasts"
 
 export const googleAuth = async (userObject) => {
 
@@ -15,10 +15,10 @@ export const googleAuth = async (userObject) => {
             errorAlert(data.message)
         }else{
             const obj = {}
-            localStorage.setItem("userStorage",JSON.stringify(data))
-            obj.response = {id:data.getUser._id,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}
+            obj.data = data
+            obj.message = data.message
+            obj.response = {id:data.getUser._id,country:data.getUser.profile.country,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}
             obj.status = true
-            successAlert(data.message)
             return obj
         }
     }catch(err){

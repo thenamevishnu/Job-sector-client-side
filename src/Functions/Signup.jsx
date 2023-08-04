@@ -7,7 +7,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
 
         const regex = {
             full_name : /^([A-Za-z])([A-Za-z\s]){3,11}$/gm,
-            username : /^([_a-z])([a-z0-9]){3,11}$/gm,
+            username : /^([_a-z])([_a-z0-9]){3,11}$/gm,
             email : /^([\w\W])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm,
             email2 : /^([\w\W])([\w\W])+@([a-zA-Z0-9]){3,6}.([a-zA-Z0-9]){2,3}$/gm,
             password : /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[\W]).{8,16}$/gm
@@ -75,7 +75,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
                         return obj
                     }else{
                         localStorage.setItem("userStorage",JSON.stringify(data))
-                        obj.response = {id:data.getUser._id,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}
+                        obj.response = {id:data.getUser._id,country:data.getUser.profile.country,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image}
                         obj.status = true
                         obj.update = true
                         obj.text = data.message

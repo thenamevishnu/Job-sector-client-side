@@ -4,17 +4,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import { errorAlert } from '../../../Functions/Toasts'
 import { useSelector } from 'react-redux';
 import { addConnection } from '../../../Functions/Profile';
+import { useNavigate } from 'react-router-dom';
 
 function PublicProfile() {
 
     const [userData,setUserData] = useState({})
     const [userId,setUserId] = useState("")
     const {id} = useSelector(state => state.user)
+    const navigate = useNavigate()
+    
 
     useEffect(()=>{
+        const id = localStorage.getItem("publicProfile")
         const fetchData = async () => {
             try{
-                const id = localStorage.getItem("publicProfile")
                 const {data} = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
                 setUserId(data._id)
                 setUserData(data.profile)
@@ -22,7 +25,11 @@ function PublicProfile() {
                 errorAlert(err.message)
             }
         }
-        fetchData()
+        if(id){
+            fetchData()
+        }else{
+            navigate("/")
+        }
     },[])
 
     const downloadPdf = async (fileUrl) => {
@@ -61,6 +68,7 @@ function PublicProfile() {
         }
         <div className='info mt-3'>
             <div className='flex items-center justify-center'>{userData.full_name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' className='w-4 h-4.5 ms-1'></img>}</div>
+            <p className='text-sm'>Level: {userData.experience}</p>
             <p><i className='fa fa-location-dot'></i> {userData.country}</p>
         </div>
     </div>

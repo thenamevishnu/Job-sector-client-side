@@ -62,7 +62,7 @@ function UserManage() {
                     {
                        userData.map((items,index) => {
                             return(
-                                <>
+                             
                                     <tr key={items._id} className={items.banned ? 'text-red-600 hover:bg-gray-200' : ' hover:bg-gray-200'}>
                                         <td className='border-2 border-gray-400 p-2'>{index + 1}</td>
                                         <td className='border-2 border-gray-400 p-2'><div className='flex justify-center items-center'>{items.name} {items.verified && <img className='ml-1 w-3 h-3.5' src={`${process.env.react_app_cloud}/job/default/verification.jpg`} alt='verified'/>}</div></td>
@@ -77,7 +77,7 @@ function UserManage() {
                                             <i className=' text-sky-800 fa fa-circle-info' onClick={()=>{localStorage.setItem("publicProfile",items._id); navigate("/profile")}}></i>
                                         </td>
                                     </tr>
-                                </>
+                               
                             )
                        }) 
                     }

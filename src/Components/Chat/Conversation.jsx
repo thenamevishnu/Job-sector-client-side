@@ -4,7 +4,7 @@ import { getMessagesByChat, sendMessage } from '../../Api/Chat';
 import Landing from './Landing';
 import SingleChat from './SingleChat';
 
-function Conversation ({selected,refreshList,socket}) {
+function Conversation ({selected,refreshList,socket,goback}) {
     
     const {id} = useSelector(state => state.user)
     const [message, setMessage] = useState("")
@@ -64,7 +64,7 @@ function Conversation ({selected,refreshList,socket}) {
     return (
         <>
             {!selected && <Landing/>}
-            {selected && <SingleChat socket={socket} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef}/>}
+            {selected && <SingleChat socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef}/>}
         </>
     )
 }

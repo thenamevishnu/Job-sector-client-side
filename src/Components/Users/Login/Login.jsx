@@ -13,6 +13,7 @@ function Login() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [otpInput,setOtpInput] = useState(false)
 
     useEffect(()=>{
         const userStorage = localStorage.getItem("userStorage") ?? null
@@ -23,23 +24,46 @@ function Login() {
         email:"",
         password:""
     })
+    const [enteredOtp,setEnteredOtp] = useState("")
+    const [loginData,setLoginData] = useState({})
 
     const [userObject,setUserObject] = useState(null)
 
     const handleSubmit = async (e) => {
         try{
             e.preventDefault()
-            const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
+            if(enteredOtp===""){
+                const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
         
-            if(!data.status){
-                errorAlert(data.message)
+                if(!data.status){
+                    errorAlert(data.message)
+                }else{
+                    if(data.getUser.twoStep){
+                        setOtpInput(true)
+                        localStorage.setItem("twoStep",data?.sentOtp)
+                        setLoginData(data)
+                    }else{
+                        localStorage.setItem("userStorage",JSON.stringify(data))
+                        dispatch(updateUser({id:data.getUser._id,country:data.getUser.profile.country,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}))
+                        successAlert(data.message)
+                        setTimeout(() => {
+                            navigate("/")
+                        }, 1600);
+                    }
+                }
             }else{
-                localStorage.setItem("userStorage",JSON.stringify(data))
-                dispatch(updateUser({id:data.getUser._id,type:data.getUser.profile.account_type,name:data.getUser.profile.full_name,email:data.getUser.profile.email,image:data.getUser.profile.image,audio:data.getUser.profile.audio}))
-                successAlert(data.message)
-                setTimeout(() => {
-                    navigate("/")
-                }, 1600);
+                const otp = localStorage.getItem("twoStep")
+                if(otp !== enteredOtp){
+                    errorAlert("Invalid Otp!")
+                }else{
+                    localStorage.setItem("userStorage",JSON.stringify(loginData))
+                    dispatch(updateUser({id:loginData.getUser._id,country:loginData.getUser.profile.country,type:loginData.getUser.profile.account_type,name:loginData.getUser.profile.full_name,email:loginData.getUser.profile.email,image:loginData.getUser.profile.image,audio:loginData.getUser.profile.audio}))
+                    successAlert(loginData.message)
+                    setTimeout(() => {
+                        localStorage.removeItem("twoStep")
+                        navigate("/")
+                    }, 1600);
+                }
             }
         }catch(err){
             errorAlert(err.message)
@@ -48,6 +72,8 @@ function Login() {
 
     userObject && googleAuth(userObject).then(response=>{
         if(response?.status){
+            localStorage.setItem("userStorage",JSON.stringify(response?.data))
+            successAlert(response?.message)
             dispatch(updateUser(response.response))
             setTimeout(() => {
                 navigate("/")
@@ -61,11 +87,15 @@ function Login() {
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job Sector Login</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>
                     <div className="mb-2">
-                    <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Email' name='email' onChange={(e) =>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                        <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Email' name='email' onChange={(e) =>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>
                     <div className="mb-2">
-                    <input type='password' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Password' name='password' onChange={(e) =>setUserData({...userData,[e.target.name]:e.target.value})}></input>
+                        <input type='password' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder='Password' name='password' onChange={(e) =>setUserData({...userData,[e.target.name]:e.target.value})}></input>
                     </div>
+                    {otpInput && <div className="mb-2">
+                            <input type='text' className='block w-full px-4 py-2 mt-2 text-green-700 bg-white border border-green-400 rounded-md focus:border-green-400 focus:ring-green-300 focus:outline-none' placeholder={`TwoStep Verification Otp ( ${userData.email} )`} name='otp' onChange={(e) =>setEnteredOtp(e.target.value)}></input>
+                        </div>
+                    }
                     <span className="text-xs text-green-600 hover:text-blue-700 cursor-pointer" onClick={()=>navigate("/forgot-password")}>
                         Forget Password?
                     </span>

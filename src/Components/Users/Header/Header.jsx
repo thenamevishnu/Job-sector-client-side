@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { errorAlert } from '../../../Functions/Toasts'
+import { updateUser } from '../../../Redux/UserSlice/UserSlice';
 
 function Header({icons}){
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const {image,type} = useSelector(state => state.user)
     const [toggleProfile,setToggleProfile] = useState(false)
     const [navToggle,setNavToggle] = useState(false)
@@ -36,7 +38,7 @@ function Header({icons}){
   },[navigate,icons])
 
     return (
-        <nav className="bg-gray-50 fixed top-0 w-full z-10 shadow-sm border-0 shadow-gray-600">
+        <nav className="bg-gray-50 fixed top-0 w-full z-50 shadow-sm border-0 shadow-gray-600">
         <div className="mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
             {icons && <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -71,10 +73,10 @@ function Header({icons}){
             </div>
             {icons && <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div className='text-xl'>
-                {type === "client" && <i className='far fa-paper-plane mr-3 cursor-pointer' title='post new job' onClick={()=>navigate("/post-job")}></i>}
-                <i className='far fa-question mr-3 cursor-pointer' title='Help'></i>
-                <i className='far fa-comment mr-3 cursor-pointer' title='Contact'></i>
-                <i className='far fa-bell mr-3 cursor-pointer' title='Notification'></i>
+                {type === "client" && <i className='far fa-plus border-2 rounded-full p-1 px-2 text-sm font-extrabold mr-3 cursor-pointer' title='post new job' onClick={()=>navigate("/post-job")}></i>}
+                {/* <i className='far fa-question mr-3 cursor-pointer' title='Help'></i> */}
+                <i className='far fa-comment cursor-pointer' title='Contact' onClick={()=>navigate("/contact")}></i>
+                {/* <i className='far fa-bell mr-3 cursor-pointer' title='Notification'></i> */}
                 </div>
 
             <div className="relative ml-3">
@@ -89,7 +91,7 @@ function Header({icons}){
                 {toggleProfile && <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-xl bg-white py-1 shadow-lg ring-1 ring-black border-2 ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1">
                 
                 <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabIndex="-1" onClick={()=>navigate("/settings/contact-info")}>Settings</span>
-                <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabIndex="-1" onClick={()=>{localStorage.removeItem("userStorage"); navigate("/login"); }}>Sign out</span>
+                <span className="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabIndex="-1" onClick={()=>{localStorage.removeItem("userStorage"); dispatch(updateUser({})); navigate("/login"); }}>Sign out</span>
                 </div>}
 
             </div>

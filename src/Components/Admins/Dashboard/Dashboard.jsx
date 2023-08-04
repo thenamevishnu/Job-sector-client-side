@@ -15,7 +15,7 @@ function Dashboard() {
             setAdminDashboard(data)
         }
         fetchData()
-    },[])
+    },[admin_id])
 
     ChartJS.register(
         CategoryScale,
@@ -45,7 +45,7 @@ function Dashboard() {
         labels,
         datasets: [
           {
-            label: 'Profit',
+            label: 'Profit of ('+new Date().getFullYear()+')' ,
             data: Array(labels.length).fill(0),
             backgroundColor: 'rgba(0, 128, 0, 0.5)',
           }

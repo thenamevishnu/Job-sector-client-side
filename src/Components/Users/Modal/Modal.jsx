@@ -25,6 +25,37 @@ export function HoursPerWeek(props) {
     )
 }
 
+export function CompleteProject(props) {
+
+    const {data} = props
+    const [modal,showModal] = props.states
+    const [amount, setAmount] = useState("")
+    const [clientGet,setClientGet] = useState(0)
+
+    const handleForm = async () => {
+        
+        if(amount === "" || isNaN(amount) || parseFloat(amount) < parseFloat(modal.from) || parseFloat(amount) > parseFloat(modal.to)){
+            errorAlert("Enter between $"+parseFloat(modal.from) +" - $"+parseFloat(modal.to))
+            console.log(modal.from, amount);
+        }else{
+            props.callback({update:true,post_id:modal.post_id,user_id:modal.user_id,amount:amount}); 
+            showModal(!modal.status)
+        }
+    }
+
+    return (
+        <ModalDesign action={[modal,showModal]}>
+            <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+            <input type='text' className='w-full rounded-lg p-2 outline-none border-2 border-gray-400' placeholder={`Enter amount to pay! ($${modal.from} - $${modal.to})`} value={amount} onChange={async (e)=>{setAmount(e.target.value); setClientGet(parseFloat((e.target.value) - (e.target.value * 0.02)))}}/>
+            <span>They will get: ${clientGet}</span>
+            <div className='mt-5 flex justify-end'>
+                <button className='text-white bg-green-700 rounded-lg p-1 ps-3 pe-3 me-3' onClick={async ()=>await handleForm()}><i className='fa fa-save'></i> Save</button>
+                <button className='text-white bg-red-600 rounded-lg p-1 ps-3 pe-3 me-3' onClick={()=>showModal(!modal.status)}><i className='fa fa-close'></i> Cancel</button>
+            </div>
+        </ModalDesign>
+    )
+}
+
 export function Languages(props){
     
     const {data} = props
@@ -506,7 +537,7 @@ export function PaypalPay(props){
 export function OnPaid() {
     
     return(
-        <div className='w-11/12 z-50 sm:w-9/12 md:w-7/12 lg:w-5/12 p-3 fixed z-10 bg-transparant left-1/2 top-24 rounded-xl shadow-xl ' style={{transform:"translate(-50%,0%)"}}>
+        <div className='w-11/12 z-50 sm:w-9/12 md:w-7/12 lg:w-5/12 p-3 fixed bg-transparant left-1/2 top-24 rounded-xl shadow-xl ' style={{transform:"translate(-50%,0%)"}}>
             <img alt='on paid pop up' src={`${process.env.react_app_cloud}/job/default/paid.gif`}/>
         </div>
     )

@@ -65,3 +65,48 @@ export const withdrawSuccess = async (id,to) => {
     const {data} = await axios.post(`${process.env.react_app_server}/withdraw`,{id,to})
     return data
 }
+
+export const handleChangePassword = async (user_id, password) => {
+    if(password.oldPassword===""){
+        errorAlert("Current Password is required")
+    }else if(!(/(?=.*?[a-z])/).test(password.oldPassword)){
+        errorAlert("Password should contain lower case!")
+    }else if(!(/(?=.*?[A-Z])/).test(password.oldPassword)){
+       errorAlert("Password should contain upper case!")
+    }else if(!(/(?=.*?[0-9])/).test(password.oldPassword)){
+       errorAlert("Password should contain digits!")
+    }else if(!(/(?=.*?[\W])/).test(password.oldPassword)){
+       errorAlert("Password should contain Special characters!")
+    }else if(password?.oldPassword?.length > 16 || password?.oldPassword?.length < 8){
+       errorAlert("Password should be 8-16!")
+    }else if(password.newPassword===""){
+        errorAlert("New Password is required")
+    }else if(!(/(?=.*?[a-z])/).test(password.newPassword)){
+        errorAlert("New Password should contain lower case!")
+    }else if(!(/(?=.*?[A-Z])/).test(password.newPassword)){
+       errorAlert("New Password should contain upper case!")
+    }else if(!(/(?=.*?[0-9])/).test(password.newPassword)){
+       errorAlert("New Password should contain digits!")
+    }else if(!(/(?=.*?[\W])/).test(password.newPassword)){
+       errorAlert("New Password should contain Special characters!")
+    }else if(password?.newPassword?.length > 16 || password?.newPassword?.length < 8){
+       errorAlert("New Password should be 8-16!")
+    }else if(password.confirmPassword===""){
+        errorAlert("Confirm Password is required")
+    }else if(password.newPassword !== password.confirmPassword){
+        errorAlert("Password does not match!")
+    }else{
+        const {data} = await axios.post(`${process.env.react_app_server}/changePassword`,{user_id, password})
+        if(!data.status){
+            errorAlert(data.message)
+            return false
+        }else{
+            successAlert(data.message)
+            return true
+        }
+    }
+}
+
+export const contactMessage = async (userData) => {
+    await axios.post(`${process.env.react_app_server}/contact`,{userData})
+}

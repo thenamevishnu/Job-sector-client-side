@@ -44,3 +44,7 @@ export const getDashboard = async (id) => {
     const {data} = await axios.get(`${process.env.react_app_server}/admin/getDashboard/${id}`)
     return data
 }
+
+export const sendNotification = async (type, message) => {
+    await axios.post(`${process.env.react_app_server}/admin/sendNotification`,{type, message})
+}

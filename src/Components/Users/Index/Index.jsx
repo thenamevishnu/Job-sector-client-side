@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { errorAlert } from '../../../Functions/Toasts'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +8,7 @@ import moment from 'moment'
 import { isSaved, saveJob } from '../../../Functions/Posts'
 import { changeSearchResults } from '../../../Api/user'
 import {v4 as uuidv4} from "uuid"
+import { updateUser } from '../../../Redux/UserSlice/UserSlice'
 
 function Index() {
 
@@ -21,17 +22,23 @@ function Index() {
     const [search,setResponses] = useState([])
     const searchContainer = useRef(null)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 const response1 = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
                 const response2 = await axios.get(process.env.react_app_server + showData)
-                console.log(response2.data);
-                response1.data.profile.total_saved = response1?.data?.saved_jobs?.length
-                setUserData(response1.data.profile)
-                setSavedJobs(response1.data.saved_jobs)
-                setPostData(response2.data.postData)
+                if(!response1.data){
+                    localStorage.removeItem("userStorage")
+                    dispatch(updateUser({}))
+                    navigate("/login")
+                }else{
+                    response1.data.profile.total_saved = response1?.data?.saved_jobs?.length
+                    setUserData(response1?.data?.profile)
+                    setSavedJobs(response1?.data?.saved_jobs)
+                    setPostData(response2?.data?.postData)
+                }
             }catch(err){
                 errorAlert(err.message)
             }
@@ -160,9 +167,10 @@ function Index() {
                         <div className=' flex items-center justify-center'>{userData?.full_name && userData.full_name} {userData.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='verification badge'/>}</div>
                     </div>
                     <div className='text-center font-mono mt-1' style={{fontSize:"12px"}}>
-                        {userData?.title && userData.title}
+                        {type === "freelancer" ? userData?.title : <><i className='fa fa-location-dot'></i> <span>{userData?.country}</span></>}
                     </div>
-                    <div className='mt-3'>{userData?.connections?.count} Connections</div>
+                        {type === "freelancer" && <>
+                        <div className='mt-3'>{userData?.connections?.count} Connections</div>
                         <hr></hr>
                         <div className='mt-4'>
                             <div className='flex items-center justify-center mb-3'><p className='mr-2'>Availability Badge</p>
@@ -176,6 +184,7 @@ function Index() {
                             </div>
                                 {userData?.available ? <span className='bg-gray-400 rounded-md p-1 ps-2 pe-2'><i className='fa fa-circle text-green-700'></i> Available</span> : <span className='bg-gray-400 rounded-md p-1 ps-2 pe-2'><i className='fa fa-circle text-red-600'></i> UnAvailable</span>}
                         </div>
+                        </>}
                 </div>
                 {type === "freelancer" && <div className='border-2 p-2 mt-1 text-start border-gray-400 rounded-xl'>
                 <h4 className=' font-bold p-2 text-lg'>Proposals</h4>

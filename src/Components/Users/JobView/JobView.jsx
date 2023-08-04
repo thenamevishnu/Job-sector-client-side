@@ -3,10 +3,11 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { saveJob, sendProposal } from '../../../Functions/Posts'
 import moment from "moment"
+import { useNavigate } from 'react-router-dom'
 
 function JobView() {
     
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     const {id,type} = useSelector(state => state.user)
     const [postInfo,setPostInfo] = useState({})
     const [related,setRelated] = useState([])
@@ -65,13 +66,13 @@ function JobView() {
                         <div className="lg:col-span-3 md:col-span-4 md:block hidden p-3">
                             <div className='border-2 border-gray-400 rounded-xl p-2'>
                                 <div className='flex justify-center'>
-                                    <img className='rounded-full' src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em"/>
+                                    <img className='rounded-full cursor-pointer' src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em" onClick={()=>{localStorage.setItem("publicProfileClient",postInfo?.auther[0]?._id); navigate("/client-profile")}}/>
                                 </div>
                                 <div className='flex items-center justify-center mt-2'>
-                                    <span>{postInfo && postInfo?.auther[0]?.profile?.full_name}</span>&nbsp;{postInfo?.auther[0]?.profile?.is_verified && <img src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='auther pic' width="15em" />}
+                                    <span>{postInfo && postInfo?.auther[0]?.profile?.full_name}</span>&nbsp;{postInfo?.auther[0]?.profile?.is_verified && <img src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='auther pic' width="15em"/>}
                                 </div>
                                 <div className='text-center'>
-                                    <span className='text-sm'>{postInfo && postInfo?.auther[0]?.profile?.title}</span>
+                                    <span className='text-sm'><i className='fa fa-location-dot'></i> {postInfo && postInfo?.auther[0]?.profile?.country}</span>
                                 </div>
                             </div>
                             {type === "freelancer" && <button className='p-2 bg-green-700 text-white w-full rounded-lg mt-3' onClick={async ()=>{setPostInfo({...postInfo,proposals:await sendProposal(postInfo._id,id)})}}><i className='far fa-paper-plane'></i> SEND PROPOSAL</button>}

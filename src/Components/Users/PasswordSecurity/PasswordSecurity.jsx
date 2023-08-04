@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { changeTwoStep, getUserData } from '../../../Api/user'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function PasswordSecurity() {
 
     const [userData,setUserData] = useState({})
-    const {id, type} = useSelector(state => state.user)
+    const {id} = useSelector(state => state.user)
+    const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -29,7 +31,10 @@ function PasswordSecurity() {
                         <div className='col-span-12 border-2 border-gray-400 rounded-lg p-3'>
                             <h1 className='text-lg text-green-700 font-bold'>Authentication Options</h1>
                             {userData && userData.profile?.signup_method === "google" ? 
-                                <p className='text-sm mt-3'>You currently use <span className='text-green-700'>Google Sign-in</span> to login. We will only ask for your Job Sector password if we need to verify your identity.</p> : ""
+                                <p className='text-sm mt-3'>You currently use <span className='text-green-700'>Google Sign-in</span> to login. We will only ask for your Job Sector password if we need to verify your identity.</p> 
+                                : <>
+                                <p className='flex items-center mt-3'>Password <i className='inner-circle ml-2 fa fa-pen text-gray-500 cursor-pointer' onClick={()=>navigate("/settings/change-password")}></i></p><p className='text-sm mt-1'>We will only ask for your Job Sector password if we need to verify your identity.</p>
+                                </>
                             }
                         </div>
 
@@ -37,7 +42,7 @@ function PasswordSecurity() {
                             <h1 className='text-lg text-green-700 font-bold'>Two Step Verification</h1> 
                             <p className='text-sm mt-3'>Add an extra layer of security to block unauthorized access and protect your account.</p>
 
-                            <div className='font-bold mt-8 text-lg text-green-700 flex items-center'><p className='mr-2'>Email Verification</p>
+                            {userData && userData?.profile?.signup_method !== "google" ? <><div className='font-bold mt-8 text-lg text-green-700 flex items-center'><p className='mr-2'>Email Verification</p>
                                 
                                 {
                                     userData?.twoStep ? 
@@ -51,7 +56,14 @@ function PasswordSecurity() {
                                         </>
                                 }
                             </div>
-                            <p className='text-sm mt-3'>Receive a six digit code by text message to confirm it’s you.</p>
+                             <p className='text-sm mt-3'>Receive a six digit code by text message to confirm it’s you.</p>
+                             </> : <>
+                            <div className='font-bold mt-8 text-lg text-green-700 flex items-center'><p className='mr-2'>Email Verification</p>
+                                
+                            </div>
+                            <p className='text-sm mt-3'>You currently use <span className='text-green-700'>Google Sign-in</span> to login.</p> 
+                            </>}
+                           
                         </div>
 
                     </div>

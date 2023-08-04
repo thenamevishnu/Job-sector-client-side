@@ -18,5 +18,5 @@ export const acceptProposal = async (post_id,user_id) => {
     }else{
         errorAlert(data.message)
     }
-    return data.userData
+    return data
 }

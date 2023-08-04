@@ -75,7 +75,10 @@ function Balance() {
 
                         <h3 className='font-bold text-green-700 block text-xl mb-2'>Available Fund</h3>  
                         <div className='flex justify-between items-center mt-10'>
-                            <div>Available : ${userData && userData.balance}</div>
+                            <div>
+                                <div>Available : <span className=' text-green-700'>${userData && userData.balance}</span></div>
+                                <div>Spent Balance : <span className='text-red-600'>${userData && userData.spent}</span></div>
+                            </div>
                             
                               <button className='text-white bg-green-700 rounded-lg p-1 px-2' onClick={()=>showModal({status:!modal.status,paypal:true})}><i className='fa fa-dollar'></i> Add Fund</button>
                            
@@ -106,7 +109,7 @@ function Balance() {
 
                         <h3 className='font-bold text-green-700 block text-xl mb-2'>Withdrawable Fund</h3>  
                         <div className='flex justify-between items-center mt-10'>
-                            <div>Withdrawable : ${userData && userData.balance}</div>
+                            <div>Withdrawable : <span className=' text-green-700'>${userData && userData.balance}</span></div>
                             <div>
                                 {
                                     userData?.cooldown - Math.floor(new Date().getTime()/1000) < 0 

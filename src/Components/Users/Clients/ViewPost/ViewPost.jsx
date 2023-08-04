@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { acceptProposal, rejectPropsal } from '../../../../Api/ManagePoposals'
 import { useSelector } from 'react-redux'
 import { createChat } from '../../../../Api/Chat'
+import { errorAlert } from '../../../../Functions/Toasts'
 
 function ViewPost() {
 
@@ -21,6 +22,14 @@ function ViewPost() {
         }
         getSinglePost()
     },[post_id])
+
+    const manageAccept = async (user_id, post_id) => {
+        const response = await acceptProposal(post_id,user_id)
+        if(response.status){
+            setUserData(response.userData)
+            await createChat(id,user_id,post_id) 
+        }
+    }
 
     return (
         <>
@@ -72,7 +81,7 @@ function ViewPost() {
                                     {
                                         obj.my_proposals.find(item => item.post_id === post_id && item.status === "Achieved") ? <div className='flex items-center cursor-pointer' onClick={()=>navigate("/chats")}><i className='me-2 fa fa-comment fs-3 text-green-700'></i> Chat Now</div> : <div className='flex items-center'>
                                         <i className='fa fa-circle-xmark me-3 fs-1 text-red-600 cursor-pointer text-3xl' onClick={async ()=>setUserData(await rejectPropsal(post_id,obj._id))}></i>
-                                        <i className='fa fa-circle-check fs-1 text-green-700 cursor-pointer text-3xl' onClick={async ()=>{await createChat(id,obj._id,post_id); setUserData(await acceptProposal(post_id,obj._id));}}></i>
+                                        <i className='fa fa-circle-check fs-1 text-green-700 cursor-pointer text-3xl' onClick={async ()=>{await manageAccept(obj._id, post_id)}}></i>
                                     </div>
                                     }
                                 </div>

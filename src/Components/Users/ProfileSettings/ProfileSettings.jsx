@@ -118,6 +118,7 @@ function ProfileSettings() {
                     <input type='file' id='upload-image' accept='.jpeg, .jpg, .png, .webp' name='dp' style={{display:"none"}} onChange={(e)=>setFiles(e.target.files[0],"image")}></input>
                     <div className='mt-3'>
                         <div className='flex justify-center items-center'>{stateData.name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' className='w-4 h-4.5 ms-1'></img>}</div>
+                        <p className='text-sm'>Level: {userData.experience}</p>
                         <div><i className='fa fa-location-dot'></i> {userData.country}</div>
                     </div>
                 </div>
