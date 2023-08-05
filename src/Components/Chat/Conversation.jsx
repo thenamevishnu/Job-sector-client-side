@@ -47,12 +47,13 @@ function Conversation ({selected,refreshList,socket,goback, unread}) {
             if(selected?._id){
                 if(selected?._id === receivedData.chat_id._id){ 
                     setMessages([...messages,receivedData])
+                    dataChange()
                 }else{
                     const unreads = await setUnreadMessage(receivedData.sender._id, receivedData.chat_id._id)
                     setUnread(unreads)
+                    dataChange()
                     //notification
                 }
-                dataChange()
             }
         })
     },[socket,messages,dataChange,selected?._id])
