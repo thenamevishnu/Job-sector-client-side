@@ -52,9 +52,9 @@ function Chat() {
                                  <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!"); setOpened(obj)}}>
                                      <div className='flex items-center'>
                                          <div className='relative'>
-                                            {(unread && obj._id === chatSelected?._id) > 0 && <span className='absolute p-1 px-2.5 w-2 h-5 bg-green-700 rounded-full text-sm text-white top-0 flex items-center justify-center'>{unread}</span>}
+                                            {/* {(unread && obj._id === chatSelected?._id) > 0 && <span className='absolute p-1 px-2.5 w-2 h-5 bg-green-700 rounded-full text-sm text-white top-0 flex items-center justify-center'>{unread}</span>} */}
                                              <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12"/>
-                                             {/* {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center items-center top-0 end-0 text-white'> {obj?.[obj?.users[0]?._id]} </div>} */}
+                                             {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute p-1 px-2.5 w-2 h-5 bg-green-700 rounded-full text-sm text-white top-0 flex items-center justify-center'> {obj?.[obj?.users[0]?._id]} </div>}
                                          </div>
                                          {!obj?.users[0]?.profile?.full_name && <div className='ms-2'>
                                              <div className='flex items-center'>Deleted Account</div>
@@ -101,9 +101,9 @@ function Chat() {
                                  <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!"); window.innerWidth <= 768 && setShowChat({...showchat,list:!showchat.list,conv:!showchat.conv})}}>
                                      <div className='flex items-center'>
                                          <div className='relative'>
-                                         {(unread && obj._id === chatSelected?._id) > 0  && <span className='absolute p-1 px-2.5 w-2 h-5 bg-green-700 rounded-full text-sm text-white top-0 flex items-center justify-center'>{unread}</span>}
+                                         {/* {(unread && obj._id === chatSelected?._id) > 0  && <span className='absolute p-1 px-2.5 w-2 h-5 bg-green-700 rounded-full text-sm text-white top-0 flex items-center justify-center'>{unread}</span>} */}
                                              <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12"/>
-                                             {/* {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center items-center top-0 end-0 text-white'> {obj?.[obj?.users[0]?._id]} </div>} */}
+                                             {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute p-1 px-2.5 w-2 h-5 bg-green-700 rounded-full text-sm text-white top-0 flex items-center justify-center'> {obj?.[obj?.users[0]?._id]} </div>}
                                          </div>
                                          {!obj?.users[0]?.profile?.full_name && <div className='ms-2'>
                                              <div className='flex items-center'>Deleted Account</div>
