@@ -44,15 +44,16 @@ function Conversation ({selected,refreshList,socket,goback, unread}) {
 
     useEffect(()=>{ 
         socket.on("receive_message",async (receivedData)=>{
-            if(selected?._id === receivedData.chat_id._id){ 
-                setMessages([...messages,receivedData])
-            }else{
-                const unreads = await setUnreadMessage(receivedData.sender._id, receivedData.chat_id._id)
-                console.log(unread);
-                setUnread(unreads)
-                //notification
+            if(selected?._id){
+                if(selected?._id === receivedData.chat_id._id){ 
+                    setMessages([...messages,receivedData])
+                }else{
+                    const unreads = await setUnreadMessage(receivedData.sender._id, receivedData.chat_id._id)
+                    setUnread(unreads)
+                    //notification
+                }
+                dataChange()
             }
-            dataChange()
         })
     },[socket,messages,dataChange,selected?._id])
 
