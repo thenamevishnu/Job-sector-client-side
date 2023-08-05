@@ -145,7 +145,7 @@ function ProfileSettings() {
                             <input className='hidden' type="file" accept='.pdf' name='pdf' id='pdf' onChange={(e)=>setFiles(e.target.files[0],"pdf")}/>
                         </label>
                         </div> 
-                        <a href={showFile.pdf ? `${process.env.react_app_cloud_audio}${showFile.pdf}` : `${process.env.react_app_cloud_audio}${stateData.pdf}`} download={new Date().toLocaleString()}>Download <i className='fa fa-link'></i></a>
+                        {(showFile?.pdf || stateData?.pdf) ? <a href={showFile.pdf ? `${process.env.react_app_cloud_audio}${showFile.pdf}` : `${process.env.react_app_cloud_audio}${stateData.pdf}`} download={new Date().toLocaleString()}>Download <i className='fa fa-link'></i></a> : <div className='text-sm text-start text-red-600'>Not added yet!</div>}
                     </div>
 
                     <div className='mt-4'>

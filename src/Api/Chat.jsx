@@ -26,8 +26,9 @@ export const getMessagesByChat = async (chat_id) => {
     return data.messages
 }
 
-export const addUnreadMessages = async (receiver,chat,setZero=false) => {
+export const setUnreadMessage = async (receiver,chat,setZero=false) => {
     const {data} = await axios.post(`${process.env.react_app_server}/chat/unreadMessage`,{chat,receiver,setZero})
+    console.log(data);
     return data.unread
 }
 

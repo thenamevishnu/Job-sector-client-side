@@ -88,7 +88,7 @@ function PublicProfile() {
             <div className='relative flex items-center'>
                 <h5 className='font-bold me-2 text-green-700 text-lg'>Resume</h5> 
             </div> 
-            <span onClick={async ()=>await downloadPdf(`${process.env.react_app_cloud_audio}${userData?.pdf}`)}>View Resume<i className='fa fa-link'></i></span>
+            {userData?.pdf ? <span onClick={async ()=>await downloadPdf(`${process.env.react_app_cloud_audio}${userData?.pdf}`)}>View Resume<i className='fa fa-link'></i></span> : <div className='text-sm text-start text-red-600'>Not added yet!</div>}
         </div>
 
         <div className='mt-4'>
