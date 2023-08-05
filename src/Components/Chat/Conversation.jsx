@@ -40,7 +40,7 @@ function Conversation ({selected,refreshList,socket,goback, unread}) {
 
     const dataChange = useCallback(async () => {
         setChangeList(!changeList)
-    },[setChangeList,changeList])
+    },[changeList])
 
     useEffect(()=>{ 
         socket.on("receive_message",async (receivedData)=>{
