@@ -19,7 +19,7 @@ function Conversation ({selected,refreshList,socket,goback, unread}) {
             socket?.emit("join_chat",selected?._id)
         }
         selected && getData()
-    },[selected,socket])
+    },[socket])
     
     const sendNow = async (e) => {
         if(e !== "click"){
