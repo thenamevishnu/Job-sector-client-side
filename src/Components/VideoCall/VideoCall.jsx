@@ -14,7 +14,7 @@ function VideoCall() {
     let remoteStream = useRef(null);
     let peerConnection = useRef(null);
     const [slash,setSlash] = useState({audio:false,video:false})
-    const [connected,setConnected] = useState(false)
+    const [callEnd,setCallEnd] = useState(false)
 
     const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ function VideoCall() {
         peerConnection.current = new RTCPeerConnection(Servers);
 
         remoteStream.current = new MediaStream();
-
+       
         if (userVideoSrc.current && remoteStream.current) {
             userVideoSrc.current.srcObject = remoteStream.current;
         }
@@ -81,7 +81,7 @@ function VideoCall() {
 
     const createAnswer = useCallback(async (user_id, offer) => {
         if (!peerConnection.current) {
-            await createPeerConnection(user_id);
+            await createPeerConnection();
         }
         await peerConnection.current.setRemoteDescription(offer);
         let answer = await peerConnection.current.createAnswer();
@@ -109,8 +109,6 @@ function VideoCall() {
                 userVideoSrc.current.srcObject = remoteStream.current;
             }
 
-            if(!userVideoSrc.current) socket.emit("pickup",room_id => setConnected(true))
-
             await createOffer(id);
         };
         
@@ -119,7 +117,7 @@ function VideoCall() {
         } else {
             userVideo();
         }
-    }, [id, navigate, room_id, socket]);
+    }, [id, navigate, room_id, socket, createOffer]);
 
     const addAnswer = async (answer) => {
         if (peerConnection.current && !peerConnection.current.currentRemoteDescription) {
@@ -136,7 +134,9 @@ function VideoCall() {
         } else {
             socket.on("call-end", (room_id) => {
                 localStream.current.getTracks().forEach(track => track.stop())
-                navigate("/chats")
+                remoteStream.current.getTracks().forEach(track => track.stop())
+                setCallEnd(true)
+                
             })
             socket.on("newUser", async (user_id) => await handleUserJoined(user_id));
             socket.on("receivedPeerToPeer", async (data) => {
@@ -152,7 +152,7 @@ function VideoCall() {
                     }
                 }
             });
-            if(myVideo.current && userVideoSrc.current) socket.on("calling",(room_id)=>setConnected(true))
+           
         }
     }, [createAnswer, handleUserJoined, navigate, socket]);
 
@@ -182,15 +182,17 @@ function VideoCall() {
     const endCall = async () => {
         if(localStream.current){
             localStream.current.getTracks().forEach(track => track.stop())
-            navigate("/chats")
+            remoteStream.current.getTracks().forEach(track => track.stop())
+            socket.emit("call-end",room_id)
+            window.location.reload()
         }
     }
 
     return (
         <div className='grid grid-cols-12 mx-auto gap-3 relative'>
             <video autoPlay className='col-span-12 h-screen w-screen bg-black' ref={userVideoSrc}></video>
-            {!connected && <span className=' absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] text-white z-50'>Calling...</span>}
-            <video autoPlay className='rounded-3xl absolute bottom-2 right-2 w-32 bg-black' ref={myVideo} muted={true}></video>
+            {callEnd &&  <span className='absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] text-red-600 whitespace-nowrap'>Video Call Ended!</span>}
+            <video autoPlay className='rounded-3xl absolute top-2 right-2 w-32 bg-black' ref={myVideo} muted={true}></video>
             <div className='absolute bottom-5 left-1/2 translate-x-[-50%]'>
                 <i className={slash.audio ? 'fas fa-microphone-slash bg-blue-900 px-3 text-white  text-xl py-1.5 rounded-full cursor-pointer' : 'fas fa-microphone bg-blue-900 px-3 text-white  text-xl py-1.5 rounded-full cursor-pointer'} onClick={toggleMic}></i>
                 <i className={slash.video ? 'fas fa-video-slash ms-3 bg-blue-900 px-3 text-white  text-xl py-1.5 rounded-full cursor-pointer' : 'fas fa-video ms-3 bg-blue-900 px-3 text-white  text-xl py-1.5 rounded-full cursor-pointer'} onClick={toggleCamera}></i>

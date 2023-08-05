@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../SocketContext'
@@ -6,21 +6,21 @@ import { SocketContext } from '../../SocketContext'
 function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRef,socket,goback}) {
     
     const {image} = useSelector(state => state.user)
-    const [isTyping,setIsTyping] = useState(null)
+    // const [isTyping,setIsTyping] = useState(null)
     const navigate = useNavigate()
     const {setSocket} = useContext(SocketContext)
     const [showchat,setShowChat] = goback
 
-    useEffect(()=>{
-        socket.emit("typing",selected?._id)
-    },[message,socket,selected?._id])
+    // useEffect(()=>{
+    //     socket.emit("typing",selected?._id)
+    // },[message,socket,selected?._id])
 
-    setTimeout(() => {
-        socket.emit("stop typing",selected._id)
-    }, 4000);
+    // setTimeout(() => {
+    //     socket.emit("stop typing",selected._id)
+    // }, 4000);
 
-    socket.on("typing",()=>setIsTyping(true))
-    socket.on("stop typing",()=>setIsTyping(false))
+    // socket.on("typing",()=>setIsTyping(true))
+    // socket.on("stop typing",()=>setIsTyping(false))
 
     return (
         <div className='md:col-span-8 col-span-12 border-2 bg-chat-background mt-16'>
@@ -31,7 +31,7 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
                     <img className=' rounded-full' src={`${process.env.react_app_cloud}/${selected?.users[0]?.profile?.image}`} alt='profile-pic' width="50px"></img>
                     <div className='ms-2'>
                         <div className='flex items-center'>{selected?.users[0]?.profile?.full_name} {selected?.users[0]?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
-                        <span className='text-green-800'>{isTyping ? "Typing..." : "Online"}</span>
+                        <span className='text-green-800'>Online</span>
                     </div>
                 </div>
 
@@ -50,8 +50,8 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
                         <div key={obj?._id} className={obj?.sender?._id === id ? 'mb-3 mt-2 flex justify-end mx-3' : 'mb-3 mt-2 flex justify-start mx-3'}>
 
                             {obj?.sender?._id === id && <span className='flex items-center me-1 whitespace-nowrap text-white' style={{fontSize:"9px"}}>{(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}</span>}
-                            <span className='relative flex items-center px-2 bg-gray-300 rounded-xl'>
-                            {obj?.sender?._id !== id && <img src={`${process.env.react_app_cloud}/${obj?.sender?.profile?.image}`} className='rounded-full w-8 md:me-1 me-0 sm:block hidden' alt='profile'></img>}<div className="lg:max-w-lg md:max-w-sm max-w-xs break-words">{obj?.content}</div>{obj?.sender?._id === id && <img src={`${process.env.react_app_cloud}/${image}`} className='rounded-full w-8 md:ms-1 ms-0 sm:block hidden' alt='profile'></img>}
+                            <span className='relative flex items-center bg-gray-300 rounded-xl'>
+                            {obj?.sender?._id !== id && <img src={`${process.env.react_app_cloud}/${obj?.sender?.profile?.image}`} className='rounded-full w-8 md:me-1 me-0 sm:block hidden' alt='profile'></img>}<div className="lg:max-w-lg md:max-w-sm max-w-xs break-words px-2">{obj?.content}</div>{obj?.sender?._id === id && <img src={`${process.env.react_app_cloud}/${image}`} className='rounded-full w-8 md:ms-1 ms-0 sm:block hidden' alt='profile'></img>}
                             </span>
                             {obj?.sender?._id !== id && <span className='flex items-center ms-1 whitespace-nowrap text-white' style={{fontSize:"9px"}}>{(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}</span>}
                         </div>

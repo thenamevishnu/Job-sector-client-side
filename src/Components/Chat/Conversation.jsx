@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { getMessagesByChat, sendMessage, setUnreadMessage } from '../../Api/Chat';
+import { getMessagesByChat, sendMessage } from '../../Api/Chat';
 import Landing from './Landing';
 import SingleChat from './SingleChat';
 
-function Conversation ({selected,refreshList,socket,goback, unread}) {
+function Conversation ({selected,refreshList,socket,goback}) {
     
     const {id} = useSelector(state => state.user)
     const [message, setMessage] = useState("")
     const [messages,setMessages] = useState([])
     const containerRef = useRef(null)
     const [changeList,setChangeList] = refreshList
-    const [unreading,setUnread] = unread
     
     useEffect(()=>{
         const getData = async () => {
@@ -19,7 +18,7 @@ function Conversation ({selected,refreshList,socket,goback, unread}) {
             socket?.emit("join_chat",selected?._id)
         }
         selected && getData()
-    },[socket,selected?._id])
+    },[selected,socket])
     
     const sendNow = async (e) => {
         if(e !== "click"){
@@ -44,17 +43,12 @@ function Conversation ({selected,refreshList,socket,goback, unread}) {
 
     useEffect(()=>{ 
         socket.on("receive_message",async (receivedData)=>{
-            if(selected?._id){
-                if(selected?._id === receivedData.chat_id._id){ 
-                    setMessages([...messages,receivedData])
-                    dataChange()
-                }else{
-                    const unreads = await setUnreadMessage(receivedData.sender._id, receivedData.chat_id._id)
-                    setUnread(unreads)
-                    dataChange()
-                    //notification
-                }
+            if(selected?._id === receivedData.chat_id._id){ 
+                setMessages([...messages,receivedData])
+            }else{
+                //notification
             }
+            dataChange()
         })
     },[socket,messages,dataChange,selected?._id])
 
