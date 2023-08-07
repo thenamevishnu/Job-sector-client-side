@@ -1,4 +1,5 @@
-import axios from "axios"
+
+import api_call from "../axios"
 import { errorAlert, successAlert } from "./Toasts"
 
 export const handleSubmit = async (userData, userObject,setCanShow, setUserData) => {
@@ -57,7 +58,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
              errorAlert("Password does not match")
         }else{
 
-            const {data} = await axios.post(process.env.react_app_server + "/signup" ,{userData},{withCredentials:true})
+            const {data} = await api_call.post("/signup" ,{userData},{withCredentials:true})
 
             if(!data.status){
                 errorAlert(data.message)
@@ -68,7 +69,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
                     const userData = {}
                     userData.email = userObject.email
                     userData.password = process.env.react_app_googleAuthKey
-                    const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
+                    const {data} = await api_call.post("/login" ,{userData},{withCredentials:true})
                     if(!data.status){
                         errorAlert(data.message)
                         obj.setUserObject = null

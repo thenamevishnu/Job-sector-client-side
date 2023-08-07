@@ -1,31 +1,80 @@
-import axios from "axios"
+
+import { errorAlert } from "../Functions/Toasts"
+import api_call from "../axios"
 
 export const fetchMyPosts = async (id) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/getMyPost/${id}`)
-    return data.posts
+    try{
+        const {data} = await api_call.get(`/getMyPost/${id}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.posts
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const changePostStatus = async (id,user_id,status) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changePostStatus/${id}/${user_id}/${!status}`)
-    if(data.status) return data.postData
+    try{
+        const {data} = await api_call.post(`/changePostStatus/${id}/${user_id}/${!status}`)
+        if(data.error)
+            errorAlert(data.error) 
+        else
+            if(data.status)
+                return data.postData
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const deletePost = async (post_id,user_id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/delete-post`,{post_id,user_id})
-    if(data.status) return data.postData
+    try{
+        const {data} = await api_call.post(`/delete-post`,{post_id,user_id})
+        if(data.error)
+            errorAlert(data.error) 
+        else
+            if(data.status)
+                return data.postData
+    }catch(err){
+        errorAlert(err)
+    }
 }
  
 export const markAsCompletedPost = async (post_id , user_id, amount) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/completed-post`,{post_id,user_id,amount})
-    return data
+    try{
+        const {data} = await api_call.post(`/completed-post`,{post_id,user_id,amount})
+        if(data.error)
+            errorAlert(data.error) 
+        else
+           return data
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const getMyProposals = async (user_id) => {
-   const {data} = await axios.get(`${process.env.react_app_server}/getMyProposals/${user_id}`)
-   return data
+    try{
+        const {data} = await api_call.get(`/getMyProposals/${user_id}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const getMyJobs = async (user_id) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/getMyJobs/${user_id}`)
-    return data
+    try{
+        const {data} = await api_call.get(`/getMyJobs/${user_id}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data
+        }
+    }catch(err){
+        errorAlert(err)
+    }
  }

@@ -1,50 +1,135 @@
-import axios from "axios"
+
+import { errorAlert, successAlert } from "../Functions/Toasts"
+import api_call from "../axios"
 
 export const getAllUsers = async () => {
-    const {data} = await axios.get(`${process.env.react_app_server}/admin/getAllUsers`)
-    return data.response
+    try{
+        const {data} = await api_call.get(`/admin/getAllUsers`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        } 
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const updateBanStatus = async (items) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/admin/updateBanStatus`,items)
-    return data.response
+    try{
+        const {data} = await api_call.post(`/admin/updateBanStatus`,items)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const updateTickStatus = async (items) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/admin/updateTickStatus`,items)
-    return data.response
+    try{
+        const {data} = await api_call.post(`/admin/updateTickStatus`,items)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const fetchSearchData = async (key) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/admin/fetchSearchData/${key}`)
-    return data.response
+    try{
+        const {data} = await api_call.get(`/admin/fetchSearchData/${key}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const fetchSearchPostData = async (key) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/admin/fetchSearchPostData/${key}`)
-    return data.response
+    try{
+        const {data} = await api_call.get(`/admin/fetchSearchPostData/${key}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const getAllPosts = async () => {
-    const {data} = await axios.get(`${process.env.react_app_server}/admin/getAllPost`)
-    return data.response
+    try{
+        const {data} = await api_call.get(`/admin/getAllPost`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const getAdminData = async (user_id) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/admin/getAdminData/${user_id}`)
-    return data
+    try{
+        const {data} = await api_call.get(`/admin/getAdminData/${user_id}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const payoutManageAdmin = async (items, type, admin_id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/admin/payoutManageAdmin/`,{items,type,admin_id})
-    return data.response
+    try{
+        const {data} = await api_call.post(`/admin/payoutManageAdmin/`,{items,type,admin_id})
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data.response
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const getDashboard = async (id) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/admin/getDashboard/${id}`)
-    return data
+    try{
+        const {data} = await api_call.get(`/admin/getDashboard/${id}`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            return data
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const sendNotification = async (type, message) => {
-    await axios.post(`${process.env.react_app_server}/admin/sendNotification`,{type, message})
+    try{
+        const {data} = await api_call.post(`/admin/sendNotification`,{type, message})
+        if(data.error){
+            errorAlert(data.error)
+            return false
+        }else{
+            successAlert("sending...")
+            return true
+        }
+    }catch(err){
+        errorAlert(err)
+    }
 }

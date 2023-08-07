@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import { acceptProposal, rejectPropsal } from '../../../../Api/ManagePoposals'
 import { useSelector } from 'react-redux'
 import { createChat } from '../../../../Api/Chat'
-import { errorAlert } from '../../../../Functions/Toasts'
+import { getSinglePosts } from '../../../../Api/FetchPosts'
 
 function ViewPost() {
 
@@ -16,9 +15,9 @@ function ViewPost() {
     const post_id = localStorage.getItem("client-view-post")
     useEffect(() => {
         const getSinglePost = async () => {
-            const {data} = await axios.get(process.env.react_app_server + "/client-post-view/"+post_id)
-            setPostData(data.postData)
-            setUserData(data.userData)
+            const response = await getSinglePosts(post_id)
+            setPostData(response.postData)
+            setUserData(response.userData)
         }
         getSinglePost()
     },[post_id])

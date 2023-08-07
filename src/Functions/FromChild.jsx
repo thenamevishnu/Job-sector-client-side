@@ -1,12 +1,13 @@
-import axios from "axios"
+
 import { errorAlert } from "./Toasts"
+import api_call from "../axios"
 
 export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
     if(data.hoursPerWeek){
         try{
             if(data.hoursPerWeek !== ""){
                 setData({hoursPerWeek:data.hoursPerWeek})
-                await axios.post(process.env.react_app_server + "/changeProfileData",{id,hoursPerWeek:data.hoursPerWeek},{withCredentials:true})
+                await api_call.post("/changeProfileData",{id,hoursPerWeek:data.hoursPerWeek},{withCredentials:true})
             }
         }catch(err){
             errorAlert(err.message)
@@ -16,7 +17,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
     if(data.language){
         try{
             if(data?.language?.lang && data?.language?.level){
-                const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,language:data.language},{withCredentials:true})
+                const response = await api_call.post("/changeProfileData",{id,language:data.language},{withCredentials:true})
                 if(!response.data.status){
                     errorAlert(response.data.message)
                 }else{
@@ -30,7 +31,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
 
     if(data.education){
         try{
-            const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,education:data.education},{withCredentials:true})
+            const response = await api_call.post("/changeProfileData",{id,education:data.education},{withCredentials:true})
             if(!response.data.status){
                 errorAlert(response.data.message)
             }else{
@@ -43,7 +44,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
 
     if(data.bio){
         try{
-            const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,bio:data.bio},{withCredentials:true})
+            const response = await api_call.post("/changeProfileData",{id,bio:data.bio},{withCredentials:true})
             if(!response.data.status){
                 errorAlert(response.data.message)
             }else{
@@ -56,7 +57,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
 
     if(data.skill){
         try{
-            const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,skill:data.skill},{withCredentials:true})
+            const response = await api_call.post("/changeProfileData",{id,skill:data.skill},{withCredentials:true})
             if(!response.data.status){
                 errorAlert(response.data.message)
             }else{
@@ -69,7 +70,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
 
     if(data.project){
         try{
-            const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,project:data.project},{withCredentials:true})
+            const response = await api_call.post("/changeProfileData",{id,project:data.project},{withCredentials:true})
             if(!response.data.status){
                 errorAlert(response.data.message)
             }else{
@@ -82,7 +83,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
 
     if(data.employment){
         try{
-            const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,employment:data.employment},{withCredentials:true})
+            const response = await api_call.post("/changeProfileData",{id,employment:data.employment},{withCredentials:true})
             if(!response.data.status){
                 errorAlert(response.data.message)
             }else{
@@ -95,7 +96,7 @@ export const fromChildResponse = async (data,id,{setData,updateData}) =>   {
 
     if(data.certificate){
         try{
-            const response = await axios.post(process.env.react_app_server + "/changeProfileData",{id,certificate:data.certificate},{withCredentials:true})
+            const response = await api_call.post("/changeProfileData",{id,certificate:data.certificate},{withCredentials:true})
             if(!response.data.status){
                 errorAlert(response.data.message)
             }else{

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../SocketContext'
@@ -10,7 +10,7 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
     const navigate = useNavigate()
     const {setSocket} = useContext(SocketContext)
     const [showchat,setShowChat] = goback
-
+    
     // useEffect(()=>{
     //     socket.emit("typing",selected?._id)
     // },[message,socket,selected?._id])

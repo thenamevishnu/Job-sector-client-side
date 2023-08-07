@@ -1,17 +1,51 @@
-import axios from "axios"
+
+import { errorAlert } from "../Functions/Toasts"
+import api_call from "../axios"
 
 export const latestPost = async () => {
-    const {data} = await axios.get(`${process.env.react_app_server}/getLatest`)
-    console.log(data);
-    return data.postData
+    try{
+        const {data} = await api_call.get(`/getLatest`)
+        if(data.error)
+            errorAlert(data.error)
+        else
+            return data.postData
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const fetchSinglePost = async (id) => {
-    const {data} = await axios.get(`${process.env.react_app_server}/get-single-post/${id}`)
-    return data?.postData[0]
+    try{
+        const {data} = await api_call.get(`/get-single-post/${id}`)
+        if(data.error)
+            errorAlert(data.error)
+        else
+            return data?.postData[0]
+    }catch(err){
+        errorAlert(err)
+    }
+}
+
+export const getSinglePosts = async (post_id) => {
+    try{
+        const {data} = await api_call.get("/client-post-view/"+post_id)
+        if(data.error)
+            errorAlert(data.error)
+        else
+            return data
+    }catch(err){
+        errorAlert(err)
+    }
 }
 
 export const getSearchPosts = async (search, filterData) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/search`,{search, filterData})
-    return data.response
+    try{
+        const {data} = await api_call.post(`/search`,{search, filterData})
+        if(data.error)
+            errorAlert(data.error)
+        else
+            return data.response
+    }catch(err){
+        errorAlert(err)
+    }
 }

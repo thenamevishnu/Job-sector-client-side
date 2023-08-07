@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
 import { errorAlert } from '../../../Functions/Toasts'
 import { useSelector } from 'react-redux';
 import { addConnection } from '../../../Functions/Profile';
 import { useNavigate } from 'react-router-dom';
+import { getUserData } from '../../../Api/user';
 
 function PublicProfile() {
 
@@ -18,7 +18,7 @@ function PublicProfile() {
         const id = localStorage.getItem("publicProfile")
         const fetchData = async () => {
             try{
-                const {data} = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
+                const {data} = await getUserData(id)
                 setUserId(data._id)
                 setUserData(data.profile)
             }catch(err){
@@ -30,7 +30,7 @@ function PublicProfile() {
         }else{
             navigate("/")
         }
-    },[])
+    },[navigate])
 
     const downloadPdf = async (fileUrl) => {
 

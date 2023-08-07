@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 import { errorAlert } from '../../../Functions/Toasts'
 import { useNavigate } from 'react-router-dom'
 import { changeAvailable, removeSaved } from '../../../Functions/Profile'
 import moment from 'moment'
 import { isSaved, saveJob } from '../../../Functions/Posts'
-import { changeSearchResults } from '../../../Api/user'
+import { changeSearchResults, getUserData } from '../../../Api/user'
 import {v4 as uuidv4} from "uuid"
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
+import api_call from '../../../axios'
 
 function Index() {
 
@@ -27,16 +27,17 @@ function Index() {
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const response1 = await axios.post(process.env.react_app_server + "/getUserData",{id},{withCredentials:true})
-                const response2 = await axios.get(process.env.react_app_server + showData)
-                if(!response1.data){
+                const response1 = await getUserData(id)
+                const response2 = await api_call.get(showData)
+                console.log(response1, response2);
+                if(!response1){
                     localStorage.removeItem("userStorage")
                     dispatch(updateUser({}))
                     navigate("/login")
                 }else{
-                    response1.data.profile.total_saved = response1?.data?.saved_jobs?.length
-                    setUserData(response1?.data?.profile)
-                    setSavedJobs(response1?.data?.saved_jobs)
+                    response1.profile.total_saved = response1?.saved_jobs?.length
+                    setUserData(response1?.profile)
+                    setSavedJobs(response1?.saved_jobs)
                     setPostData(response2?.data?.postData)
                 }
             }catch(err){
@@ -47,7 +48,7 @@ function Index() {
       if(searchContainer?.current){
         searchContainer.current.style.display = "none"
     }
-    },[id,showData,type])
+    },[id,showData,type,navigate,dispatch])
 
     const searchFlow = async (prefix) => {
         setSearch(prefix)

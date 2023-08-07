@@ -25,7 +25,7 @@ function Payments() {
                         <h1 className="whitespace-nowrap text-lg font-bold text-green-700">All Transactions</h1>
                         {userData?.transactions?.length > 0 ? userData?.transactions.map(item => {
                             return (
-                                <div className='col-span-12 border-2 border-gray-400 rounded-lg p-2' key={item?.pay_id}>
+                                <div className='col-span-12 border-2 border-gray-400 rounded-lg p-2' key={item?.time}>
                                     <p>Amount : ${item?.amount}</p>
                                     <p>Status : {item?.status}</p>
                                     <p>Time : {item?.time}</p>

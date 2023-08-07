@@ -19,6 +19,8 @@ function Balance() {
         }
         fetchData()
     },[id])
+    
+    
 
     useEffect(()=>{
         const getWithdrawalOptions = async () => {

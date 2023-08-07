@@ -105,12 +105,12 @@ function SearchPost() {
                         </label>
                         <select className='border-2 mb-2 w-4/12 border-gray-400 rounded-lg outline-none' onChange={async (e) => {await showResult({...filter,sort:e.target.value})}}>
                             <option value="0">Sort</option>
-                            <option value="latest" selected={sort==="latest" ? true : false}>Posted Time Latest</option>
-                            <option value="oldest" selected={sort==="oldest" ? true : false}>Posted Time Oldest</option>
-                            <option value="proposalsLow" selected={sort==="proposalsLow" ? true : false}>Proposals Low-High</option>
-                            <option value="proposalsHigh" selected={sort==="proposalsHigh" ? true : false}>Proposals High-Low</option>
-                            <option value="connectionsLow" selected={sort==="connectionsLow" ? true : false}>Connection Needed Low-High</option>
-                            <option value="connectionsHigh" selected={sort==="connectionsHigh" ? true : false}>Connection Needed High-Low</option>
+                            <option value="latest" defaultValue={sort==="latest" ? true : false}>Posted Time Latest</option>
+                            <option value="oldest" defaultValue={sort==="oldest" ? true : false}>Posted Time Oldest</option>
+                            <option value="proposalsLow" defaultValue={sort==="proposalsLow" ? true : false}>Proposals Low-High</option>
+                            <option value="proposalsHigh" defaultValue={sort==="proposalsHigh" ? true : false}>Proposals High-Low</option>
+                            <option value="connectionsLow" defaultValue={sort==="connectionsLow" ? true : false}>Connection Needed Low-High</option>
+                            <option value="connectionsHigh" defaultValue={sort==="connectionsHigh" ? true : false}>Connection Needed High-Low</option>
                         </select>
                     </div>
                     <section className='md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button' ref={searchContainer}>

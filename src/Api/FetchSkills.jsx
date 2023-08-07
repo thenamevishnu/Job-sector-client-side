@@ -1,8 +1,19 @@
-import axios from "axios"
+
+import { errorAlert } from "../Functions/Toasts"
+import api_call from "../axios"
 
 export const fetchSkills = async () => {
-    const {data} = await axios.get(`${process.env.react_app_server}/getAllUsersSkills`)
-    if(data.status){
-        return data?.skills
+    try{
+        const {data} = await api_call.get(`/getAllUsersSkills`)
+        if(data.error){
+            errorAlert(data.error)
+        }else{
+            if(data.status){
+                return data?.skills
+            }
+        }
+        
+    }catch(err){
+        errorAlert(err)
     }
 }

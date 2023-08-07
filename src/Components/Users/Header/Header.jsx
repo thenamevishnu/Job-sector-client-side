@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux'
 import { errorAlert } from '../../../Functions/Toasts'
 import { updateUser } from '../../../Redux/UserSlice/UserSlice';
+import { userAuth } from '../../../Api/user';
 
 function Header({icons}){
 
@@ -15,25 +15,25 @@ function Header({icons}){
     const [navToggle,setNavToggle] = useState(false)
     useEffect(()=>{
         
-      if(icons){
-          const userStorage = localStorage.getItem("userStorage")
+        if(icons){
+            const userStorage = localStorage.getItem("userStorage")
 
-          if(!userStorage) navigate("/login")
+            if(!userStorage) navigate("/login")
 
-          const getAuth = async () => {
-              try{
-                  const {data} = await axios.post(process.env.react_app_server + "/auth",{userStorage},{withCredentials:true})
-                  if(!data.status){
+            const getAuth = async () => {
+                try{
+                    const data = await userAuth(userStorage)
+                    if(!data.status){
                         localStorage.removeItem("userStorage")
                         navigate("/login")
-                  }
-              }catch(err){
-                  errorAlert(err.message)
-              }
-          }
+                    }
+                }catch(err){
+                    errorAlert(err.message)
+                }
+            }
 
-          getAuth()
-      }
+            getAuth()
+        }
 
   },[navigate,icons])
 

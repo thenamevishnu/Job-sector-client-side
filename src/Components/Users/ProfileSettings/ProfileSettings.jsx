@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "./ProfileSettings.css"
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom'
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
@@ -9,6 +8,8 @@ import {BioData, Certificate, Education, Employment, HoursPerWeek, Languages, Pr
 import { promiseAlert, errorAlert } from '../../../Functions/Toasts'
 import { fromChildResponse } from '../../../Functions/FromChild'
 import { deleteCertificate, deleteEducation, deleteEmployment, deleteLanguage, deleteProject, deleteSkill } from '../../../Functions/Profile'
+import { getUserData } from '../../../Api/user';
+import api_call from '../../../axios';
 
 function ProfileSettings() {
 
@@ -50,7 +51,7 @@ function ProfileSettings() {
             const myPromise = new Promise(resolve => {
                 setTimeout(async () => {
                     const endPoint = type==="image" ? "/update-profile-pic" : type==="audio" ? "/update-profile-audio" : "/update-profile-pdf"
-                    const {data} = await axios.post(process.env.react_app_server +""+endPoint, formData, config)
+                    const {data} = await api_call.post(endPoint, formData, config)
                     type==="image" ? promiseComplete({image:file}) : type === "audio" ? promiseComplete({audio:data.audio}) : promiseComplete({pdf:data.pdf})
                     const obj = type==="image" ? {...stateData,image:data.dp,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio} : type==="audio" ? {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:data.audio} : {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio,pdf:data.pdf}
                     dispatch(updateUser(obj))
@@ -69,7 +70,7 @@ function ProfileSettings() {
        
         const fetchData = async () => {
             try{
-                const {data} = await axios.post(process.env.react_app_server + "/getUserData",{id:stateData.id},{withCredentials:true})
+                const data = await getUserData(stateData.id)
                 setUserData(data.profile)
             }catch(err){
                 errorAlert(err.message)

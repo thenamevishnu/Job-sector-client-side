@@ -1,5 +1,6 @@
-import axios from "axios"
+
 import { errorAlert } from "./Toasts"
+import api_call from "../axios"
 
 export const googleAuth = async (userObject) => {
 
@@ -9,7 +10,7 @@ export const googleAuth = async (userObject) => {
         userData.email = userObject.email
         userData.password = process.env.react_app_googleAuthKey
 
-        const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
+        const {data} = await api_call.post("/login" ,{userData},{withCredentials:true})
     
         if(!data.status){
             errorAlert(data.message)

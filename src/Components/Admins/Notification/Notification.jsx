@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { successAlert } from '../../../Functions/Toasts'
 import { sendNotification } from '../../../Api/Admin'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,11 +10,12 @@ function Notification() {
 
     const handleNotification = async (e) => {
         e.preventDefault()
-        successAlert("sending...")
-        sendNotification(broadcastType, broadcast)
-        setTimeout(() => {
-            navigate("/admin")
-        }, 1400);
+        const status = await sendNotification(broadcastType, broadcast)
+        if(status){
+            setTimeout(() => {
+                navigate("/admin")
+            }, 1400);
+        }
     }
 
     return (

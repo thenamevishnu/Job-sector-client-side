@@ -1,51 +1,76 @@
-import axios from "axios"
+
+import api_call from "../axios"
 import { errorAlert, successAlert } from "./Toasts"
 
 export const deleteLanguage = async (obj,id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteLanguage:true,obj:obj,id:id})
-    if(data.status){
-        return data.languages
+    try{
+        const {data} = await api_call.post(`/changeProfileData`,{deleteLanguage:true,obj:obj,id:id})
+        if(data.status){
+            return data.languages
+        }
+    }catch(err){
+        errorAlert(err)
     }
 }
 
 export const deleteEducation = async (obj,id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteEducation:true,obj:obj,id:id})
-    if(data.status){
-        return data.educations
+    try{
+        const {data} = await api_call.post(`/changeProfileData`,{deleteEducation:true,obj:obj,id:id})
+        if(data.status){
+            return data.educations
+        }
+    }catch(err){
+        errorAlert(err)
     }
 }
 
 export const deleteSkill = async (value,id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteSkill:true,value:value,id:id})
-    if(data.status){
-        return data.skills
+    try{
+        const {data} = await api_call.post(`/changeProfileData`,{deleteSkill:true,value:value,id:id})
+        if(data.status){
+            return data.skills
+        }
+    }catch(err){
+        errorAlert(err)
     }
 }
 
 export const deleteProject = async (obj,id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteProject:true,obj:obj,id:id})
-    if(data.status){
-        return data.projects
+    try{
+        const {data} = await api_call.post(`/changeProfileData`,{deleteProject:true,obj:obj,id:id})
+        if(data.status){
+            return data.projects
+        }
+    }catch(err){
+        errorAlert(err)
     }
 }
 
 export const deleteEmployment = async (obj,id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteEmployment:true,obj:obj,id:id})
-    if(data.status){
-        return data.employments
+    try{
+        const {data} = await api_call.post(`/changeProfileData`,{deleteEmployment:true,obj:obj,id:id})
+        if(data.status){
+            return data.employments
+        }
+    }catch(err){
+        errorAlert(err)
     }
 }
 
 export const deleteCertificate = async (obj,id) => {
-    const {data} = await axios.post(`${process.env.react_app_server}/changeProfileData`,{deleteCertificate:true,obj:obj,id:id})
-    if(data.status){
-        return data.certificates
+    try{
+        const {data} = await api_call.post(`/changeProfileData`,{deleteCertificate:true,obj:obj,id:id})
+        if(data.status){
+            return data.certificates
+        }
+    }catch(err){
+        errorAlert(err)
     }
 }
 
 export const changeAvailable = async (checkStatus,id) => {
     try{
-        await axios.post(`${process.env.react_app_server}/changeProfileData`,{checkStatus:true,value:checkStatus,id:id})
+        await api_call.post(`/changeProfileData`,{checkStatus:true,value:checkStatus,id:id})
     }catch(err){
         errorAlert(err.message)
     }
@@ -53,7 +78,7 @@ export const changeAvailable = async (checkStatus,id) => {
 
 export const removeSaved = async (post_id,user_id,savedId) => {
     try{
-        const {data} = await axios.post(`${process.env.react_app_server}/removeSaved/${user_id}/${post_id}`)
+        const {data} = await api_call.post(`/removeSaved/${user_id}/${post_id}`)
         savedId.splice(savedId.indexOf(post_id),1)
         return {postData:data.postData,savedId:savedId}
     }catch(err){
@@ -63,7 +88,7 @@ export const removeSaved = async (post_id,user_id,savedId) => {
 
 export const addConnection = async (follower, to) => {
     try{
-        const {data} = await axios.post(`${process.env.react_app_server}/addConnection`,{follower:follower,to:to})
+        const {data} = await api_call.post(`/addConnection`,{follower:follower,to:to})
         if(data.status){
             successAlert(data.message)
         }else{
