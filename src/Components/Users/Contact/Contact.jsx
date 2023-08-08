@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { errorAlert, successAlert } from '../../../Functions/Toasts'
 import { contactMessage } from '../../../Api/user'
+import Loading from '../../Loading/Loading'
 
 function Contact() {
 
     const {name,email,id} = useSelector(state => state.user)
 
     const [userData,setUserData] = useState({id:id,email:email,name:name,subject:"",message:""})
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        userData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[userData])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -28,7 +36,8 @@ function Contact() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
+        <>
+        {loading ? <Loading/> : <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
             <div className="w-full p-6 m-auto bg-white md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Contact us</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>
@@ -45,7 +54,8 @@ function Contact() {
                     </div>
                 </form>
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 

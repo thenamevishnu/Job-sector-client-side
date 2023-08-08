@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { getUserData } from '../../../../Api/user'
 import { errorAlert } from '../../../../Functions/Toasts'
 import { fetchMyPosts } from '../../../../Api/FetchMyPosts'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../../Loading/Loading'
 
 function PublicClientProfile() {
 
@@ -12,6 +12,13 @@ function PublicClientProfile() {
     const navigate = useNavigate()
     const [userData,setUserData] = useState({})
     const [postData,setPostData] = useState([])
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        userData && postData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[userData,postData])
 
     useEffect(()=>{
         
@@ -31,7 +38,8 @@ function PublicClientProfile() {
     },[id])
 
     return (
-        <div className='container mx-auto grid grid-cols-12 gap-2 mt-20'>
+        <>
+        {loading ? <Loading/> : <div className='container mx-auto grid grid-cols-12 gap-2 mt-20'>
             <div className='md:col-span-4 col-span-12 text-center'>
                 <div className='p-3 border-2 border-gray-400 rounded-lg'>
                 <img className='rounded-full mx-auto w-20' src={`${process.env.react_app_cloud + userData?.profile?.image}`} alt='client profile pic'/>
@@ -61,7 +69,8 @@ function PublicClientProfile() {
                     }
                 </div>
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 

@@ -7,6 +7,7 @@ import { changeSearchResults, getUserData } from '../../../Api/user'
 import { isSaved, saveJob } from '../../../Functions/Posts'
 import SearchFilter from './SearchFilter'
 import {v4 as uuidv4} from "uuid"
+import Loading from '../../Loading/Loading'
 
 function SearchPost() {
     
@@ -28,6 +29,16 @@ function SearchPost() {
     const searchContainer = useRef(null)
     const [searchData,setResponses] = useState([])
     const [filter,setFilter] = useState({experience:experience?.split(",") ?? [],jobType:jobType?.split(",") ?? [],proposals:proposals?.split(",") ?? [],connections:connections?.split(",") ?? [],sort:sort ?? "rel"})
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        setTimeout(() => {
+            setLoading(false)
+            if(searchContainer.current){
+                searchContainer.current.style.display = "none"
+            }
+        }, 1000);
+    },[])
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -37,11 +48,11 @@ function SearchPost() {
             const user = await getUserData(id)
             setUserData(user)
             setSavedJobs(user.saved_jobs)
+            if(searchContainer.current){
+                searchContainer.current.style.display = "none"
+            }
         }
         fetchData()
-        if(searchContainer?.current){
-            searchContainer.current.style.display = "none"
-        }
     },[search,id, connections, jobType, proposals, experience, sort])
 
     const searchFlow = async (prefix) => {
@@ -94,6 +105,7 @@ function SearchPost() {
 
     return (
         <>
+        {loading ? <Loading/> :<>
             <div className='container grid mx-auto grid-cols-12 mt-20'>
                 {filter && <SearchFilter showResult={showResult} queries={filter} filters={{experience, jobType, proposals, connections}}/>}
                 <div className='col-span-8 p-3 relative'>
@@ -113,9 +125,9 @@ function SearchPost() {
                             <option value="connectionsHigh" defaultValue={sort==="connectionsHigh" ? true : false}>Connection Needed High-Low</option>
                         </select>
                     </div>
-                    <section className='md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button' ref={searchContainer}>
+                    <section className={searchData.length > 0 && `md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button`} ref={searchContainer}>
                     {
-                        searchData && searchData.map(items => {
+                        searchData?.length !== 0 && searchData.map(items => {
                                 return(
                                     <div key={items} className='text-start mb-0.5 p-2 rounded-xl whitespace-nowrap overflow-hidden cursor-pointer hover:shadow-button hover:bg-gray-100' onClick={()=>{setSearch(items); if(searchContainer?.current){
                                         searchContainer.current.style.display = "none"
@@ -157,7 +169,7 @@ function SearchPost() {
                                     </div>
                                     <div className='text-start mt-4'>Total Proposals : {obj.proposals?.length}</div>
                                     <div className='text-start mt-1'>Payments - ${obj.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {obj.auther[0]?.profile?.country}</div>
-                                    <div className='text-start mt-3'>Rating : {obj.auther[0]?.profile?.rating}
+                                    <div className='text-start mt-3'>Rating : {obj.auther[0]?.profile?.avgRating}/5
                                     </div>
                                 </div>  
                             </div>
@@ -166,6 +178,7 @@ function SearchPost() {
                     }
                 </div>
             </div>
+        </>}
         </>
     )
 }

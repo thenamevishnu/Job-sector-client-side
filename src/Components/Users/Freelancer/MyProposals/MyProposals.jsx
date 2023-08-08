@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getMyProposals } from '../../../../Api/FetchMyPosts'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../../Loading/Loading'
 
 function MyProposals() {
 
@@ -9,6 +10,13 @@ function MyProposals() {
     
     const {id} = useSelector(state => state.user)
     const [postData,setPostData] = useState([])
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        postData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[postData])
 
     useEffect(()=>{
         const api_call = async () => {
@@ -20,7 +28,8 @@ function MyProposals() {
 
 
     return (
-        <div className='container grid grid-cols-12 mt-20 mx-auto gap-2'>
+        <>
+        {loading ? <Loading/> : <div className='container grid grid-cols-12 mt-20 mx-auto gap-2'>
             {
                 postData.length > 0 ? postData.map(obj => {
                     return (
@@ -36,7 +45,8 @@ function MyProposals() {
                     )
                 }) : <div className='mt-20 text-center whitespace-nowrap col-span-12 text-lg '>No Proposals Found!</div>
             }
-        </div>
+        </div>}
+        </>
     )
 }
 

@@ -11,10 +11,19 @@ function Conversation ({selected,refreshList,socket,goback}) {
     const [messages,setMessages] = useState([])
     const containerRef = useRef(null)
     const [changeList,setChangeList] = refreshList
+    const [dataLoaded,setDataLoaded] = useState(false)
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        dataLoaded && setTimeout(() => {
+            setLoading(false)
+        }, 2000);
+    },[dataLoaded])
     
     useEffect(()=>{
         const getData = async () => {
             setMessages(await getMessagesByChat(selected?._id))
+            setDataLoaded(!dataLoaded)
             socket?.emit("join_chat",selected?._id)
         }
         selected && getData()
@@ -64,7 +73,7 @@ function Conversation ({selected,refreshList,socket,goback}) {
     return (
         <>
             {!selected && <Landing/>}
-            {selected && <SingleChat socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef}/>}
+            {selected && <SingleChat socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef} loading={loading}/>}
         </>
     )
 }

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { addSkills, postNewJob, removeSkills } from '../../../../Functions/Posts'
 import { useNavigate } from 'react-router-dom'
 import { fetchSkills } from '../../../../Api/FetchSkills'
+import Loading from '../../../Loading/Loading'
 
 function PostJob() {
 
@@ -20,6 +21,13 @@ function PostJob() {
     })
 
     const [AllSkills,setAllSkills] = useState([])
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[])
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -38,6 +46,7 @@ function PostJob() {
 
     return (
         <>
+            {loading ? <Loading/> : <>
             <div className="relative flex flex-col justify-center min-h-screen mt-4 overflow-hidden">
                 <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                     <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Post New job</h1>
@@ -114,6 +123,7 @@ function PostJob() {
                 
                 </div>
             </div>
+            </>}
         </>
         
     )

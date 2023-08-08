@@ -10,6 +10,7 @@ import { fromChildResponse } from '../../../Functions/FromChild'
 import { deleteCertificate, deleteEducation, deleteEmployment, deleteLanguage, deleteProject, deleteSkill } from '../../../Functions/Profile'
 import { getUserData } from '../../../Api/user';
 import api_call from '../../../axios';
+import Loading from '../../Loading/Loading';
 
 function ProfileSettings() {
 
@@ -22,6 +23,13 @@ function ProfileSettings() {
     const [promiseCheck,promiseComplete] = useState({})
     const [modal, showModal] = useState({})
     const audioRef = useRef(null)
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+       userData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[userData])
     
     useEffect(()=>{
         setFile(promiseCheck)
@@ -102,6 +110,7 @@ function ProfileSettings() {
 
     return (
         <>
+        {loading ? <Loading/> : <>
         {modal.hoursPerWeek && <HoursPerWeek data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}
         {modal.language && <Languages data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}
         {modal.education && <Education data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}    
@@ -344,7 +353,8 @@ function ProfileSettings() {
                 </div>
             </div>
         </div>
-    </>
+    </>}
+        </>
          )
 }
 

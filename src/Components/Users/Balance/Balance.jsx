@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { AddPaymentMethods, getUserData, withdrawSuccess } from '../../../Api/user'
 import { AddPaymentMethod, OnPaid, PaypalPay } from '../Modal/Modal'
 import { errorAlert, successAlert, warnAlert } from '../../../Functions/Toasts'
+import Loading from '../../Loading/Loading'
 
 function Balance() {
 
@@ -12,15 +13,20 @@ function Balance() {
     const [userData,setUserData] = useState({})
     const [method, setMethods] = useState([])
     const [showTick,showTickSuccess] = useState(false)
-   
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        userData && method && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[userData, method])
+
     useEffect(()=>{
         const fetchData = async () => {
             setUserData(await getUserData(id))
         }
         fetchData()
     },[id])
-    
-    
 
     useEffect(()=>{
         const getWithdrawalOptions = async () => {
@@ -65,6 +71,7 @@ function Balance() {
 
     return (
       <>
+      {loading ? <Loading/> : <>
       {modal.paypal && <PaypalPay data={modal} states={[modal, showModal]} getSuccess={handleDataFromChild}/>}
       {modal.addMethod && <AddPaymentMethod data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}
       {showTick && <OnPaid/>} 
@@ -162,7 +169,8 @@ function Balance() {
                 </div></>
                 }
             </div>  
-        </div></>
+        </div></>}
+      </>
     )
 }
 

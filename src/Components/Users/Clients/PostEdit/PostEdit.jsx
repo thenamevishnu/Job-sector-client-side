@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { addSkills, removeSkills, updateMyPost } from '../../../../Functions/Posts'
 import { fetchSinglePost } from '../../../../Api/FetchPosts'
 import { fetchSkills } from '../../../../Api/FetchSkills'
+import Loading from '../../../Loading/Loading'
 
 function PostEdit() {
     const navigate = useNavigate()
@@ -20,6 +21,14 @@ function PostEdit() {
     })
     const [AllSkills, setAllSkills] = useState([])
     const [skill,setSkill] = useState("")
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        post_id && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[post_id])
+
     useEffect(()=>{
         const fetchPostData = async () => {
             const posts = await fetchSinglePost(post_id)
@@ -45,7 +54,8 @@ function PostEdit() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center min-h-screen mt-4 overflow-hidden">
+        <>
+        {loading ? <Loading/> : <div className="relative flex flex-col justify-center min-h-screen mt-4 overflow-hidden">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">edit job</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>
@@ -120,7 +130,8 @@ function PostEdit() {
                 </form>
             
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 

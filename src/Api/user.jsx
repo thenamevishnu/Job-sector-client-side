@@ -204,3 +204,17 @@ export const userAuth = async (userStorage) => {
         errorAlert(err)
     }
 }
+
+export const setRateUser = async (user, user_id, rate) => {
+    try{
+        const {data} = await api_call.post("/rateUser",{user,user_id, rate})
+        if(data.error){
+            errorAlert(data.error)
+            return false
+        }else{
+            return true
+        }
+    }catch(err){
+        errorAlert(err)
+    }
+}

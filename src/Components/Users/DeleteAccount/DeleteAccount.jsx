@@ -3,6 +3,7 @@ import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { useSelector } from 'react-redux'
 import { deleteAccount, getUserData } from '../../../Api/user'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../Loading/Loading'
 
 function DeleteAccount() {
 
@@ -11,6 +12,13 @@ function DeleteAccount() {
     const [check,setCheck] = useState({})
     const [password,setPassword] = useState("")
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        userData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[userData])
 
     useEffect(()=>{
         const getData = async () => {
@@ -26,7 +34,8 @@ function DeleteAccount() {
     },[userData])
 
     return (
-        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <>
+        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
             <ProfileMenu active={{deleteAccount:true}}/>
             <div className='md:col-span-8 col-span-12 border-2 border-gray-400 rounded-lg p-3'>
                 <h1 className='text-lg text-green-700 font-bold'><i className='fa fa-trash'></i> Account Deletion</h1>
@@ -46,7 +55,8 @@ function DeleteAccount() {
                 </div>}
                 {check?.reason && <button className='mt-8 ml-5 bg-green-700 outline-none text-white p-1 px-2 rounded-lg hover:bg-green-900 shadow-button active:shadow-none' onClick={async ()=>await deleteAccount(id, email, password) && navigate("/login")}>Confirm To Delete</button>}
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 

@@ -5,6 +5,7 @@ import { isUri } from 'valid-url'
 import ModalDesign from './ModalDesign'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { Paypal } from '../Balance/Paypal'
+import { setRateUser } from '../../../Api/user'
 
 export function HoursPerWeek(props) {
 
@@ -21,6 +22,35 @@ export function HoursPerWeek(props) {
                 <option value="As needed - open to offers">As needed - open to offers</option>
                 <option value="None">None</option>
             </select>
+        </ModalDesign>
+    )
+}
+
+export function RateUser(props) {
+
+    const {data} = props
+    const [modal,showModal] = props.states
+    const [rate,setRates] = useState([])
+
+    const setRate = async (num) => {
+        const newArray = []
+        for(let i=0;i<num;i++){
+            newArray.push(true)
+        }
+        setRates(newArray)
+        await setRateUser(data.user, data.user_id, num)
+    }
+
+    return (
+        <ModalDesign action={[modal,showModal]} className={"w-11/12 sm:w-9/12 md:w-7/12 lg:w-2/12"}>
+            <h3 className='text-green-700 text-lg text-center mb-3'>{data.title}</h3>
+            <div className='flex justify-center items-center text-2xl mt-5'>
+                <i className={rate[0] ? 'fas fa-star text-green-800 cursor-pointer' : 'cursor-pointer far fa-star'} onClick={async ()=>await setRate(1)}></i>
+                <i className={rate[1] ? 'fas fa-star text-green-800 cursor-pointer' : 'cursor-pointer far fa-star'} onClick={async ()=>await setRate(2)}></i>
+                <i className={rate[2] ? 'fas fa-star text-green-800 cursor-pointer' : 'cursor-pointer far fa-star'} onClick={async ()=>await setRate(3)}></i>
+                <i className={rate[3] ? 'fas fa-star text-green-800 cursor-pointer' : 'cursor-pointer far fa-star'} onClick={async ()=>await setRate(4)}></i>
+                <i className={rate[4] ? 'fas fa-star text-green-800 cursor-pointer' : 'cursor-pointer far fa-star'} onClick={async ()=>await setRate(5)}></i>
+            </div>
         </ModalDesign>
     )
 }

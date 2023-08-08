@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { saveJob, sendProposal } from '../../../Functions/Posts'
 import moment from "moment"
 import { useNavigate } from 'react-router-dom'
+import api_call from '../../../axios'
+import Loading from '../../Loading/Loading'
 
 function JobView() {
     
@@ -12,11 +13,18 @@ function JobView() {
     const [postInfo,setPostInfo] = useState({})
     const [related,setRelated] = useState([])
     const [refresh,setRefresh] = useState(false)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(()=>{
+        postInfo && related && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[postInfo,related])
 
     useEffect(() => {
         const post_id = localStorage.getItem("post-id")
         const getSinglePost = async () => {
-            const {data} = await axios.get(process.env.react_app_server + "/get-single-post/"+post_id)
+            const {data} = await api_call.get("/get-single-post/"+post_id)
             setPostInfo(data.postData[0])
             setRelated(data.related)
         }
@@ -26,7 +34,7 @@ function JobView() {
     useEffect(() => {
         const post_id = localStorage.getItem("post-id")
         const getSinglePost = async () => {
-            const {data} = await axios.get(process.env.react_app_server + "/get-single-post/"+post_id)
+            const {data} = await api_call.get("/get-single-post/"+post_id)
             setPostInfo(data.postData[0])
             setRelated(data.related)
         }
@@ -34,8 +42,10 @@ function JobView() {
         window.scrollTo(0, 0)
     },[refresh])
 
+
     return (
         <>
+            {loading ? <Loading/> : <>
             <div className='container grid grid-cols-12 relative mx-auto mt-20 border-2 border-gray-400 rounded-xl'>
                 {!postInfo?.title && <div className='text-center text-lg col-span-12'>Post Disabled or Deleted!</div>}
 
@@ -59,7 +69,7 @@ function JobView() {
                             <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeedfrom}</div>
                             <div className='text-start mt-4 mb-4'>Total Proposals : {postInfo?.proposals?.length}</div>
                             <div className='text-start mt-1'>Payments - ${postInfo?.auther && postInfo?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {postInfo?.auther && postInfo?.auther[0]?.profile?.country}</div>
-                            <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.rating}</div>
+                            <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.avgRating}/5</div>
                             
                         </div>
 
@@ -105,7 +115,7 @@ function JobView() {
                                         </div>
                                     <div className='text-start mt-4 mb-4'>Total Proposals : {relatedPost?.proposals?.length}</div>
                                     <div className='text-start mt-1'>Payment verified - ${relatedPost?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> India</div>
-                                    <div className='text-start mt-3'>Rating : {relatedPost?.auther[0]?.profile?.rating}</div>
+                                    <div className='text-start mt-3'>Rating : {relatedPost?.auther[0]?.profile?.avgRating}/5</div>
                                 </div>  
                             )
                         })
@@ -113,6 +123,7 @@ function JobView() {
                 </div>
                 }
             </div>
+            </>}
         </>
         
     )

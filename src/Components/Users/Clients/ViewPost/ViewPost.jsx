@@ -5,6 +5,7 @@ import { acceptProposal, rejectPropsal } from '../../../../Api/ManagePoposals'
 import { useSelector } from 'react-redux'
 import { createChat } from '../../../../Api/Chat'
 import { getSinglePosts } from '../../../../Api/FetchPosts'
+import Loading from '../../../Loading/Loading'
 
 function ViewPost() {
 
@@ -13,6 +14,14 @@ function ViewPost() {
     const [postData,setPostData] = useState({})
     const [userData,setUserData] = useState([])
     const post_id = localStorage.getItem("client-view-post")
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        postData && userData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[postData,userData])
+    
     useEffect(() => {
         const getSinglePost = async () => {
             const response = await getSinglePosts(post_id)
@@ -32,7 +41,7 @@ function ViewPost() {
 
     return (
         <>
-        <div className='container grid grid-cols-12 border-2 border-gray-400 mx-auto mt-20 rounded-xl'>
+        {loading? <Loading/> : <><div className='container grid grid-cols-12 border-2 border-gray-400 mx-auto mt-20 rounded-xl'>
             {
                 !postData?.title && <div className='text-center col-span-12'>Post Disabled or Deleted!</div>
             } 
@@ -87,7 +96,7 @@ function ViewPost() {
                             )
                         })
                     }
-        </div>
+        </div></>}
         </>
     )
 }

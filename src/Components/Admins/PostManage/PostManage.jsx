@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { fetchSearchPostData, getAllPosts } from '../../../Api/Admin'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../Loading/Loading'
 
 function PostManage() {
 
     const [postData,setPostData] = useState([])
     const [search,setSearch] = useState("")
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        postData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[postData])
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -25,7 +33,9 @@ function PostManage() {
 
     return (
         <>
-            <div className='grid grid-cols-12 mt-20 mb-3'>
+            {
+                loading ? <Loading/> : <>
+                <div className='grid grid-cols-12 mt-20 mb-3'>
                 <div className='col-span-12 flex justify-center'>
                     <input className='lg:w-3/12 md:w-5/12 sm:w-7/12 w-10/12 p-2 border-2 border-gray-400 rounded-lg outline-none' placeholder='Search User...' type='text' value={search} onChange={async (e)=>{ setSearch(e.target.value); await fetchSearch(e.target.value)}}/>
                 </div>
@@ -69,6 +79,8 @@ function PostManage() {
                     }
                 </tbody>}
            </table>
+                </>
+            }
         </>
     )
 }

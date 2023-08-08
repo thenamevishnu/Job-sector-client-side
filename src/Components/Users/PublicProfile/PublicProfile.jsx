@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { addConnection } from '../../../Functions/Profile';
 import { useNavigate } from 'react-router-dom';
 import { getUserData } from '../../../Api/user';
+import Loading from '../../Loading/Loading';
 
 function PublicProfile() {
 
@@ -12,7 +13,13 @@ function PublicProfile() {
     const [userId,setUserId] = useState("")
     const {id} = useSelector(state => state.user)
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
     
+    useEffect(()=>{
+        userData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[userData])
 
     useEffect(()=>{
         const id = localStorage.getItem("publicProfile")
@@ -55,7 +62,8 @@ function PublicProfile() {
 
 
     return (
-        <>    
+        <>
+        {loading ? <Loading/> : <>    
         <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
 
 <div className='md:col-span-4 col-span-12'>
@@ -254,7 +262,8 @@ function PublicProfile() {
     </div>
 </div>
 </div>
-    </>
+    </>}
+        </>
          )
 }
 

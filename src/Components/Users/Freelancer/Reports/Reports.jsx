@@ -4,11 +4,19 @@ import { getUserReports } from '../../../../Api/user'
 import { useSelector } from 'react-redux'
 import {Chart as ChartJS,CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import Loading from '../../../Loading/Loading';
 
 function Reports() {
 
     const {id} = useSelector(state => state.user)
     const [reports,setReports] = useState([])
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        reports && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[reports])
 
     useEffect(()=>{
         const getReports = async () => {
@@ -59,7 +67,8 @@ function Reports() {
     })
 
     return (
-        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <>
+        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
             <ProfileMenu active={{myReports:true}}/>
             <div className='md:col-span-8 col-span-12 rounded-xl border-2 border-gray-400'>
                 <div className='container grid grid-cols-12 max-auto p-3 gap-1'>
@@ -103,7 +112,8 @@ function Reports() {
 
                 </div>
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 

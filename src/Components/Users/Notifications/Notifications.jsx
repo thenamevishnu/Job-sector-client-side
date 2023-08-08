@@ -2,11 +2,19 @@ import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import {useSelector} from "react-redux"
 import { changeNotifications, getUserData } from '../../../Api/user'
+import Loading from '../../Loading/Loading'
 
 function Notifications() {
 
     const {type,id} = useSelector(state => state.user)
     const [check,setCheck] = useState({})
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        check && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[check])
 
     useEffect(()=>{
         const getNotification = async () => {
@@ -21,7 +29,8 @@ function Notifications() {
     }
 
     return (
-        <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
+        <>
+        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
             <ProfileMenu active={{manageNotification:true}}/>
             <div className="col-span-12 md:col-span-8 border-2 border-gray-400 rounded-lg p-3">
                 <h1 className='text-green-700 font-bold mb-3 text-lg'>Promotional Messages</h1>
@@ -73,7 +82,8 @@ function Notifications() {
                 </div>
                   
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 

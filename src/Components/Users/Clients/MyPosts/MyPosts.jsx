@@ -4,6 +4,7 @@ import { changePostStatus, deletePost, fetchMyPosts, markAsCompletedPost } from 
 import { useNavigate } from 'react-router-dom'
 import { CompleteProject } from '../../Modal/Modal'
 import { errorAlert, successAlert } from '../../../../Functions/Toasts'
+import Loading from '../../../Loading/Loading'
 
 
 function MyPosts() {
@@ -12,6 +13,13 @@ function MyPosts() {
     const {id} = useSelector(state => state.user)
     const [postData,setPostData] = useState([])
     const [modal,showModal] = useState({})
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        postData && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[postData])
 
     useEffect(()=>{
         const api_call = async () => {
@@ -46,6 +54,7 @@ function MyPosts() {
   
     return (
         <>
+        {loading ? <Loading/> : <>
         {modal.CompleteProject && <CompleteProject data={modal} states={[modal,showModal]} callback={markAsCompleted}/>}
         <div className='container grid grid-cols-12 mx-auto mt-20 gap-2'>
             {
@@ -78,6 +87,7 @@ function MyPosts() {
                     })
                 }
             </div>
+        </>}
         </>
         
        

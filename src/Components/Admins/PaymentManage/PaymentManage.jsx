@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getAdminData, payoutManageAdmin } from '../../../Api/Admin'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../Loading/Loading'
 
 function PaymentManage() {
 
@@ -11,6 +12,13 @@ function PaymentManage() {
     const {admin_id} = useSelector(state => state.user)
 
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        payouts && setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    },[payouts])
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -25,7 +33,9 @@ function PaymentManage() {
     }
 
     return (
-        <div className='container grid grid-cols-12 mt-20 mx-auto gap-1'>
+        <>
+        {
+            loading ? <Loading/> : <div className='container grid grid-cols-12 mt-20 mx-auto gap-1'>
             {
                 payouts && payouts.map(items => {
                     return (
@@ -46,6 +56,8 @@ function PaymentManage() {
                 })
             }
         </div>
+        }
+        </>
     )
 }
 

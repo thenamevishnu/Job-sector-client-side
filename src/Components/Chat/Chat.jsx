@@ -15,6 +15,13 @@ function Chat() {
     const [chatSelected,selectedChat] = useState(null)
     const [changeList,setChangeList] = useState(null)
     const [showchat,setShowChat] = useState({list:true,conv:false})
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(()=>{
+        chatList && setTimeout(() => {
+            setLoading(false)
+        }, 2000);
+    },[chatList])
 
     useEffect(()=>{
        const fetchData = async () => {
@@ -40,35 +47,53 @@ function Chat() {
                  </div>
                  <div className='p-2 overflow-x-hidden overflow-y-scroll hideScrollBar mb-10'>
                      
-                     {
-                         chatList && chatList.map((obj) => {
-                             return (
-                                 <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!");}}>
-                                     <div className='flex items-center'>
-                                         <div className='relative'>
-                                             <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12"/>
-                                             {/* {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center items-center top-0 end-0 text-white'> {obj?.[obj?.users[0]?._id]} </div>} */}
-                                         </div>
-                                         {!obj?.users[0]?.profile?.full_name && <div className='ms-2'>
-                                             <div className='flex items-center'>Deleted Account</div>
-                                         </div>}
-                                         {obj?.users[0]?.profile?.full_name && <div className='ms-2'>
-                                             <div className='flex items-center'>{obj?.users[0]?.profile?.full_name} {obj?.users[0]?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
-                                             <div style={{fontSize:"0.73em"}}>{obj?.lastMessage?.length > 10 ? obj?.lastMessage?.substring(0,10)+"..." : obj?.lastMessage}</div>
-                                         </div>}
-                                     </div>
-                                     {obj?.users[0]?.profile?.full_name && <div className='absolute top-2 right-4'>
-                                         {(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}
-                                     </div>}
-                                 </div>
-                             )
-                         })
-                     }
-                     {
-                         chatList && chatList.length === 0 && <div className='border-2 rounded-lg p-2 text-center'>
-                         No Users Found!
-                         </div>
-                     }
+                    {
+                    loading ? <div className='overflow-x-hidden overflow-y-scroll hideScrollBar rounded-xl'>
+                        {
+                            [1,2,3,4,5].map(item => {
+                                return(
+                                    <div key={item} className='flex relative justify-between mt-2 px-3 items-center bg-gray-300 dark:bg-gray-400 animate-pulse rounded-xl w-full h-16'>
+                                        <div className='flex items-center bg-gray-400'>
+                                            <div className=' bg-gray-500 dark:bg-gray-500 animate-pulse rounded-full h-12 w-12 mr-2'></div>
+                                            <div>
+                                                <div className=' bg-gray-500 dark:bg-gray-500 animate-pulse rounded-lg h-4 w-36'></div>
+                                                <div className=' bg-gray-500 dark:bg-gray-500 animate-pulse rounded-lg h-3 w-26 mt-2'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        </div> : chatList && chatList.length === 0 ? <div className='border-2 rounded-lg p-2 text-center'>
+                        No Users Found!
+                        </div>
+                    : <>{
+
+                        chatList && chatList.map((obj) => {
+                            return (
+                                <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!");}}>
+                                    <div className='flex items-center'>
+                                        <div className='relative'>
+                                            <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12"/>
+                                            {/* {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center items-center top-0 end-0 text-white'> {obj?.[obj?.users[0]?._id]} </div>} */}
+                                        </div>
+                                        {!obj?.users[0]?.profile?.full_name && <div className='ms-2'>
+                                            <div className='flex items-center'>Deleted Account</div>
+                                        </div>}
+                                        {obj?.users[0]?.profile?.full_name && <div className='ms-2'>
+                                            <div className='flex items-center'>{obj?.users[0]?.profile?.full_name} {obj?.users[0]?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
+                                            <div style={{fontSize:"0.73em"}}>{obj?.lastMessage?.length > 10 ? obj?.lastMessage?.substring(0,10)+"..." : obj?.lastMessage}</div>
+                                        </div>}
+                                    </div>
+                                    {obj?.users[0]?.profile?.full_name && <div className='absolute top-2 right-4'>
+                                        {(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}
+                                    </div>}
+                                </div>
+                            )
+                        })                        
+
+                    }
+                    </>}
                  </div>
  
              </div>
