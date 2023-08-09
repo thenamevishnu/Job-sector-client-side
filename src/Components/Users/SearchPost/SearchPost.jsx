@@ -8,6 +8,7 @@ import { isSaved, saveJob } from '../../../Functions/Posts'
 import SearchFilter from './SearchFilter'
 import {v4 as uuidv4} from "uuid"
 import Loading from '../../Loading/Loading'
+import Footer from '../Footer/Footer'
 
 function SearchPost() {
     
@@ -42,8 +43,8 @@ function SearchPost() {
 
     useEffect(()=>{
         const fetchData = async () => {
-            const obj = {experience: experience , proposals:proposals , connections:connections , jobType:jobType , sort: sort}
-            setFilter(obj)
+            const obj = {experience: experience ?? [] , proposals:proposals ?? [] , connections:connections ?? [] , jobType:jobType ?? [] , sort: sort}
+            setFilter({experience:experience?.split(",") ?? [],jobType:jobType?.split(",") ?? [],proposals:proposals?.split(",") ?? [],connections:connections?.split(",") ?? [],sort:sort})
             setPostData(await getSearchPosts(search, obj))
             const user = await getUserData(id)
             setUserData(user)
@@ -109,23 +110,23 @@ function SearchPost() {
             <div className='container grid mx-auto grid-cols-12 mt-20'>
                 {filter && <SearchFilter showResult={showResult} queries={filter} filters={{experience, jobType, proposals, connections}}/>}
                 <div className='col-span-8 p-3 relative'>
-                    <div className='flex justify-between'>
-                        <label className='w-8/12 relative' htmlFor='search'>
-                            <input type='text' className='p-2 mb-2 w-8/12 rounded-ss-xl rounded-es-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
-                            
-                            <i className='fa fa-search p-3.5 text-white bg-gray-600 rounded-ee-xl rounded-se-xl cursor-pointer' onClick={()=>showResult()}></i>
+                    <div className='flex justify-between relative'>
+                        <label className='w-full mr-2 relative' htmlFor='search'>
+                            <input type='text' className='p-2 mb-2 w-full rounded-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
+                            <i className='fa fa-search absolute right-0.5 top-0.5 px-3.5 py-2.5 bg-white text-gray-600 rounded-xl cursor-pointer' onClick={()=>showResult()}></i>
                         </label>
-                        <select className='border-2 mb-2 w-4/12 border-gray-400 rounded-lg outline-none' onChange={async (e) => {await showResult({...filter,sort:e.target.value})}}>
+                        
+                        <select value={sort ?? ""} className='border-2 mb-2 lg:4/12 md:w-3/12 w-3/12 border-gray-400 rounded-lg outline-none' onChange={async (e) => {await showResult({...filter,sort:e.target.value})}}>
                             <option value="0">Sort</option>
-                            <option value="latest" defaultValue={sort==="latest" ? true : false}>Posted Time Latest</option>
-                            <option value="oldest" defaultValue={sort==="oldest" ? true : false}>Posted Time Oldest</option>
-                            <option value="proposalsLow" defaultValue={sort==="proposalsLow" ? true : false}>Proposals Low-High</option>
-                            <option value="proposalsHigh" defaultValue={sort==="proposalsHigh" ? true : false}>Proposals High-Low</option>
-                            <option value="connectionsLow" defaultValue={sort==="connectionsLow" ? true : false}>Connection Needed Low-High</option>
-                            <option value="connectionsHigh" defaultValue={sort==="connectionsHigh" ? true : false}>Connection Needed High-Low</option>
+                            <option value="latest">Posted Time Latest</option>
+                            <option value="oldest">Posted Time Oldest</option>
+                            <option value="proposalsLow">Proposals Low-High</option>
+                            <option value="proposalsHigh" >Proposals High-Low</option>
+                            <option value="connectionsLow">Connection Needed Low-High</option>
+                            <option value="connectionsHigh">Connection Needed High-Low</option>
                         </select>
                     </div>
-                    <section className={searchData.length > 0 && `md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button`} ref={searchContainer}>
+                    {searchData.length > 0 && <section className="md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button" ref={searchContainer}>
                     {
                         searchData?.length !== 0 && searchData.map(items => {
                                 return(
@@ -135,7 +136,7 @@ function SearchPost() {
                                 )
                         })
                     }
-                    </section>
+                    </section>}
                     {
                         postData?.length > 0 ? postData.map(obj => {
                             return(
@@ -145,7 +146,7 @@ function SearchPost() {
                                         <div className='text-green-700 text-start' style={{fontSize:"1.2em",maxWidth:"35em"}} onClick={()=>{localStorage.setItem("post-id",obj._id); navigate("/post-view")}}>{obj.title}</div>
                                     </div>
                                     <div className='p-3'>
-                                        <i className='far fa-thumbs-down me-3 bg-gray-300 rounded-full p-3 text-green-700'></i>
+                                        {/* <i className='far fa-thumbs-down me-3 bg-gray-300 rounded-full p-3 text-green-700'></i> */}
                                         <i className={isSaved(saved_jobs,obj._id) ? 'fas fa-heart bg-gray-300 rounded-full p-3 text-green-700' : savedId?.includes(obj._id) ? 'fas fa-heart bg-gray-300 rounded-full p-3 text-green-700' : 'far fa-heart bg-gray-300 rounded-full p-3 text-green-700'} onClick={async ()=>{
                                             const saved = await saveJob(obj._id,id,userData); 
                                             setUserData({...userData, total_saved: saved}); 
@@ -178,6 +179,7 @@ function SearchPost() {
                     }
                 </div>
             </div>
+            <Footer />
         </>}
         </>
     )

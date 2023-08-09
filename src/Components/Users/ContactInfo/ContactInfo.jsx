@@ -16,11 +16,12 @@ function ContactInfo() {
 
     return (
         <>
-        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
+        <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
             <ProfileMenu active={{contactInfo:true}}/>
                     
-                <div className='md:col-span-8 col-span-12'>
-                    <div className='relative border-2 border-gray-400 p-3 mb-2 rounded-xl'>
+                <div className='md:col-span-8 col-span-12 relative'>
+                {loading ? <Loading/> : <>
+                <div className='relative border-2 border-gray-400 p-3 mb-2 rounded-xl'>
 
                         <h3 className=' font-bold text-green-700 block text-xl mb-2'>Contact Info</h3>  
                         <div className='ml-5'>
@@ -47,9 +48,10 @@ function ContactInfo() {
                         </div>
 
                     </div>
+                </>}
                 
                 </div>  
-        </div>}
+        </div>
         </>
     )
 }

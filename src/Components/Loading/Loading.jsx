@@ -3,7 +3,7 @@ import "./Loading.css"
 
 function Loading() {
     return (
-        <div className='w-screen h-screen flex justify-center items-center'>
+        <div className='absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]'>
            <div className='loader'>
 
 </div>

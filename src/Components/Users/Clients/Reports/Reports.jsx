@@ -70,10 +70,11 @@ function Reports() {
 
     return (
         <>
-        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
             <ProfileMenu active={{myReports:true}}/>
-            <div className='md:col-span-8 col-span-12 rounded-xl border-2 border-gray-400'>
-                <div className='container grid grid-cols-12 max-auto p-3 gap-1'>
+            <div className='md:col-span-8 col-span-12 rounded-xl relative border-2 border-gray-400'>
+            {loading ? <Loading/> : 
+            <div className='container grid grid-cols-12 max-auto p-3 gap-1'>
                     <div className='col-span-12 xs:col-span-6 sm:col-span-6 lg:col-span-4 text-lg text-center rounded-lg border-2 border-violet-800 p-3 text-violet-800'>
                         <p className='mb-3'>Total Posts</p>
                         <p>{reports && reports?.total_post}</p>
@@ -99,9 +100,9 @@ function Reports() {
                         <Bar options={options} data={data} />
                     </div>
 
-                </div>
+                </div>}
             </div>
-        </div>}
+        </div>
         </>
     )
 }

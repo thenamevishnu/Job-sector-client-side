@@ -11,6 +11,7 @@ import { deleteCertificate, deleteEducation, deleteEmployment, deleteLanguage, d
 import { getUserData } from '../../../Api/user';
 import api_call from '../../../axios';
 import Loading from '../../Loading/Loading';
+import Footer from '../Footer/Footer';
 
 function ProfileSettings() {
 
@@ -353,6 +354,7 @@ function ProfileSettings() {
                 </div>
             </div>
         </div>
+        <Footer />
     </>}
         </>
          )

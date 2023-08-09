@@ -113,7 +113,26 @@ function Chat() {
                  </div>
                  <div className='p-2 overflow-x-hidden overflow-y-scroll hideScrollBar mb-10'>
                      
-                     {
+                     {loading ? <div className='overflow-x-hidden overflow-y-scroll hideScrollBar rounded-xl'>
+                        {
+                            [1,2,3,4,5].map(item => {
+                                return(
+                                    <div key={item} className='flex relative justify-between mt-2 px-3 items-center bg-gray-300 dark:bg-gray-400 animate-pulse rounded-xl w-full h-16'>
+                                        <div className='flex items-center bg-gray-400'>
+                                            <div className=' bg-gray-500 dark:bg-gray-500 animate-pulse rounded-full h-12 w-12 mr-2'></div>
+                                            <div>
+                                                <div className=' bg-gray-500 dark:bg-gray-500 animate-pulse rounded-lg h-4 w-36'></div>
+                                                <div className=' bg-gray-500 dark:bg-gray-500 animate-pulse rounded-lg h-3 w-26 mt-2'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        </div> : chatList && chatList.length === 0 ? <div className='border-2 rounded-lg p-2 text-center'>
+                        No Users Found!
+                        </div>
+                    : <>{
                          chatList && chatList.map((obj) => {
                              return (
                                  <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!"); (window.innerWidth <= 768 && obj?.users[0]?.profile?.full_name) && setShowChat({...showchat,list:!showchat.list,conv:!showchat.conv})}}>
@@ -136,12 +155,8 @@ function Chat() {
                                  </div>
                              )
                          })
-                     }
-                     {
-                         chatList && chatList.length === 0 && <div className='border-2 rounded-lg p-2 text-center'>
-                         No Users Found!
-                         </div>
-                     }
+                     }</>
+                        }
                  </div>
  
              </div>}

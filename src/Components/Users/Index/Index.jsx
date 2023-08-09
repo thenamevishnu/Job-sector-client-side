@@ -10,6 +10,7 @@ import {v4 as uuidv4} from "uuid"
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
 import api_call from '../../../axios'
 import Loading from '../../Loading/Loading'
+import Footer from '../Footer/Footer'
 
 function Index() {
 
@@ -88,24 +89,25 @@ function Index() {
      
     return (
        <>
-       {loading ? <Loading/> :  <div className='container grid grid-cols-12 mx-auto text-center mt-20 gap-1'>
+       {loading ? <Loading/> :  <><div className='container grid grid-cols-12 mx-auto text-center mt-20 gap-1'>
             <div className='md:col-span-8 col-span-12 relative'>
-                <label className='w-full relative' htmlFor='search'>
-                    <input type='text' className='p-2 md:w-6/12 w-11/12  rounded-ss-xl rounded-es-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
+                <label className='relative' htmlFor='search'>
+                    <input type='text' className='p-2 w-full outline-none rounded-xl border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
                     
-                    <i className='fa fa-search p-3 text-white bg-gray-600 rounded-ee-xl rounded-se-xl cursor-pointer' onClick={()=>showResult()}></i>
+                    
                 </label>
-                <section className={search.length > 0 && `md:left-1/4 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-6/12 w-11/12 p-3 bg-white absolute rounded-xl shadow-button`} ref={searchContainer}>
+                <i className='fa fa-search p-2 bg-white text-gray-700 absolute top-1 right-1 rounded-xl cursor-pointer' onClick={()=>showResult()}></i>
+                {search.length > 0 && <section className="max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 w-full bg-white absolute rounded-xl shadow-button" ref={searchContainer}>
                 {
                      search && search.map(items => {
                             return(
                                 <div key={items} className='text-start border-2 mb-0.5 border-gray-200 rounded-xl p-1 whitespace-nowrap overflow-hidden cursor-pointer hover:bg-slate-300' onClick={()=>{setSearch(items); if(searchContainer?.current){
                                     searchContainer.current.style.display = "none"
-                                }}}><span className='text-green-700'>{searchValue}</span>{items.slice(searchValue.length)}</div>
+                                }}}><span className='text-red-700'>{searchValue}</span>{items.slice(searchValue.length)}</div>
                             )
                      })
                 }
-                </section>
+                </section>}
             <div className="mt-3">
                 <div className='border-2 border-gray-400 rounded-xl'>
                     <h4 className='text-start p-3 font-bold'>{type === "freelancer" ? "Jobs you might like" : "Job Board"}</h4>
@@ -132,7 +134,7 @@ function Index() {
                                     <i className='fa fa-trash me-3' title='remove from saved list' onClick={async ()=>{const info = await removeSaved(obj._id,id,savedId); setPostData(info.postData); setUserData({...userData,total_saved:userData?.total_saved - 1})}}></i>
                                 </div>}
                                 {showData !== "/getSavedPost/"+id+"" && <div className='p-3'>
-                                    <i className='far fa-thumbs-down me-3 bg-gray-300 rounded-full p-3 text-green-700'></i>
+                                    {/* <i className='far fa-thumbs-down me-3 bg-gray-300 rounded-full p-3 text-green-700'></i> */}
                                     <i className={isSaved(saved_jobs,obj._id) ? 'fas fa-heart bg-gray-300 rounded-full p-3 text-green-700' : savedId?.includes(obj._id) ? 'fas fa-heart bg-gray-300 rounded-full p-3 text-green-700' : 'far fa-heart bg-gray-300 rounded-full p-3 text-green-700'} onClick={async ()=>{
                                         const saved = await saveJob(obj._id,id,userData); 
                                         console.log(saved);
@@ -202,7 +204,9 @@ function Index() {
             </div>}
             </div>
             
-        </div>}
+        </div>
+        <Footer />
+        </>}
        </>
     )
 }

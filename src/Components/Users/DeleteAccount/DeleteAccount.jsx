@@ -35,10 +35,11 @@ function DeleteAccount() {
 
     return (
         <>
-        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
             <ProfileMenu active={{deleteAccount:true}}/>
-            <div className='md:col-span-8 col-span-12 border-2 border-gray-400 rounded-lg p-3'>
-                <h1 className='text-lg text-green-700 font-bold'><i className='fa fa-trash'></i> Account Deletion</h1>
+            <div className='md:col-span-8 col-span-12 border-2 border-gray-400 rounded-lg p-3 relative'>
+            {loading ? <Loading/> : <>
+            <h1 className='text-lg text-green-700 font-bold'><i className='fa fa-trash'></i> Account Deletion</h1>
                 <h2 className='mt-8'>I want to close my account</h2>
                 <ul className='mt-4'>
                     <li className='flex items-center ms-5 mb-2'><label htmlFor='input1' className={check?.id === 1 ? 'bg-green-700 inner-check me-2 cursor-pointer' : 'inner-check me-2 cursor-pointer'} onClick={()=>setCheck({id:1,reason:'I have created a second account'})}><input type='check' className='hidden' id="input1"></input></label> I have created a second account</li>
@@ -54,8 +55,11 @@ function DeleteAccount() {
                     <input type='text' hidden className='p-2 border-2 ml-5 mt-5 border-gray-400 rounded-lg outline-none' placeholder='Enter password' value={process.env.react_app_googleAuthKey} />
                 </div>}
                 {check?.reason && <button className='mt-8 ml-5 bg-green-700 outline-none text-white p-1 px-2 rounded-lg hover:bg-green-900 shadow-button active:shadow-none' onClick={async ()=>await deleteAccount(id, email, password) && navigate("/login")}>Confirm To Delete</button>}
+           
+        
+            </>}
             </div>
-        </div>}
+            </div>
         </>
     )
 }

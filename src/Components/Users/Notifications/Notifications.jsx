@@ -6,7 +6,7 @@ import Loading from '../../Loading/Loading'
 
 function Notifications() {
 
-    const {type,id} = useSelector(state => state.user)
+    const {id} = useSelector(state => state.user)
     const [check,setCheck] = useState({})
     const [loading, setLoading] = useState(true)
     
@@ -30,10 +30,11 @@ function Notifications() {
 
     return (
         <>
-        {loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
+        <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
             <ProfileMenu active={{manageNotification:true}}/>
-            <div className="col-span-12 md:col-span-8 border-2 border-gray-400 rounded-lg p-3">
-                <h1 className='text-green-700 font-bold mb-3 text-lg'>Promotional Messages</h1>
+            <div className="col-span-12 md:col-span-8 border-2 border-gray-400 rounded-lg p-3 relative">
+            {loading ? <Loading/> : <>
+            <h1 className='text-green-700 font-bold mb-3 text-lg'>Promotional Messages</h1>
                 <div className='flex items-center'>
                     <label className={check?.promotional ? "bg-green-700 inner-check me-2" : "inner-check me-2"} onClick={()=>{setCheck({...check,promotional:true}); changeNotification()}}>
                         <input type='radio' className='hidden'/>
@@ -80,9 +81,9 @@ function Notifications() {
                         <input type='radio' className='hidden'/>
                     </label>No
                 </div>
-                  
+            </>}
             </div>
-        </div>}
+        </div>
         </>
     )
 }

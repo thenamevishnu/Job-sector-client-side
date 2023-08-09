@@ -31,11 +31,11 @@ function PasswordSecurity() {
 
     return (
         <>
-            {
-                loading ? <Loading/> : <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+           <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
                 <ProfileMenu active={{passwordSecurity:true}}/>
-                    <div className="md:col-span-8 col-span-12">
-                        <div className='grid grid-cols-12 mx-auto container'>
+                    <div className="md:col-span-8 col-span-12 relative">
+                    {
+                loading ? <Loading/> : <div className='grid grid-cols-12 mx-auto container'>
                             
                             <div className='col-span-12 border-2 border-gray-400 rounded-lg p-3'>
                                 <h1 className='text-lg text-green-700 font-bold'>Authentication Options</h1>
@@ -75,11 +75,10 @@ function PasswordSecurity() {
                                
                             </div>
     
-                        </div>
+                        </div>}
                     </div>
     
                 </div>
-            }
         </>
     )
 }

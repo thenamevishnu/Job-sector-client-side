@@ -6,6 +6,7 @@ import { fetchMyPosts } from '../../../../Api/FetchMyPosts'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../../Loading/Loading'
+import Footer from '../../Footer/Footer'
 
 function ClientProfile() {
 
@@ -36,7 +37,7 @@ function ClientProfile() {
 
     return (
         <>
-            {loading ? <Loading/> : <div className='container mx-auto grid grid-cols-12 gap-2 mt-20'>
+            {loading ? <Loading/> : <><div className='container mx-auto grid grid-cols-12 gap-2 mt-20'>
             <div className='md:col-span-4 col-span-12 text-center'>
                 <div className='p-3 border-2 border-gray-400 rounded-lg'>
                 <img className='rounded-full mx-auto w-20' src={`${process.env.react_app_cloud + userData?.profile?.image}`} alt='client profile pic'/>
@@ -66,7 +67,9 @@ function ClientProfile() {
                     }
                 </div>
             </div>
-        </div>}
+        </div>
+        <Footer /></>
+        }
         </>
     )
 }

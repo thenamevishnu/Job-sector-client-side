@@ -10,7 +10,7 @@ function SearchFilter({showResult, queries, filters}) {
     const [check,setCheck] = useState(queries)
     
     const Filter = (text,field) => {
-        if(!check[field].includes(text)){
+        if(!check[field]?.includes(text)){
             if(field === "connections" || field === "proposals"){
                 check[field]?.shift()
             }
@@ -18,7 +18,7 @@ function SearchFilter({showResult, queries, filters}) {
             setCheck({...check,[field]:check[field]})
             showResult(check)
         }else{
-            check[field].splice(check[field].indexOf(text),1)
+            check[field]?.splice(check[field]?.indexOf(text),1)
             setCheck({...check,[field]:check[field]})
             showResult(check)
         }

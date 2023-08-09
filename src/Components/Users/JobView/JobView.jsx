@@ -5,6 +5,7 @@ import moment from "moment"
 import { useNavigate } from 'react-router-dom'
 import api_call from '../../../axios'
 import Loading from '../../Loading/Loading'
+import Footer from '../Footer/Footer'
 
 function JobView() {
     
@@ -73,7 +74,7 @@ function JobView() {
                             
                         </div>
 
-                        <div className="lg:col-span-3 md:col-span-4 md:block hidden p-3">
+                        <div className="lg:col-span-3 md:col-span-4 col-span-12 p-3">
                             <div className='border-2 border-gray-400 rounded-xl p-2'>
                                 <div className='flex justify-center'>
                                     <img className='rounded-full cursor-pointer' src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em" onClick={()=>{localStorage.setItem("publicProfileClient",postInfo?.auther[0]?._id); navigate("/client-profile")}}/>
@@ -123,6 +124,7 @@ function JobView() {
                 </div>
                 }
             </div>
+            <Footer />
             </>}
         </>
         
