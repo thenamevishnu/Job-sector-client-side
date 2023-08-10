@@ -2,6 +2,7 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import api_call from "../../../axios";
 
 const style = {"layout":"vertical"};
 
@@ -32,7 +33,7 @@ export const Paypal = ({ currency, showSpinner, amount , getSuccess , action}) =
                 disabled={false}
                 forceReRender={[amount, currency, style]}
                 fundingSource={undefined}
-                createOrder={(data, actions) => {
+                createOrder={async (data, actions) => {
                     return actions.order
                         .create({
                             purchase_units: [
@@ -46,11 +47,10 @@ export const Paypal = ({ currency, showSpinner, amount , getSuccess , action}) =
                             ],
                         })
                         .then((orderId) => {
-                            // Your code here after create the order
                             return orderId;
                         });
                 }}
-                onApprove={function (data, actions) {
+                onApprove={async function (data, actions) {
                     return actions.order.capture().then(async function () {
                         const obj = {
                             pay_id: data.orderID,
@@ -58,8 +58,8 @@ export const Paypal = ({ currency, showSpinner, amount , getSuccess , action}) =
                             currency:currency,
                             user_id:id
                         }
-                        const response = await axios.post(`${process.env.react_app_server}/onPaymentCompleted`,obj,{withCredentials:true})
-                        getSuccess({amountPaid:amount,transactions:response.data.transactions})
+                        const response = await api_call.post(`/onPaymentCompleted`,obj,{withCredentials:true})
+                        await getSuccess({amountPaid:amount,transactions:response.data.transactions})
                         showModal(!modal)
                     });
                 }}
