@@ -1,7 +1,6 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import api_call from "../../../axios";
 
 const style = {"layout":"vertical"};
