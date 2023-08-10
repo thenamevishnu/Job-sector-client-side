@@ -13,7 +13,7 @@ function Reset() {
 
     useEffect(()=>{
         const resetKey = localStorage.getItem("resetKey") ? JSON.parse(localStorage.getItem("resetKey")) : null
-        if(!resetKey.key){
+        if(!resetKey?.key){ 
             navigate("/login")
         }
     })
