@@ -70,6 +70,7 @@ function JobView() {
                             <div className='text-start mt-4 mb-4'>Connections Need : {postInfo?.connectionsNeedfrom}</div>
                             <div className='text-start mt-4 mb-4'>Total Proposals : {postInfo?.proposals?.length}</div>
                             <div className='text-start mt-1'>Payments - ${postInfo?.auther && postInfo?.auther[0]?.spent} Spent | <i className='fa fa-location-dot'></i> {postInfo?.auther && postInfo?.auther[0]?.profile?.country}</div>
+                            {console.log(postInfo?.auther)}
                             <div className='text-start mt-3'>Rating : {postInfo?.auther && postInfo?.auther[0]?.profile?.avgRating}/5</div>
                             
                         </div>

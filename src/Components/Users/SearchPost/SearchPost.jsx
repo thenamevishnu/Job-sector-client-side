@@ -126,17 +126,17 @@ function SearchPost() {
                             <option value="connectionsHigh">Connection Needed High-Low</option>
                         </select>
                     </div>
-                    {searchData.length > 0 && <section className="md:right-1/2 left-6 max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 md:w-8/12 w-11/12 p-3 bg-white border-gray-400 absolute rounded-xl shadow-button" ref={searchContainer}>
-                    {
-                        searchData?.length !== 0 && searchData.map(items => {
-                                return(
-                                    <div key={items} className='text-start mb-0.5 p-2 rounded-xl whitespace-nowrap overflow-hidden cursor-pointer hover:shadow-button hover:bg-gray-100' onClick={()=>{setSearch(items); if(searchContainer?.current){
-                                        searchContainer.current.style.display = "none"
-                                    }}}><span className='text-green-700'>{searchValue}</span>{items.slice(searchValue.length)}</div>
-                                )
-                        })
-                    }
-                    </section>}
+                    {searchData.length > 0 && <section className="w-1/2 max-h-80 border-2 top-[3.35rem] border-gray-400 overflow-x-hidden overflow-y-scroll hideScrollBar bg-white absolute rounded-xl shadow-button" ref={searchContainer}>
+                {
+                     searchData && searchData.map(items => {
+                            return(
+                                <div key={items} className='text-start mb-0.5 p-1 whitespace-nowrap overflow-hidden cursor-pointer hover:bg-slate-300' onClick={()=>{setSearch(items); if(searchContainer?.current){
+                                    searchContainer.current.style.display = "none"
+                                }}}><span className='text-red-700'>{searchValue}</span>{items.slice(searchValue.length)}</div>
+                            )
+                     })
+                }
+                </section>}
                     {
                         postData?.length > 0 ? postData.map(obj => {
                             return(

@@ -97,11 +97,11 @@ function Index() {
                     
                 </label>
                 <i className='fa fa-search p-2 bg-white text-gray-700 absolute top-1 right-1 rounded-xl cursor-pointer' onClick={()=>showResult()}></i>
-                {search.length > 0 && <section className="max-h-80 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 w-full bg-white absolute rounded-xl shadow-button" ref={searchContainer}>
+                {search.length > 0 && <section className="max-h-80 border-gray-400 overflow-x-hidden overflow-y-scroll hideScrollBar border-2 w-1/2 bg-white absolute rounded-xl shadow-button" ref={searchContainer}>
                 {
                      search && search.map(items => {
                             return(
-                                <div key={items} className='text-start border-2 mb-0.5 border-gray-200 rounded-xl p-1 whitespace-nowrap overflow-hidden cursor-pointer hover:bg-slate-300' onClick={()=>{setSearch(items); if(searchContainer?.current){
+                                <div key={items} className='text-start mb-0.5 p-1 whitespace-nowrap overflow-hidden cursor-pointer hover:bg-slate-300' onClick={()=>{setSearch(items); if(searchContainer?.current){
                                     searchContainer.current.style.display = "none"
                                 }}}><span className='text-red-700'>{searchValue}</span>{items.slice(searchValue.length)}</div>
                             )
