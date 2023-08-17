@@ -59,7 +59,9 @@ export const Paypal = ({ currency, showSpinner, amount , getSuccess , action}) =
                         }
                         const response = await api_call.post(`/onPaymentCompleted`,obj,{withCredentials:true})
                         await getSuccess({amountPaid:amount,transactions:response.data.transactions})
-                        showModal(!modal)
+                        setTimeout(() => {
+                            showModal(!modal)
+                        }, 1500);
                     });
                 }}
             />

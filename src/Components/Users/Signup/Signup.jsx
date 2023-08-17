@@ -9,6 +9,7 @@ import { handleSubmit } from '../../../Functions/Signup'
 import {successAlert} from "../../../Functions/Toasts"
 
 import json from "country-region-data/data.json"
+import ButtonLoader from '../../Loading/ButtonLoader';
 
 function Signup() {
 
@@ -26,6 +27,7 @@ function Signup() {
         otp:""
     })
     const [canShow,setCanShow] = useState(null)
+    const [buttonLoading,setButtonLoading] = useState(false)
 
     useEffect(()=>{
 
@@ -49,7 +51,11 @@ function Signup() {
 
     const submitHandle = async (e) => {
         e.preventDefault()
+        setButtonLoading(true)
         const response = await handleSubmit(userData, userObject, setCanShow, setUserData)
+        setTimeout(() => {
+            setButtonLoading(false)
+        }, 500);
             if(response?.status){
                 if(response?.update){
                     successAlert(response.text)
@@ -107,9 +113,11 @@ function Signup() {
                         </select>
                     </div>
                     <div className="mt-6">
-                        <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
+                        {buttonLoading ? <button type='button' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
+                            <ButtonLoader/>
+                        </button> : <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
                             Register
-                        </button>
+                        </button>}
                     </div>
                 </form>
                 <div className="relative flex items-center justify-center w-full mt-6 border border-t">

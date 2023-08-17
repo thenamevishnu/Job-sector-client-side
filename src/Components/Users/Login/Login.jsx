@@ -8,12 +8,15 @@ import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode"
 import { successAlert, errorAlert } from '../../../Functions/Toasts';
 import { googleAuth } from '../../../Functions/GoogleOauth';
+import ButtonLoader from '../../Loading/ButtonLoader';
+import api_call from '../../../axios';
 
 function Login() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [otpInput,setOtpInput] = useState(false)
+    const [buttonLoading,setButtonLoading] = useState(false)
 
     useEffect(()=>{
         const userStorage = localStorage.getItem("userStorage") ?? null
@@ -33,8 +36,11 @@ function Login() {
         try{
             e.preventDefault()
             if(enteredOtp===""){
-                const {data} = await axios.post(process.env.react_app_server + "/login" ,{userData},{withCredentials:true})
-        
+                setButtonLoading(true)
+                const {data} = await api_call.post("/login" ,{userData},{withCredentials:true})
+                setTimeout(() => {
+                    setButtonLoading(false)
+                }, 500);
                 if(!data.status){
                     errorAlert(data.message)
                 }else{
@@ -100,9 +106,11 @@ function Login() {
                         Forget Password?
                     </span>
                     <div className="mt-6">
-                        <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
-                            Login
-                        </button>
+                    {buttonLoading ? <button type='button' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
+                             <ButtonLoader/>
+                        </button> : <button type='submit' className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-800 focus:outline-none">
+                             Login
+                        </button>}
                     </div>
                 </form>
                 <div className="relative flex items-center justify-center w-full mt-6 border border-t">

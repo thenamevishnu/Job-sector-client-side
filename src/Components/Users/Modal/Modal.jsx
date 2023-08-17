@@ -567,7 +567,7 @@ export function PaypalPay(props){
 export function OnPaid() {
     
     return(
-        <div className='w-11/12 z-50 sm:w-9/12 md:w-7/12 lg:w-5/12 p-3 fixed bg-transparant left-1/2 top-24 rounded-xl shadow-xl ' style={{transform:"translate(-50%,0%)"}}>
+        <div className='w-11/12 z-50 sm:w-9/12 md:w-7/12 lg:w-5/12 p-3 fixed bg-transparant left-1/2 top-24 rounded-full shadow-xl ' style={{transform:"translate(-50%,0%)"}}>
             <img alt='on paid pop up' src={`${process.env.react_app_cloud}/job/default/paid.gif`}/>
         </div>
     )
