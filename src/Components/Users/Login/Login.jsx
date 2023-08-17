@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux"
-import axios from 'axios';
 import { updateUser } from "../../../Redux/UserSlice/UserSlice"
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode"

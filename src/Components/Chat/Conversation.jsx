@@ -13,6 +13,8 @@ function Conversation ({selected,refreshList,socket,goback}) {
     const [changeList,setChangeList] = refreshList
     const [dataLoaded,setDataLoaded] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [isTyping,setIsTyping] = useState(false)
+    let timer = useRef(null)
     
     useEffect(()=>{
         dataLoaded && setTimeout(() => {
@@ -28,6 +30,19 @@ function Conversation ({selected,refreshList,socket,goback}) {
         }
         selected && getData()
     },[selected,socket])
+
+    useEffect(()=>{
+        dataLoaded && message!== "" && socket.emit("typing",selected?._id)
+        timer.current = setTimeout(() => {
+            socket.emit("stoptyping",selected?._id)
+        }, 3000)
+        return()=>{
+            clearTimeout(timer.current)
+        }
+    },[message])
+
+    socket.on("typing",(room)=>setIsTyping(true))
+    socket.on("stoptyping",(room)=>setIsTyping(false))
     
     const sendNow = async (e) => {
         if(e !== "click"){
@@ -41,6 +56,8 @@ function Conversation ({selected,refreshList,socket,goback}) {
             }
             const response = await sendMessage(messageData)
             socket?.emit("new_message",response)
+            clearTimeout(timer.current)
+            socket.emit("stoptyping",selected?._id)
             setMessages([...messages,response])
             setMessage("")
             dataChange()
@@ -59,11 +76,12 @@ function Conversation ({selected,refreshList,socket,goback}) {
             }
             dataChange()
         })
+        
     },[socket,messages,dataChange,selected?._id])
 
     useEffect(()=>{
         socket.emit("setup",id)
-    },[id,socket])
+    },[])
 
     useEffect(()=>{
         if(containerRef?.current)
@@ -73,7 +91,7 @@ function Conversation ({selected,refreshList,socket,goback}) {
     return (
         <>
             {!selected && <Landing/>}
-            {selected && <SingleChat socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef} loading={loading}/>}
+            {selected && <SingleChat typeAction={[isTyping,setIsTyping]} socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef} loading={loading}/>}
         </>
     )
 }

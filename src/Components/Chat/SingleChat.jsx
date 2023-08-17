@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../SocketContext'
 import { RateUser } from '../Users/Modal/Modal'
 
-function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRef,socket,goback,loading}) {
+function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRef,socket,goback,loading,typeAction}) {
     
     const {image,type} = useSelector(state => state.user)
     const navigate = useNavigate()
     const {setSocket} = useContext(SocketContext)
     const [showchat,setShowChat] = goback
+    const [isTyping] = typeAction
     const [modal, showModal] = useState({})
-    const skelten = [1,0,,1,1,0,0,1,0,0,1,1,1,0]
+    const skelten = [1,0,1,1,0,0,1,0,0,1,1,1,0]
 
     return (
         <>
@@ -24,7 +25,7 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
                     <img className=' rounded-full' src={`${process.env.react_app_cloud}/${selected?.users[0]?.profile?.image}`} alt='profile-pic' width="50px"></img>
                     <div className='ms-2'>
                         <div className='flex items-center'>{selected?.users[0]?.profile?.full_name} {selected?.users[0]?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
-                        <span className='text-green-800'>Online</span>
+                        <span className='text-green-800'>{isTyping ? "typing..." : "online"}</span>
                     </div>
                 </div>
 
