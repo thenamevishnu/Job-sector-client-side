@@ -4,7 +4,7 @@ import api_call from "../axios"
 
 export const getUserData = async (id) => {
     try{
-        const {data} = await api_call.post("/getUserData",{id},{withCredentials:true})
+        const {data} = await api_call.post("/getUserData",{id})
         if(data.error){
             errorAlert(data.error)
         }else{
