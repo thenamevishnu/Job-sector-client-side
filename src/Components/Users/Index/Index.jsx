@@ -41,7 +41,17 @@ function Index() {
                 console.log(response1, response2);
                 if(!response1){
                     localStorage.removeItem("userStorage")
-                    dispatch(updateUser({}))
+                    dispatch(updateUser({
+                        id:"",
+                        name:"",
+                        email:"",
+                        image:"",
+                        audio:"",
+                        type:"",
+                        chat_manage:false,
+                        pdf:"",
+                        country:""
+                    }))
                     navigate("/login")
                 }else{
                     response1.profile.total_saved = response1?.saved_jobs?.length

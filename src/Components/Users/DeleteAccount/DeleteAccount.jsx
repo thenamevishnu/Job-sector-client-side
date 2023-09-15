@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteAccount, getUserData } from '../../../Api/user'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../Loading/Loading'
+import { updateUser } from '../../../Redux/UserSlice/UserSlice'
 
 function DeleteAccount() {
 
@@ -13,6 +14,7 @@ function DeleteAccount() {
     const [password,setPassword] = useState("")
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch()
     
     useEffect(()=>{
         userData && setTimeout(() => {
@@ -32,6 +34,21 @@ function DeleteAccount() {
             setPassword(process.env.react_app_googleAuthKey)
         }
     },[userData])
+
+    const clearRedux = () => {
+        dispatch(updateUser({
+            id:"",
+            name:"",
+            email:"",
+            image:"",
+            audio:"",
+            type:"",
+            chat_manage:false,
+            pdf:"",
+            country:""
+        }))
+        navigate("/login")
+    }
 
     return (
         <>
@@ -54,7 +71,7 @@ function DeleteAccount() {
                 {userData?.profile?.signup_method === "google" && <div>
                     <input type='text' hidden className='p-2 border-2 ml-5 mt-5 border-gray-400 rounded-lg outline-none' placeholder='Enter password' value={process.env.react_app_googleAuthKey} />
                 </div>}
-                {check?.reason && <button className='mt-8 ml-5 bg-green-700 outline-none text-white p-1 px-2 rounded-lg hover:bg-green-900 shadow-button active:shadow-none' onClick={async ()=>await deleteAccount(id, email, password) && navigate("/login")}>Confirm To Delete</button>}
+                {check?.reason && <button className='mt-8 ml-5 bg-green-700 outline-none text-white p-1 px-2 rounded-lg hover:bg-green-900 shadow-button active:shadow-none' onClick={async ()=>await deleteAccount(id, email, password) && clearRedux()}>Confirm To Delete</button>}
            
         
             </>}

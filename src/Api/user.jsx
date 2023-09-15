@@ -80,6 +80,7 @@ export const deleteAccount = async (id, email, password) => {
             }else{
                 successAlert(data.message)
                 localStorage.clear()
+                
                 return true
             }
         }
