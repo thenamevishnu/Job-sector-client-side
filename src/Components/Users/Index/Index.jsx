@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { errorAlert } from '../../../Functions/Toasts'
+import { errorAlert } from '../../../Services/Toasts'
 import { useNavigate } from 'react-router-dom'
-import { changeAvailable, removeSaved } from '../../../Functions/Profile'
 import moment from 'moment'
-import { isSaved, saveJob } from '../../../Functions/Posts'
-import { changeSearchResults, getUserData } from '../../../Api/user'
+import { changeAvailable, changeSearchResults, getUserData, removeSaved } from '../../../Services/user'
 import {v4 as uuidv4} from "uuid"
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
 import api_call from '../../../axios'
 import Loading from '../../Loading/Loading'
 import Footer from '../Footer/Footer'
+import { isSaved, saveJob } from '../../../Services/FetchPosts'
 
 function Index() {
 
@@ -99,7 +98,7 @@ function Index() {
      
     return (
        <>
-       {loading ? <Loading/> :  <><div className='container grid grid-cols-12 mx-auto text-center mt-20 gap-1'>
+       {loading ? <Loading/> :  <><div className=' grid grid-cols-12 mx-auto md:px-10 px-2 text-center mt-20 gap-1'>
             <div className='md:col-span-8 col-span-12 relative'>
                 <label className='relative' htmlFor='search'>
                     <input type='text' className='p-2 w-full outline-none rounded-xl border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
@@ -183,7 +182,7 @@ function Index() {
             <div className='col-span-4 md:block hidden'>
                 <div className='p-3 text-center border-gray-400 border-2 rounded-xl'>
                     <div className='flex justify-center'>
-                        <img src={userData?.image && `${process.env.react_app_cloud}/${userData.image}`} alt='profile pic' onClick={()=>navigate("/my-profile")} className='cursor-pointer rounded-full w-32'/>
+                        <img src={userData?.image && `${process.env.react_app_cloud}/${userData.image}`} alt='profile pic' onClick={()=>navigate("/my-profile")} className='cursor-pointer rounded-full w-28 h-28 object-contain bg-gray-200 border-2'/>
                     </div>
                     <div className='text-center mt-3'>
                         <div className=' flex items-center justify-center'>{userData?.full_name && userData.full_name} {userData.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='verification badge'/>}</div>
@@ -215,7 +214,9 @@ function Index() {
             </div>
             
         </div>
-        <Footer />
+        
+        {loading ? "" : <Footer />}
+        
         </>}
        </>
     )

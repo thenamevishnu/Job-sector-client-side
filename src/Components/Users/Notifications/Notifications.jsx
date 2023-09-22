@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import {useSelector} from "react-redux"
-import { changeNotifications, getUserData } from '../../../Api/user'
+import { changeNotifications, getUserData } from '../../../Services/user'
 import Loading from '../../Loading/Loading'
 
 function Notifications() {
@@ -22,7 +22,7 @@ function Notifications() {
             setCheck(user.notifications)
         }
         getNotification()
-    },[])
+    },[id])
 
     const changeNotification = async () => {
         await changeNotifications(id,check)
@@ -30,9 +30,9 @@ function Notifications() {
 
     return (
         <>
-        <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
+        <div className=' grid grid-cols-12 mx-auto gap-1 mt-20 px-2 md:px-10'>
             <ProfileMenu active={{manageNotification:true}}/>
-            <div className="col-span-12 md:col-span-8 border-2 border-gray-400 rounded-lg p-3 relative">
+            <div className={loading ? "col-span-12 md:col-span-8 md:border-2 md:border-gray-400 rounded-xl p-3 md:relative" : "col-span-12 md:col-span-8 border-2 border-gray-400 rounded-xl p-3 md:relative"}>
             {loading ? <Loading/> : <>
             <h1 className='text-green-700 font-bold mb-3 text-lg'>Promotional Messages</h1>
                 <div className='flex items-center'>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../SocketContext'
 import { RateUser } from '../Users/Modal/Modal'
 
-function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRef,socket,goback,loading,typeAction}) {
+function SingleChat({messages,id,sendNow,selectedChat,setMessage,message,selected,containerRef,socket,goback,loading,typeAction}) {
     
     const {image,type} = useSelector(state => state.user)
     const navigate = useNavigate()
@@ -21,8 +21,8 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
             <div className='bg-gray-200 h-14 flex justify-between'>
                 
                 <div className='flex items-center'>
-                    <i className='fa fa-arrow-left cursor-pointer md:hidden block mx-2' onClick={()=>setShowChat({...showchat,list:!showchat.list,conv:!showchat.conv})}></i>
-                    <img className=' rounded-full' src={`${process.env.react_app_cloud}/${selected?.users[0]?.profile?.image}`} alt='profile-pic' width="50px"></img>
+                    <i className='fa fa-arrow-left cursor-pointer md:hidden block mx-2' onClick={()=>{selectedChat.current = null; setShowChat({...showchat,list:!showchat.list,conv:!showchat.conv})}}></i>
+                    <img className=' rounded-full w-12 h-12 object-contain bg-gray-300 shadow-tag' src={`${process.env.react_app_cloud}/${selected?.users[0]?.profile?.image}`} alt='profile-pic' width="50px"></img>
                     <div className='ms-2'>
                         <div className='flex items-center'>{selected?.users[0]?.profile?.full_name} {selected?.users[0]?.profile?.is_verified && <img className='ms-1 w-4 h-4.5' src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='profile'/>}</div>
                         <span className='text-green-800'>{isTyping ? "typing..." : "online"}</span>
@@ -56,7 +56,7 @@ function SingleChat({messages,id,sendNow,setMessage,message,selected,containerRe
 
                             {obj?.sender?._id === id && <span className='flex items-center me-1 whitespace-nowrap text-white' style={{fontSize:"9px"}}>{(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}</span>}
                             <span className='relative flex items-center bg-gray-300 rounded-xl'>
-                            {obj?.sender?._id !== id && <img src={`${process.env.react_app_cloud}/${obj?.sender?.profile?.image}`} className='rounded-full w-8 md:me-1 me-0 sm:block hidden' alt='profile'></img>}<div className="lg:max-w-lg md:max-w-sm max-w-xs break-words px-2">{obj?.content}</div>{obj?.sender?._id === id && <img src={`${process.env.react_app_cloud}/${image}`} className='rounded-full w-8 md:ms-1 ms-0 sm:block hidden' alt='profile'></img>}
+                            {obj?.sender?._id !== id && <img src={`${process.env.react_app_cloud}/${obj?.sender?.profile?.image}`} className='rounded-full w-8 h-8 object-fill bg-gray-300 shadow-tag md:me-1 me-0 sm:block hidden' alt='profile'></img>}<div className="lg:max-w-lg md:max-w-sm max-w-xs break-words px-2">{obj?.content}</div>{obj?.sender?._id === id && <img src={`${process.env.react_app_cloud}/${image}`} className='rounded-full w-8 md:ms-1 ms-0 sm:block hidden' alt='profile'></img>}
                             </span>
                             {obj?.sender?._id !== id && <span className='flex items-center ms-1 whitespace-nowrap text-white' style={{fontSize:"9px"}}>{(new Date(obj?.updatedAt)).toLocaleString("en-US",{hour:"numeric",minute:"numeric",hour12:true})}</span>}
                         </div>

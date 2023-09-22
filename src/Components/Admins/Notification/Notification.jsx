@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { sendNotification } from '../../../Api/Admin'
+import { sendNotification } from '../../../Services/Admin'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../Loading/Loading'
 
@@ -29,7 +29,7 @@ function Notification() {
     return (
         <>
         {
-            loading ? <Loading/> : <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
+            loading ? <Loading/> : <div className="relative flex flex-col justify-center mt-20 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Broadcasting System</h1>
                 <form className="mt-6" onSubmit={handleNotification}>

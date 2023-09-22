@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { errorAlert } from '../../../Functions/Toasts'
+import { errorAlert } from '../../../Services/Toasts'
 import { isUri } from 'valid-url'
 import ModalDesign from './ModalDesign'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { Paypal } from '../Balance/Paypal'
-import { setRateUser } from '../../../Api/user'
+import { setRateUser } from '../../../Services/user'
 
 export function HoursPerWeek(props) {
 

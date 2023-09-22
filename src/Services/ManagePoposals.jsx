@@ -1,5 +1,5 @@
 
-import { errorAlert, successAlert } from "../Functions/Toasts"
+import { errorAlert, successAlert } from "./Toasts"
 import api_call from "../axios"
 
 export const rejectPropsal = async (post_id,user_id) => {

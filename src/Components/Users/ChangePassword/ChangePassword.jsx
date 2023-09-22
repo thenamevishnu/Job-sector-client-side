@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { handleChangePassword } from '../../../Api/user'
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
 import { useNavigate } from 'react-router-dom'
+import { handleChangePassword } from '../../../Services/user'
 
 function ChangePassword() {
 
@@ -26,7 +26,7 @@ function ChangePassword() {
     }
 
     return (
-        <div className="relative flex justify-center mt-20 overflow-hidden">
+        <div className="mt-20 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Change Password</h1>
                 <form className="mt-6" onSubmit={submitHandle}>

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getSearchPosts } from '../../../Api/FetchPosts'
+import { getSearchPosts, isSaved, saveJob } from '../../../Services/FetchPosts'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
-import { changeSearchResults, getUserData } from '../../../Api/user'
-import { isSaved, saveJob } from '../../../Functions/Posts'
+import { changeSearchResults, getUserData } from '../../../Services/user'
 import SearchFilter from './SearchFilter'
 import {v4 as uuidv4} from "uuid"
 import Loading from '../../Loading/Loading'
@@ -107,13 +106,15 @@ function SearchPost() {
     return (
         <>
         {loading ? <Loading/> :<>
-            <div className='container grid mx-auto grid-cols-12 mt-20'>
+            <div className=' grid mx-auto grid-cols-12 mt-20 px-2 md:px-10'>
                 {filter && <SearchFilter showResult={showResult} queries={filter} filters={{experience, jobType, proposals, connections}}/>}
                 <div className='col-span-8 p-3 relative'>
                     <div className='flex justify-between relative'>
                         <label className='w-full mr-2 relative' htmlFor='search'>
-                            <input type='text' className='p-2 mb-2 w-full rounded-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
-                            <i className='fa fa-search absolute right-0.5 top-0.5 px-3.5 py-2.5 bg-white text-gray-600 rounded-xl cursor-pointer' onClick={()=>showResult()}></i>
+                            
+                                <input type='text' className='p-2 mb-2 w-full rounded-xl outline-none border-2 border-gray-400' name="search" id='search' placeholder='Search for jobs...' value={searchValue} autoComplete='off' onChange={async (e)=>searchFlow(e.target.value)}></input>
+                                <i className='fa fa-search absolute right-0.5 top-0.5 px-3.5 py-2.5 bg-white text-gray-600 rounded-xl cursor-pointer' onClick={showResult}></i>
+                            
                         </label>
                         
                         <select value={sort ?? ""} className='border-2 mb-2 lg:4/12 md:w-3/12 w-3/12 border-gray-400 rounded-lg outline-none' onChange={async (e) => {await showResult({...filter,sort:e.target.value})}}>

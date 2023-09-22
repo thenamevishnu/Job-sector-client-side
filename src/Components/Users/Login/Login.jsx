@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux"
 import { updateUser } from "../../../Redux/UserSlice/UserSlice"
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode"
-import { successAlert, errorAlert } from '../../../Functions/Toasts';
-import { googleAuth } from '../../../Functions/GoogleOauth';
+import { successAlert, errorAlert } from '../../../Services/Toasts';
+import { googleAuth } from '../../../Services/GoogleOauth';
 import ButtonLoader from '../../Loading/ButtonLoader';
 import api_call from '../../../axios';
 
@@ -87,7 +87,7 @@ function Login() {
     })
 
     return (
-        <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
+        <div className="relative flex flex-col justify-center mt-20 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job Sector Login</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>

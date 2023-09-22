@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { saveJob, sendProposal } from '../../../Functions/Posts'
 import moment from "moment"
 import { useNavigate } from 'react-router-dom'
 import api_call from '../../../axios'
 import Loading from '../../Loading/Loading'
 import Footer from '../Footer/Footer'
+import { saveJob, sendProposal } from '../../../Services/FetchPosts'
 
 function JobView() {
     
@@ -46,8 +46,8 @@ function JobView() {
 
     return (
         <>
-            {loading ? <Loading/> : <>
-            <div className='container grid grid-cols-12 relative mx-auto mt-20 border-2 border-gray-400 rounded-xl'>
+            {loading ? <Loading/> : <div className='px-2 md:px-10'>
+            <div className=' grid grid-cols-12 relative mx-auto mt-20 border-2 border-gray-400 rounded-xl'>
                 {!postInfo?.title && <div className='text-center text-lg col-span-12'>Post Disabled or Deleted!</div>}
 
                 {postInfo?.title && <div className="col-span-12">
@@ -78,7 +78,7 @@ function JobView() {
                         <div className="lg:col-span-3 md:col-span-4 col-span-12 p-3">
                             <div className='border-2 border-gray-400 rounded-xl p-2'>
                                 <div className='flex justify-center'>
-                                    <img className='rounded-full cursor-pointer' src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em" onClick={()=>{localStorage.setItem("publicProfileClient",postInfo?.auther[0]?._id); navigate("/client-profile")}}/>
+                                    <img className='rounded-full cursor-pointer w-28 h-28 object-contain bg-gray-200 border-2' src={postInfo && `${process.env.react_app_cloud}/${postInfo?.auther[0]?.profile?.image}`} alt='auther pic' width="90em" onClick={()=>{localStorage.setItem("publicProfileClient",postInfo?.auther[0]?._id); navigate("/client-profile")}}/>
                                 </div>
                                 <div className='flex items-center justify-center mt-2'>
                                     <span>{postInfo && postInfo?.auther[0]?.profile?.full_name}</span>&nbsp;{postInfo?.auther[0]?.profile?.is_verified && <img src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='auther pic' width="15em"/>}
@@ -96,7 +96,7 @@ function JobView() {
 
             </div>
 
-            <div className='container grid grid-cols-12 mx-auto'>
+            <div className=' grid grid-cols-12 mx-auto'>
                 { related?.length > 0 && <div className="col-span-12">
                     <h4 className='font-bold text-xl underline my-5'>RELATED POSTS</h4>
                     {
@@ -125,8 +125,9 @@ function JobView() {
                 </div>
                 }
             </div>
-            <Footer />
-            </>}
+           
+            </div>}
+            {loading | !postInfo?.title ? "" : <Footer />}
         </>
         
     )

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { errorAlert, successAlert } from '../../../Functions/Toasts'
-import { contactMessage } from '../../../Api/user'
+import { errorAlert, successAlert } from '../../../Services/Toasts'
+import { contactMessage } from '../../../Services/user'
 import Loading from '../../Loading/Loading'
 
 function Contact() {

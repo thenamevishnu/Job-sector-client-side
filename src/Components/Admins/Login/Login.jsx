@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { errorAlert, successAlert } from '../../../Functions/Toasts'
+import { errorAlert, successAlert } from '../../../Services/Toasts'
 import axios from 'axios'
 import { updateAdmin } from '../../../Redux/AdminSlice/AdminSlice'
 
@@ -42,7 +42,7 @@ function Login() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
+        <div className="px-2 md:px-0 mt-20 overflow-hidden">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job sector admin</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>

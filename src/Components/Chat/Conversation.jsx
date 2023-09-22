@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { getMessagesByChat, sendMessage } from '../../Api/Chat';
 import Landing from './Landing';
 import SingleChat from './SingleChat';
+import { getMessagesByChat, sendMessage, setUnreadMessage } from '../../Services/Chat';
 
 function Conversation ({selected,refreshList,socket,goback}) {
     
@@ -14,6 +14,8 @@ function Conversation ({selected,refreshList,socket,goback}) {
     const [dataLoaded,setDataLoaded] = useState(false)
     const [loading, setLoading] = useState(true)
     const [isTyping,setIsTyping] = useState(false)
+    const selectedChat = useRef(null)
+
     let timer = useRef(null)
     
     useEffect(()=>{
@@ -25,17 +27,18 @@ function Conversation ({selected,refreshList,socket,goback}) {
     useEffect(()=>{
         const getData = async () => {
             setMessages(await getMessagesByChat(selected?._id))
-            setDataLoaded(!dataLoaded)
+            setDataLoaded((prev) => !prev)
             socket?.emit("join_chat",selected?._id)
+            selectedChat.current = selected
         }
         selected && getData()
-    },[selected,socket])
+    },[selected])
 
     useEffect(()=>{
-        dataLoaded && message!== "" && socket.emit("typing",selected?._id)
+        dataLoaded && message!== "" && socket.emit("typing",selectedChat.current?._id)
         timer.current = setTimeout(() => {
-            socket.emit("stoptyping",selected?._id)
-        }, 3000)
+            socket.emit("stoptyping",selectedChat.current?._id)
+        }, 2000)
         return()=>{
             clearTimeout(timer.current)
         }
@@ -51,47 +54,43 @@ function Conversation ({selected,refreshList,socket,goback}) {
         if(message.trim().length === 0) return
             const messageData = {
                 content: message,
-                chat_id:selected?._id,
+                chat_id:selectedChat.current?._id,
                 sender:id
             }
             const response = await sendMessage(messageData)
             socket?.emit("new_message",response)
             clearTimeout(timer.current)
-            socket.emit("stoptyping",selected?._id)
+            socket.emit("stoptyping",selectedChat.current?._id)
             setMessages([...messages,response])
             setMessage("")
-            dataChange()
+            setChangeList(response)
     }
 
-    const dataChange = useCallback(async () => {
-        setChangeList(!changeList)
-    },[setChangeList,changeList])
-
     useEffect(()=>{ 
-        socket.on("receive_message",async (receivedData)=>{
-            if(selected?._id === receivedData.chat_id._id){ 
-                setMessages([...messages,receivedData])
+        socket.on("receive_message",async (receivedData)=>{ 
+            if(selectedChat.current?._id === receivedData.chat_id._id){ 
+                setMessages((messages) => [...messages,receivedData])
             }else{
+                await setUnreadMessage(receivedData.sender._id, receivedData.chat_id._id)
                 //notification
             }
-            dataChange()
+            setChangeList(receivedData)
         })
-        
-    },[socket,messages,dataChange,selected?._id])
+    },[socket])
 
     useEffect(()=>{
         socket.emit("setup",id)
     },[])
 
     useEffect(()=>{
-        if(containerRef?.current)
-            containerRef?.current?.scrollTo(0, containerRef.current.scrollHeight);
-    },[messages])
+        if(containerRef.current)
+            containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
+    },[messages,loading])
 
     return (
         <>
             {!selected && <Landing/>}
-            {selected && <SingleChat typeAction={[isTyping,setIsTyping]} socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef} loading={loading}/>}
+            {selected && <SingleChat typeAction={[isTyping,setIsTyping]} selectedChat={selectedChat} socket={socket} goback={goback} messages={messages} id={id} sendNow={sendNow} message={message} setMessage={setMessage} selected={selected} containerRef={containerRef} loading={loading}/>}
         </>
     )
 }

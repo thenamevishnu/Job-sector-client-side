@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { changePostStatus, deletePost, fetchMyPosts, markAsCompletedPost } from '../../../../Api/FetchMyPosts'
+import { changePostStatus, deletePost, fetchMyPosts, markAsCompletedPost } from '../../../../Services/FetchMyPosts'
 import { useNavigate } from 'react-router-dom'
 import { CompleteProject } from '../../Modal/Modal'
-import { errorAlert, successAlert } from '../../../../Functions/Toasts'
+import { errorAlert, successAlert } from '../../../../Services/Toasts'
 import Loading from '../../../Loading/Loading'
 
 
@@ -56,7 +56,7 @@ function MyPosts() {
         <>
         {loading ? <Loading/> : <>
         {modal.CompleteProject && <CompleteProject data={modal} states={[modal,showModal]} callback={markAsCompleted}/>}
-        <div className='container grid grid-cols-12 mx-auto mt-20 gap-2'>
+        <div className=' grid grid-cols-12 mx-auto mt-20 gap-2 px-2 md:px-10'>
             {
                 postData && postData.length === 0 && <div className='col-span-12'>Not Posts Found!</div>
             }

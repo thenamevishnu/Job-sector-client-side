@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
-import { warnAlert } from '../../../Functions/Toasts';
+import { warnAlert } from '../../../Services/Toasts';
 
 function SignupType() {
 
@@ -14,7 +14,7 @@ function SignupType() {
     },[navigate])
 
     return (
-        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+        <div className="md:relative md:flex md:flex-col md:justify-center md:min-h-screen mt-20 md:mt-0 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-3xl">
                 <div className="grid sm:grid-cols-2 xm:grid-cols-1 gap-4 mx-auto text-center">
                 <div className='relative shadow-2xl p-4 rounded-lg border flex items-center cursor-pointer' onClick={()=>{

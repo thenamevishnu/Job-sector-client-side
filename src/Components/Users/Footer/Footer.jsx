@@ -2,8 +2,8 @@ import React from 'react'
 
 function Footer() {
   return (
-    <>
-        <div className='mt-10 bg-gray-300 rounded-xl mx-3'>
+    <div className='px-2 md:px-10'>
+        <div className='mt-10 bg-gray-300 rounded-xl mx-auto px-5'>
             <div className='grid grid-cols-12 text-center p-3 m-3 '>
                 <div className="md:col-span-3 col-span-6 mt-5">
                     <p>About US</p>
@@ -39,7 +39,7 @@ function Footer() {
                  <i className='fa fa-copyright'></i> 2022 - 2023 | Job Sector 
             </div>
         </div>
-    </>
+    </div>
     
   )
 }

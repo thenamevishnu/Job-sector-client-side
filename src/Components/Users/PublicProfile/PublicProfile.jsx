@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import 'react-toastify/dist/ReactToastify.css';
-import { errorAlert } from '../../../Functions/Toasts'
+import { errorAlert } from '../../../Services/Toasts'
 import { useSelector } from 'react-redux';
-import { addConnection } from '../../../Functions/Profile';
 import { useNavigate } from 'react-router-dom';
-import { getUserData } from '../../../Api/user';
+import { addConnection, getUserData } from '../../../Services/user';
 import Loading from '../../Loading/Loading';
-import Footer from '../Footer/Footer';
 
 function PublicProfile() {
 
@@ -65,12 +63,12 @@ function PublicProfile() {
     return (
         <>
         {loading ? <Loading/> : <>    
-        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <div className=' grid grid-cols-12 mx-auto mt-20 gap-1 px-2 md:px-10'>
 
             <div className='md:col-span-4 col-span-12'>
                 <div className='text-center mb-1 border-2 rounded-xl border-gray-400 p-2 relative'>
                     <div className='flex justify-center'>
-                        <img className='w-32 rounded-full' src={process.env.react_app_cloud + "/" + userData.image} alt='profile-pic'/>
+                        <img className='w-28 h-28 object-contain bg-gray-200 border-2 rounded-full' src={process.env.react_app_cloud + "/" + userData.image} alt='profile-pic'/>
                     </div>
                     {
                         id!==userId && <span className='absolute bottom-1 end-1 text-white p-2 rounded-full w-8 flex justify-center items-center h-8 bg-blue-900 me-3 mb-2 cursor-pointer fs-5' onClick={async ()=>await addConnection(id,userId)} title={`Follow ${userData?.full_name}`}><i className='fa fa-plus'></i></span>
@@ -206,7 +204,7 @@ function PublicProfile() {
 
             </div>
 
-            <div className='container grid grid-cols-12 mx-auto mt-1'>
+            <div className=' grid grid-cols-12 mx-auto mt-1 px-2 md:px-10'>
             <div className="col-span-12 border-2 border-gray-400 relative rounded-xl p-3">
                 <h5 className='font-bold text-green-700 ps-3 pt-3 text-lg mb-2'>Certificates</h5> 
                 <div className="grid grid-cols-12 gap-2">
@@ -235,7 +233,7 @@ function PublicProfile() {
             </div>
             </div>
 
-            <div className='container grid grid-cols-12 mx-auto mt-1'>
+            <div className=' grid grid-cols-12 mx-auto mt-1 px-2 md:px-10 mb-5'>
             <div className="col-span-12 border-2 border-gray-400 relative rounded-xl p-3">
                 <h5 className='font-bold text-green-700 ps-3 pt-3 text-lg mb-2'>Employment History</h5> 
                 <div className="grid grid-cols-12 gap-2">
@@ -263,7 +261,6 @@ function PublicProfile() {
                 </div>
             </div>
             </div>
-            <Footer />
                 </>}
         </>
          )

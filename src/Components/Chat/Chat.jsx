@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { chatListSearch, getAllChatList } from '../../Api/Chat'
 import Conversation from './Conversation'
 import io from "socket.io-client"
-import { errorAlert } from '../../Functions/Toasts'
+import { errorAlert } from '../../Services/Toasts'
+import { chatListSearch, getAllChatList, setUnreadMessage } from '../../Services/Chat'
 
 let socket = io(process.env.react_app_server)
 
@@ -33,6 +33,7 @@ function Chat() {
             })
             setChatList(lists)
        }
+       console.log("changed");
        fetchData()
     },[changeList,id])
 
@@ -71,11 +72,11 @@ function Chat() {
 
                         chatList && chatList.map((obj) => {
                             return (
-                                <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!");}}>
+                                <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!"); await setUnreadMessage(obj?.users[0]?._id, obj?._id, true); setChangeList(!changeList)}}>
                                     <div className='flex items-center'>
                                         <div className='relative'>
-                                            <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12"/>
-                                            {/* {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center items-center top-0 end-0 text-white'> {obj?.[obj?.users[0]?._id]} </div>} */}
+                                            <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12 h-12 object-contain bg-gray-300 shadow-tag"/>
+                                            {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center w-4 h-4 text-sm p-2.5 items-center top-[-0.3rem] end-[-0.3rem] text-white'> {obj?.[obj?.users[0]?._id]} </div>}
                                         </div>
                                         {!obj?.users[0]?.profile?.full_name && <div className='ms-2'>
                                             <div className='flex items-center'>Deleted Account</div>
@@ -135,11 +136,11 @@ function Chat() {
                     : <>{
                          chatList && chatList.map((obj) => {
                              return (
-                                 <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!"); (window.innerWidth <= 768 && obj?.users[0]?.profile?.full_name) && setShowChat({...showchat,list:!showchat.list,conv:!showchat.conv})}}>
+                                 <div className='flex justify-between items-center border-2 mb-1 cursor-pointer rounded-lg p-2 relative' key={obj._id} onClick={async ()=>{obj?.users[0]?.profile?.full_name ? selectedChat(obj) : errorAlert("Deleted Account!"); (window.innerWidth <= 768 && obj?.users[0]?.profile?.full_name) && setShowChat({...showchat,list:!showchat.list,conv:!showchat.conv}); await setUnreadMessage(obj?.users[0]?._id, obj?._id, true); setChangeList(!changeList)}}>
                                      <div className='flex items-center'>
                                          <div className='relative'>
-                                             <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12"/>
-                                             {/* {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center items-center top-0 end-0 text-white'> {obj?.[obj?.users[0]?._id]} </div>} */}
+                                             <img src={`${process.env.react_app_cloud}/${obj?.users[0]?.profile?.image ? obj?.users[0]?.profile?.image : 'job/default/deleted.jpg'}`} alt='pic of opponent' className="rounded-full w-12 h-12 object-contain bg-gray-300 shadow-tag"/>
+                                             {obj?.[obj?.users[0]?._id] === 0 || obj?.[obj?.users[0]?._id] === undefined ? "" : <div className='absolute bg-green-600 rounded-full flex justify-center w-4 h-4 text-sm p-2.5 items-center top-[-0.3rem] end-[-0.3rem] text-white'> {obj?.[obj?.users[0]?._id]} </div>}
                                          </div>
                                          {!obj?.users[0]?.profile?.full_name && <div className='ms-2'>
                                              <div className='flex items-center'>Deleted Account</div>

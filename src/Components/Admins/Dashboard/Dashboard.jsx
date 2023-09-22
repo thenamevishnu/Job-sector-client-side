@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getDashboard } from '../../../Api/Admin'
+import { getDashboard } from '../../../Services/Admin'
 import {Chart as ChartJS,CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
@@ -68,7 +68,7 @@ function Dashboard() {
     return (
         <>
         {
-            loading ? <Loading/> : adminDashboard && <div className='grid grid-cols-12 container mt-20 gap-3 mx-auto'>
+            loading ? <Loading/> : adminDashboard && <div className='grid px-2 md:px-10 grid-cols-12 container mt-20 gap-3 mx-auto'>
             {
                 Object.entries(adminDashboard).filter(items => items[0]!=="profitData").map(items => {
                     return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAccount, getUserData } from '../../../Api/user'
+import { deleteAccount, getUserData } from '../../../Services/user'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../Loading/Loading'
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
@@ -52,9 +52,9 @@ function DeleteAccount() {
 
     return (
         <>
-        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <div className=' grid grid-cols-12 mx-auto mt-20 gap-1 px-2 md:px-10'>
             <ProfileMenu active={{deleteAccount:true}}/>
-            <div className='md:col-span-8 col-span-12 border-2 border-gray-400 rounded-lg p-3 relative'>
+            <div className={loading ? 'md:col-span-8 col-span-12 md:border-2 md:border-gray-400 rounded-xl p-3 md:relative' : 'md:col-span-8 col-span-12 border-2 border-gray-400 rounded-xl p-3 md:relative'}>
             {loading ? <Loading/> : <>
             <h1 className='text-lg text-green-700 font-bold'><i className='fa fa-trash'></i> Account Deletion</h1>
                 <h2 className='mt-8'>I want to close my account</h2>

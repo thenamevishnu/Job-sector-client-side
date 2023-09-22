@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
-import { acceptProposal, rejectPropsal } from '../../../../Api/ManagePoposals'
+import { acceptProposal, rejectPropsal } from '../../../../Services/ManagePoposals'
 import { useSelector } from 'react-redux'
-import { createChat } from '../../../../Api/Chat'
-import { getSinglePosts } from '../../../../Api/FetchPosts'
+import { createChat } from '../../../../Services/Chat'
+import { getSinglePosts } from '../../../../Services/FetchPosts'
 import Loading from '../../../Loading/Loading'
 
 function ViewPost() {
@@ -41,7 +41,7 @@ function ViewPost() {
 
     return (
         <>
-        {loading? <Loading/> : <><div className='container grid grid-cols-12 border-2 border-gray-400 mx-auto mt-20 rounded-xl'>
+        {loading? <Loading/> : <div className='px-2 md:px-10 '><div className=' grid grid-cols-12 border-2 border-gray-400 mx-auto mt-20 rounded-xl'>
             {
                 !postData?.title && <div className='text-center col-span-12'>Post Disabled or Deleted!</div>
             } 
@@ -71,10 +71,12 @@ function ViewPost() {
         </div>
         
         <div className='container grid grid-cols-12 mx-auto mt-1 gap-2 rounded-xl px-0 p-2'>
-        {
-                userData?.length > 0 && <h3 className='p-2 px-0 col-span-12 text-green-700 text-lg mb-2 uppercase'>Proposals list</h3>
-            }
-                    {
+        
+             <h3 className='p-2 px-0 col-span-12 text-green-700 text-lg mb-2 uppercase'>Proposals list</h3>
+            {
+                userData?.length === 0 ? <div className='flex justify-center w-screen text-red-700'>No Proposals found!</div> :
+            
+                    
                         userData && userData.map((obj) => {
                             return(
                                 <div className='lg:col-span-4 md:col-span-6 col-span-12 flex justify-between border-2 border-gray-400 rounded-xl p-2' key={obj._id} >
@@ -96,7 +98,7 @@ function ViewPost() {
                             )
                         })
                     }
-        </div></>}
+        </div></div>}
         </>
     )
 }

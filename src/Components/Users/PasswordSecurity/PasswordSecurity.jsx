@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
-import { changeTwoStep, getUserData } from '../../../Api/user'
+import { changeTwoStep, getUserData } from '../../../Services/user'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../Loading/Loading'
@@ -31,13 +31,13 @@ function PasswordSecurity() {
 
     return (
         <>
-           <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+           <div className=' grid grid-cols-12 mx-auto mt-20 gap-1 px-2 md:px-10'>
                 <ProfileMenu active={{passwordSecurity:true}}/>
-                    <div className="md:col-span-8 col-span-12 relative">
+                    <div className={loading ? "md:col-span-8 col-span-12 md:relative md:border-2 md:border-gray-400 rounded-xl" : "md:col-span-8 col-span-12 md:relative"}>
                     {
                 loading ? <Loading/> : <div className='grid grid-cols-12 mx-auto container'>
                             
-                            <div className='col-span-12 border-2 border-gray-400 rounded-lg p-3'>
+                            <div className='col-span-12 border-2 border-gray-400 rounded-xl p-3'>
                                 <h1 className='text-lg text-green-700 font-bold'>Authentication Options</h1>
                                 {userData && userData.profile?.signup_method === "google" ? 
                                     <p className='text-sm mt-3'>You currently use <span className='text-green-700'>Google Sign-in</span> to login. We will only ask for your Job Sector password if we need to verify your identity.</p> 
@@ -47,7 +47,7 @@ function PasswordSecurity() {
                                 }
                             </div>
     
-                            <div className='col-span-12 border-2 border-gray-400 rounded-lg p-3 mt-1'>
+                            <div className='col-span-12 border-2 border-gray-400 rounded-xl p-3 mt-1'>
                                 <h1 className='text-lg text-green-700 font-bold'>Two Step Verification</h1> 
                                 <p className='text-sm mt-3'>Add an extra layer of security to block unauthorized access and protect your account.</p>
     

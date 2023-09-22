@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getMyProposals } from '../../../../Api/FetchMyPosts'
+import { getMyProposals } from '../../../../Services/FetchMyPosts'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../../Loading/Loading'
 
@@ -29,7 +29,7 @@ function MyProposals() {
 
     return (
         <>
-        {loading ? <Loading/> : <div className='container grid grid-cols-12 mt-20 mx-auto gap-2'>
+        {loading ? <Loading/> : <div className=' px-2 md:px-10 grid grid-cols-12 mt-20 mx-auto gap-2'>
             {
                 postData.length > 0 ? postData.map(obj => {
                     return (

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { getUserData } from '../../../../Api/user'
-import { errorAlert } from '../../../../Functions/Toasts'
-import { fetchMyPosts } from '../../../../Api/FetchMyPosts'
+import { getUserData } from '../../../../Services/user'
+import { errorAlert } from '../../../../Services/Toasts'
+import { fetchMyPosts } from '../../../../Services/FetchMyPosts'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../../Loading/Loading'
-import Footer from '../../Footer/Footer'
 
 function PublicClientProfile() {
 
@@ -36,14 +35,14 @@ function PublicClientProfile() {
         }else{
             navigate("/")
         }
-    },[id])
+    },[id,navigate])
 
     return (
         <>
-        {loading ? <Loading/> : <><div className='container mx-auto grid grid-cols-12 gap-2 mt-20'>
+        {loading ? <Loading/> : <><div className='mx-auto grid grid-cols-12 gap-2 mt-20 px-2 md:px-10'>
             <div className='md:col-span-4 col-span-12 text-center'>
                 <div className='p-3 border-2 border-gray-400 rounded-lg'>
-                <img className='rounded-full mx-auto w-20' src={`${process.env.react_app_cloud + userData?.profile?.image}`} alt='client profile pic'/>
+                <img className='rounded-full mx-auto w-28 h-28 object-contain bg-gray-200 border-2' src={`${process.env.react_app_cloud + userData?.profile?.image}`} alt='client profile pic'/>
                 <p className='mt-2 flex items-center justify-center'><i className='fa fa-user text-gray-400 mr-1'></i> {userData?.profile?.full_name} <img src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='auther pic' width="15em" className='ml-1'/></p>
                 <p><i className='fa fa-at text-gray-400'></i> {userData?.profile?.email}</p>
                 <p><i className='fa fa-location-dot text-gray-400'></i> {userData?.profile?.country}</p>
@@ -71,7 +70,7 @@ function PublicClientProfile() {
                 </div>
             </div>
         </div>
-        <Footer />
+        
         </>}
         </>
     )

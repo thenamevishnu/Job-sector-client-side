@@ -1,5 +1,5 @@
 
-import { errorAlert } from "../Functions/Toasts"
+import { errorAlert } from "./Toasts"
 import api_call from "../axios"
 
 export const fetchSkills = async () => {

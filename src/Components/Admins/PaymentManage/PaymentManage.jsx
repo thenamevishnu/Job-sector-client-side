@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getAdminData, payoutManageAdmin } from '../../../Api/Admin'
+import { getAdminData, payoutManageAdmin } from '../../../Services/Admin'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../Loading/Loading'
 
@@ -35,7 +35,7 @@ function PaymentManage() {
     return (
         <>
         {
-            loading ? <Loading/> : <div className='container grid grid-cols-12 mt-20 mx-auto gap-1'>
+            loading ? <Loading/> : <div className='container grid grid-cols-12 mt-20 mx-auto gap-1 px-2 md:px-10'>
             {
                 payouts && payouts.map(items => {
                     return (

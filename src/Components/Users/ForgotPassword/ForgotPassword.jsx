@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { sendForgotLink } from '../../../Functions/ForgotLink'
+import { sendForgotLink } from '../../../Services/ForgotLink'
 import ButtonLoader from '../../Loading/ButtonLoader'
 
 function ForgotPassword() {
@@ -17,7 +17,7 @@ function ForgotPassword() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+        <div className="mt-20 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">forgot password</h1>
                 <form className="mt-6" onSubmit={submitHandle}>

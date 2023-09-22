@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { useSelector } from 'react-redux'
-import { AddPaymentMethods, getUserData, withdrawSuccess } from '../../../Api/user'
+import { AddPaymentMethods, getUserData, withdrawSuccess } from '../../../Services/user'
 import { AddPaymentMethod, OnPaid, PaypalPay } from '../Modal/Modal'
-import { errorAlert, successAlert, warnAlert } from '../../../Functions/Toasts'
+import { errorAlert, successAlert, warnAlert } from '../../../Services/Toasts'
 import Loading from '../../Loading/Loading'
 
 function Balance() {
@@ -75,10 +75,10 @@ function Balance() {
       {modal.paypal && <PaypalPay data={modal} states={[modal, showModal]} getSuccess={handleDataFromChild}/>}
       {modal.addMethod && <AddPaymentMethod data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}
       {showTick && <OnPaid/>} 
-      <div className='container grid grid-cols-12 mx-auto gap-2 mt-20'>
+      <div className='grid grid-cols-12 mx-auto gap-1 mt-20 px-2 md:px-10'>
           <ProfileMenu active={{balance:true}}/>
               
-            <div className='md:col-span-8 col-span-12 relative'>
+            <div className={loading ? "md:col-span-8 col-span-12 md:relative md:border-2 md:border-gray-400 rounded-xl" : "md:col-span-8 col-span-12 relative"}>
                 {loading ? <Loading/> : <>
                 {
                     type === "client" && <><div className='relative border-2 border-gray-400 p-3 mb-2 rounded-xl'>

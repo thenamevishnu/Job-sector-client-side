@@ -20,7 +20,7 @@ export const Paypal = ({ currency, showSpinner, amount , getSuccess , action}) =
                 },
             }
         );
-    }, [currency, showSpinner]);
+    }, [currency, showSpinner, dispatch, options]);
 
     return (
         <>

@@ -5,13 +5,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom'
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
 import {BioData, Certificate, Education, Employment, HoursPerWeek, Languages, Projects, Skills} from '../Modal/Modal'
-import { promiseAlert, errorAlert } from '../../../Functions/Toasts'
-import { fromChildResponse } from '../../../Functions/FromChild'
-import { deleteCertificate, deleteEducation, deleteEmployment, deleteLanguage, deleteProject, deleteSkill } from '../../../Functions/Profile'
-import { getUserData } from '../../../Api/user';
+import { promiseAlert, errorAlert } from '../../../Services/Toasts'
+import { fromChildResponse } from '../../../Services/FromChild'
+import { deleteCertificate, deleteEducation, deleteEmployment, deleteLanguage, deleteProject, deleteSkill, getUserData } from '../../../Services/user';
 import api_call from '../../../axios';
 import Loading from '../../Loading/Loading';
-import Footer from '../Footer/Footer';
 
 function ProfileSettings() {
 
@@ -57,15 +55,13 @@ function ProfileSettings() {
                 withCredentials: true
             }
 
-            const myPromise = new Promise(resolve => {
-                setTimeout(async () => {
-                    const endPoint = type==="image" ? "/update-profile-pic" : type==="audio" ? "/update-profile-audio" : "/update-profile-pdf"
-                    const {data} = await api_call.post(endPoint, formData, config)
-                    type==="image" ? promiseComplete({image:file}) : type === "audio" ? promiseComplete({audio:data.audio}) : promiseComplete({pdf:data.pdf})
-                    const obj = type==="image" ? {...stateData,image:data.dp,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio} : type==="audio" ? {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:data.audio} : {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio,pdf:data.pdf}
-                    dispatch(updateUser(obj))
-                    resolve(data)
-                }, 1500);
+            const myPromise = new Promise(async resolve => {
+                const endPoint = type==="image" ? "/update-profile-pic" : type==="audio" ? "/update-profile-audio" : "/update-profile-pdf"
+                const {data} = await api_call.post(endPoint, formData, config)
+                type==="image" ? promiseComplete({image:file}) : type === "audio" ? promiseComplete({audio:data.audio}) : promiseComplete({pdf:data.pdf})
+                const obj = type==="image" ? {...stateData,image:data.dp,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio} : type==="audio" ? {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:data.audio} : {...stateData,image:stateData.image,id:stateData.id,email:stateData.email,name:stateData.name,audio:stateData.audio,pdf:data.pdf}
+                dispatch(updateUser(obj))
+                resolve(data)
             })
 
             promiseAlert(myPromise)
@@ -121,11 +117,11 @@ function ProfileSettings() {
         {modal.employment && <Employment data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}
         {modal.certificate && <Certificate data={modal} states={[modal, showModal]} sendDataToParant={handleDataFromChild} />}    
         
-        <div className='container grid grid-cols-12 mx-auto mt-20 gap-1'>
+        <div className=' grid grid-cols-12 mx-auto mt-20 gap-1 px-2 md:px-10'>
 
             <div className='md:col-span-4 col-span-12'>
                 <div className='text-center mb-1 border-2 rounded-xl border-gray-400 p-2'>
-                    <label htmlFor='upload-image' title='Update Image' className='cursor-pointer mt-2 flex justify-center'><img className='w-32 rounded-full' src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + "/" +stateData.image} alt='profile-pic'/></label>
+                    <label htmlFor='upload-image' title='Update Image' className='cursor-pointer mt-2 flex justify-center'><img className='w-28 bg-gray-200 h-28 rounded-full object-contain border-2' src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + "/" +stateData.image} alt='profile-pic'/></label>
                     <input type='file' id='upload-image' accept='.jpeg, .jpg, .png, .webp' name='dp' style={{display:"none"}} onChange={(e)=>setFiles(e.target.files[0],"image")}></input>
                     <div className='mt-3'>
                         <div className='flex justify-center items-center'>{stateData.name} {userData.is_verified && <img src={process.env.react_app_cloud + 'job/default/verification.png'} alt='verified' className='w-4 h-4.5 ms-1'></img>}</div>
@@ -285,7 +281,7 @@ function ProfileSettings() {
 
         </div>
 
-        <div className='container grid grid-cols-12 mx-auto mt-1'>
+        <div className=' grid grid-cols-12 mx-auto mt-1 px-2 md:px-10'>
             <div className="col-span-12 border-2 border-gray-400 relative rounded-xl p-3">
                 <span className='inner-circle cursor-pointer absolute top-3 right-3' onClick={()=>showModal({status:!modal.status,certificate:true,title:"Certificates"})}>
                     <i className='fa fa-plus' style={{color:'#808080'}}></i>
@@ -320,7 +316,7 @@ function ProfileSettings() {
             </div>
         </div>
 
-        <div className='container grid grid-cols-12 mx-auto mt-1'>
+        <div className=' grid grid-cols-12 mx-auto mt-1 px-2 md:px-10 mb-5'>
             <div className="col-span-12 border-2 border-gray-400 relative rounded-xl p-3">
                 <span className='inner-circle cursor-pointer absolute top-3 right-3' onClick={()=>showModal({status:!modal.status,employment:true,title:"Employment History"})}>
                     <i className='fa fa-plus' style={{color:'#808080'}}></i>
@@ -354,7 +350,6 @@ function ProfileSettings() {
                 </div>
             </div>
         </div>
-        <Footer />
     </>}
         </>
          )

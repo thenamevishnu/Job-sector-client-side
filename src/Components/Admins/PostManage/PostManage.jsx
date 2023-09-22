@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchSearchPostData, getAllPosts } from '../../../Api/Admin'
+import { fetchSearchPostData, getAllPosts } from '../../../Services/Admin'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../Loading/Loading'
 
@@ -40,6 +40,7 @@ function PostManage() {
                     <input className='lg:w-3/12 md:w-5/12 sm:w-7/12 w-10/12 p-2 border-2 border-gray-400 rounded-lg outline-none' placeholder='Search User...' type='text' value={search} onChange={async (e)=>{ setSearch(e.target.value); await fetchSearch(e.target.value)}}/>
                 </div>
             </div>
+            <div className='px-2 md:px-10'>
             <table className='md:table hidden container mx-auto text-center cursor-pointer'>
                 <thead>
                     <tr>
@@ -105,6 +106,7 @@ function PostManage() {
                     }
                 
            </table>
+           </div>
                 </>
             }
         </>

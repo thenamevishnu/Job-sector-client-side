@@ -5,8 +5,8 @@ import { GoogleLogin } from "@react-oauth/google"
 import jwt_decode from "jwt-decode"
 import { useDispatch } from 'react-redux'
 import { updateUser } from '../../../Redux/UserSlice/UserSlice'
-import { handleSubmit } from '../../../Functions/Signup'
-import {successAlert} from "../../../Functions/Toasts"
+import { handleSubmit } from '../../../Services/Signup'
+import {successAlert} from "../../../Services/Toasts"
 
 import json from "country-region-data/data.json"
 import ButtonLoader from '../../Loading/ButtonLoader';
@@ -76,7 +76,7 @@ function Signup() {
     }
 
     return (
-        <div className="relative flex flex-col justify-center mt-20 overflow-hidden">
+        <div className="relative flex flex-col justify-center mt-20 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">Job Sector Registration</h1>
                 <form className="mt-6" onSubmit={submitHandle}>

@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from "../../Components/Users/Header/Header"
-import Footer from "../../Components/Users/Footer/Footer"
 import Balance from '../../Components/Users/Balance/Balance'
 
 function BalancePage() {
@@ -8,7 +7,6 @@ function BalancePage() {
         <div>
             <Header icons={true}/>
             <Balance/>
-            <Footer/>
         </div>
     )
 }

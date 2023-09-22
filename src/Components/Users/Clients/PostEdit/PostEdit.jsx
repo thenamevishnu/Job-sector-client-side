@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { addSkills, removeSkills, updateMyPost } from '../../../../Functions/Posts'
-import { fetchSinglePost } from '../../../../Api/FetchPosts'
-import { fetchSkills } from '../../../../Api/FetchSkills'
+import { addSkills, fetchSinglePost, removeSkills, updateMyPost } from '../../../../Services/FetchPosts'
+import { fetchSkills } from '../../../../Services/FetchSkills'
 import Loading from '../../../Loading/Loading'
 
 function PostEdit() {
@@ -55,7 +54,7 @@ function PostEdit() {
 
     return (
         <>
-        {loading ? <Loading/> : <div className="relative flex flex-col justify-center min-h-screen mt-4 overflow-hidden">
+        {loading ? <Loading/> : <div className="mt-20 overflow-hidden px-2 md:px-0">
             <div className="w-full p-6 m-auto bg-white rounded-2xl shadow-2xl border-2 md:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-green-700 uppercase">edit job</h1>
                 <form className="mt-6" onSubmit={handleSubmit}>
