@@ -81,7 +81,7 @@ function ClientProfile() {
             {loading ? <Loading/> : <><div className='mx-auto grid grid-cols-12 gap-2 mt-20 px-2 md:px-10'>
             <div className='md:col-span-4 col-span-12 text-center'>
                 <div className='p-3 border-2 border-gray-400 rounded-lg'>
-                <label htmlFor='upload-image' title='Update Image' className='cursor-pointer rounded-full mx-auto w-20 flex justify-center'><img className='w-32 rounded-full' src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + userData?.profile?.image} alt='profile-pic'/></label>
+                <label htmlFor='upload-image' title='Update Image' className='cursor-pointer flex justify-center'><img className='rounded-full w-28 bg-gray-200 h-28 object-contain border-2' src={showFile.image ? URL.createObjectURL(showFile.image) : process.env.react_app_cloud + userData?.profile?.image} alt='profile-pic'/></label>
                 <input type='file' id='upload-image' accept='.jpeg, .jpg, .png, .webp' name='dp' style={{display:"none"}} onChange={(e)=>setFiles(e.target.files[0],"image")}></input>
                 <p className='mt-2 flex items-center justify-center'><i className='fa fa-user text-gray-400 mr-1'></i> {userData?.profile?.full_name} <img src={`${process.env.react_app_cloud}/job/default/verification.png`} alt='auther pic' width="15em" className='ml-1'/></p>
                 <p><i className='fa fa-at text-gray-400'></i> {userData?.profile?.email}</p>
