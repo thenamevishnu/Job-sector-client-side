@@ -58,7 +58,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
              errorAlert("Password does not match")
         }else{
 
-            const {data} = await api_call.post("/signup" ,{userData},{withCredentials:true})
+            const {data} = await api_call.post("/signup" ,{userData})
 
             if(!data.status){
                 errorAlert(data.message)
@@ -69,7 +69,7 @@ export const handleSubmit = async (userData, userObject,setCanShow, setUserData)
                     const userData = {}
                     userData.email = userObject.email
                     userData.password = process.env.react_app_googleAuthKey
-                    const {data} = await api_call.post("/login" ,{userData},{withCredentials:true})
+                    const {data} = await api_call.post("/login" ,{userData})
                     if(!data.status){
                         errorAlert(data.message)
                         obj.setUserObject = null

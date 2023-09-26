@@ -36,7 +36,7 @@ function Login() {
             e.preventDefault()
             if(enteredOtp===""){
                 setButtonLoading(true)
-                const {data} = await api_call.post("/login" ,{userData},{withCredentials:true})
+                const {data} = await api_call.post("/login" ,{userData})
                 setTimeout(() => {
                     setButtonLoading(false)
                 }, 500);
