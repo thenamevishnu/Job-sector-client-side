@@ -27,7 +27,7 @@ function Index() {
     const [loading, setLoading] = useState(true)
     
     useEffect(()=>{
-        userData && postData && setTimeout(() => {
+        userData?.full_name && postData && setTimeout(() => {
             setLoading(false)
         }, 1000);
     },[postData,userData])
